@@ -1,2 +1,3 @@
-# stocktaking-server
- API to manage personal budget
+# Stocktaking-server
+
+API to manage personal budget
