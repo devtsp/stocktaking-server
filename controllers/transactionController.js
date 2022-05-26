@@ -17,14 +17,24 @@ const createTransaction = async (req, res) => {
 		return res.status(400).json({ error: '"Amount" field is required' });
 	if (!type.trim())
 		return res.status(400).json({ error: '"Type" field is required' });
-	const connection = await connectDB;
+
 	const id = uuid();
 	const createdAt = newDate();
+
+	const connection = await connectDB;
 	await connection.execute(
 		`INSERT INTO transactions(id,createdAt,concept,amount,type) 
-    VALUES('${id}','${createdAt}','${concept}',${+amount},'${type}')`
+      VALUES('${id}','${createdAt}','${concept}',${+amount},'${type}')`
 	);
-	res.send({ id, createdAt, concept, amount: +amount, type });
+	res.json({ id, createdAt, concept, amount: +amount, type });
 };
 
-module.exports = { getAllTransactions, createTransaction };
+const removeTransaction = async (req, res) => {
+	const { id } = req.body;
+	if (!id.trim()) return res.status(400).json({ error: 'Id field required' });
+	const connection = await connectDB;
+	await connection.execute(`DELETE FROM transactions WHERE id = '${id}'`);
+	res.json({ message: `Object with id "${id}" deleted succesfully` });
+};
+
+module.exports = { getAllTransactions, createTransaction, removeTransaction };

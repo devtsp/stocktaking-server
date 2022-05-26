@@ -6,6 +6,7 @@ const transactionController = require('../controllers/transactionController');
 router
 	.route('/')
 	.get(transactionController.getAllTransactions)
-	.post(transactionController.createTransaction);
+	.post(transactionController.createTransaction)
+	.delete(transactionController.removeTransaction);
 
 module.exports = router;
