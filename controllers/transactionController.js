@@ -6,6 +6,9 @@ const newDate = require('../utils/formatDate');
 const getAllTransactions = async (req, res) => {
 	const connection = await connectDB;
 	const [rows, fields] = await connection.execute('SELECT * FROM transactions');
+	if (!rows.length) {
+		return res.status(204).end();
+	}
 	res.json(rows);
 };
 
