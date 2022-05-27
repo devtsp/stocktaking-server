@@ -23,7 +23,7 @@ const createTransaction = async (req, res) => {
 
 	const transaction = {
 		id: uuid(),
-		createdAt: newDate(),
+		createdAt: new Date().toISOString(),
 		concept,
 		amount: +amount,
 		type,
@@ -37,9 +37,9 @@ const removeTransaction = async (req, res) => {
 	const { id } = req.body;
 	!id.trim() && res.status(400).json({ error: 'Id field required' });
 
-	const transaction = { id, deletedAt: newDate() };
 	const connection = await connectDB;
 	await connection.execute(transactionQueries.remove(transaction));
+	const transaction = { id, deletedAt: new Date().toISOString() };
 	res.json({ message: `Object with id '${id}' deleted succesfully` });
 };
 
@@ -58,8 +58,8 @@ const updateTransaction = async (req, res) => {
 	let [rows] = await connection.execute(transactionQueries.select(id));
 	!Object.keys(rows).length && res.status(204).end();
 
-	const transaction = { validFields, id, updatedAt: newDate() };
 	await connection.execute(transactionQueries.update(transaction));
+	const transaction = { validFields, id, updatedAt: new Date().toISOString() };
 	res.json({ message: `Object with id '${id}' updated succesfully` });
 };
 
