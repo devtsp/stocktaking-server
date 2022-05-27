@@ -61,7 +61,7 @@ const updateTransaction = async (req, res) => {
 	);
 
 	if (!Object.keys(row).length) {
-		return res.status(204).json({ error: 'Not found' }).end();
+		return res.status(204).end();
 	}
 
 	const validFields = Object.entries({ amount, concept }).filter(
