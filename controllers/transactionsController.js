@@ -23,7 +23,7 @@ const createTransaction = async (req, res) => {
 		id: uuid(),
 		createdAt: new Date().toISOString(),
 		concept,
-		amount: +amount,
+		amount: type === 'IN' ? +amount : -amount,
 		type,
 	};
 	await queryDB(transactionQueries.insert(transaction));
