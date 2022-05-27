@@ -1,11 +1,13 @@
-const selectAll = () => 'SELECT * FROM transactions';
+const selectAll = () => 'SELECT * FROM transactions WHERE deletedAt IS NULL';
 
 const insert = ({ id, createdAt, concept, amount, type }) =>
 	`INSERT INTO transactions( id, createdAt, concept, amount, type ) VALUES( "${id}", "${createdAt}", "${concept}", ${amount}, "${type}" )`;
 
-const remove = id => `DELETE FROM transactions WHERE id = '${id}'`;
+const remove = ({ id, deletedAt }) =>
+	`UPDATE transactions SET deletedAt = "${deletedAt}" WHERE id = '${id}'`;
 
-const select = id => `SELECT * FROM transactions WHERE id = "${id}"`;
+const select = id =>
+	`SELECT * FROM transactions WHERE id = "${id}" AND deletedAt IS NULL`;
 
 const update = ({ id, validFields, updatedAt }) => {
 	const formattedFields = validFields.map(
