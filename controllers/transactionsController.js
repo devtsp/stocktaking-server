@@ -55,9 +55,15 @@ const updateTransaction = async (req, res) => {
 	res.json({ message: `Object with id '${id}' updated succesfully` });
 };
 
+const getBalance = async (req, res) => {
+	const [[balance]] = await queryDB(transactionQueries.getBalance());
+	res.json(...balance);
+};
+
 module.exports = {
 	getAllTransactions,
 	createTransaction,
 	removeTransaction,
 	updateTransaction,
+	getBalance,
 };
