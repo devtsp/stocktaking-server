@@ -52,6 +52,15 @@ const updateTransaction = async (req, res) => {
 		return res.status(400).json({ error: 'Id field required' });
 	}
 
+	const connection = await connectDB;
+	const [row, fields] = await connection.execute(
+		`SELECT * FROM transactions WHERE id = "${id}"`
+	);
+
+	if (!Object.keys(row).length) {
+		return res.status(204).json({ error: 'Not found' }).end();
+	}
+
 	const validFields = Object.entries({ amount, concept }).filter(
 		([key, value]) => !!value
 	);
@@ -64,7 +73,6 @@ const updateTransaction = async (req, res) => {
 		([key, value]) => ` ${key} = "${value}"`
 	);
 
-	const connection = await connectDB;
 	await connection.execute(
 		`UPDATE transactions SET ${formattedFields}, modifiedAt = "${newDate()}" WHERE id = "${id}"`
 	);
