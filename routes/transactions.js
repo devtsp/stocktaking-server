@@ -10,4 +10,6 @@ router
 	.delete(transactionsController.removeTransaction)
 	.patch(transactionsController.updateTransaction);
 
+router.route('/balance').get(transactionsController.getBalance);
+
 module.exports = router;
