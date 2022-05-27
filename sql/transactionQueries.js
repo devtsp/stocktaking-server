@@ -16,10 +16,13 @@ const update = ({ id, validFields, updatedAt }) => {
 	return `UPDATE transactions SET ${formattedFields}, modifiedAt = "${updatedAt}" WHERE id = "${id}"`;
 };
 
+const getBalance = () => 'SELECT SUM(amount) as balance FROM transactions';
+
 module.exports = {
 	selectAll,
 	insert,
 	remove,
 	select,
 	update,
+	getBalance,
 };
