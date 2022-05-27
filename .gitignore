@@ -129,3 +129,4 @@ dist
 # private files
 Challenge Full stack - JavaScript.rev2.pdf
 tests.js
+/logs

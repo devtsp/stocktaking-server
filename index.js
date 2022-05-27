@@ -3,10 +3,13 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
+const logger = require('./middleware/logger');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 //MIDDLEWARE
+app.use(logger);
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
