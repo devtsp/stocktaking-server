@@ -1,4 +1,5 @@
-const selectAll = () => 'SELECT * FROM transactions WHERE deletedAt IS NULL';
+const selectAll = () =>
+	'SELECT * FROM transactions WHERE deletedAt IS NULL ORDER BY createdAt DESC';
 
 const insert = ({ id, createdAt, concept, amount, type }) =>
 	`INSERT INTO transactions( id, createdAt, concept, amount, type ) VALUES( "${id}", "${createdAt}", "${concept}", ${amount}, "${type}" )`;
