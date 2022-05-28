@@ -80,3 +80,38 @@ header h1 {
 	border: 2px solid rgba(0, 0, 0, 0.397);
 	margin: 1rem 0;
 }
+
+/* LOGIN ============================================ */
+
+.Login {
+	width: fit-content;
+	margin: 0 auto;
+}
+
+.Login h1 {
+	font-size: 1.4rem;
+}
+
+.Login div {
+	width: fit-content;
+	margin: 0 auto;
+	text-align: left;
+}
+
+.Login input {
+	width: 200px;
+	margin-bottom: 0.6rem;
+}
+
+.Login input[type='submit'] {
+	padding: 0.4rem;
+	background-color: white;
+	border-radius: 5px;
+	border: 2px solid rgba(0, 0, 0, 0.397);
+	margin: 1rem 0;
+}
+
+.Login a,
+.login a:visited {
+	color: yellowgreen;
+}
