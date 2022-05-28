@@ -10,12 +10,13 @@ const logUser = async (req, res) => {
 		return res.status(400).json({ error: 'Email and password are required' });
 	}
 
-	const [[[user]], connection] = await queryDB(userQueries.select(email));
+	const [[rows], connection] = await queryDB(userQueries.select(email));
 
-	if (!Object.keys(user).length) {
+	if (!Object.keys(rows).length) {
 		return res.status(401).json({ error: 'Email not registered' });
 	}
 
+	const user = rows[0];
 	const validPassword = await bcrypt.compare(password, user.password);
 	if (validPassword) {
 		const accessToken = jwt.sign(
