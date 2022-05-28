@@ -1,6 +1,6 @@
 const select = username => `SELECT * from users WHERE username = '${username}'`;
 
-const insert = (username, hashedPassword, id) =>
-	`INSERT INTO users(username, password, id) VALUES('${username}', '${hashedPassword}', '${id}')`;
+const insert = (email, hashedPassword, id) =>
+	`INSERT INTO users(email, password, id) VALUES('${email}', '${hashedPassword}', '${id}')`;
 
 module.exports = { select, insert };
