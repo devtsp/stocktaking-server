@@ -30,8 +30,12 @@ const createTransaction = async (req, res) => {
 		amount: type === 'IN' ? +amount : -amount,
 		type,
 	};
-	await queryDB(transactionQueries.insert(transaction));
-	res.json(transaction);
+	try {
+		await queryDB(transactionQueries.insert(transaction));
+		res.status(201).json(transaction);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 
 const removeTransaction = async (req, res) => {
@@ -68,8 +72,12 @@ const updateTransaction = async (req, res) => {
 	}
 
 	const transaction = { validFields, id, updatedAt: new Date().toISOString() };
-	await queryDB(transactionQueries.update(transaction), connection);
-	res.json({ message: `Object with id '${id}' updated succesfully` });
+	try {
+		await queryDB(transactionQueries.update(transaction), connection);
+		res.json({ message: `Object with id '${id}' updated succesfully` });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 
 const getBalance = async (req, res) => {
