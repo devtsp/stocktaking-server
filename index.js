@@ -11,17 +11,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 //MIDDLEWARE
-app.use(logger);
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(logger);
 
 //ROUTES
 app.use('/', require('./routes/root'));
 app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
+app.use('/logout', require('./routes/logout'));
 
 //AUTH
 app.use(verifyJWT);
