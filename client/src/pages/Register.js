@@ -5,17 +5,23 @@ const Register = () => {
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [error, setError] = React.useState('');
-	const [success, setSuccess] = React.useState('');
 
 	const submitRegister = async e => {
 		e.preventDefault();
 		const body = { email, password };
+		if (!email.trim() || !password.trim()) {
+			setError('Fields must not be empty');
+			return;
+		}
+
 		try {
-			const response = await main.post('/register', body);
-			console.log(response.data);
-			setSuccess('Succesfully registered user');
+			setError('');
+			await main.post('/register', body);
+			const { data } = await main.post('/auth', body);
+			const { accessToken } = data;
+			localStorage.setItem('accessToken', accessToken);
+			console.log(accessToken);
 		} catch (err) {
-			console.error(err.response.data);
 			setError(err.response.data.error);
 		}
 	};
@@ -29,6 +35,8 @@ const Register = () => {
 					type="text"
 					id="register-email"
 					onChange={e => setEmail(e.target.value)}
+					autoComplete="off"
+					required
 				/>
 			</div>
 			<div>
@@ -37,10 +45,11 @@ const Register = () => {
 					type="password"
 					id="register-password"
 					onChange={e => setPassword(e.target.value)}
+					autoComplete="off"
+					required
 				/>
 			</div>
 			{error && <div className="error">*{error}</div>}
-			{success && <div className="success">{success}</div>}
 			<div>
 				<input type="submit" value="Submit" />
 			</div>
