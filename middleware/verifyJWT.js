@@ -13,7 +13,7 @@ const verifyJWT = (req, res, next) => {
 		if (error) {
 			return res.status(403).json({ error: 'Invalid/expired token' });
 		}
-		req.user = decoded.UserInfo.username;
+		req.user = decoded.UserInfo.email;
 		next();
 	});
 };
