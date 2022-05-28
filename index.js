@@ -18,6 +18,7 @@ app.use(express.json());
 app.use('/', require('./routes/root'));
 app.use('/transactions', require('./routes/api/transactions'));
 app.use('/register', require('./routes/register'));
+app.use('/auth', require('./routes/auth'));
 
 //404
 app.all('*', (req, res) => {
