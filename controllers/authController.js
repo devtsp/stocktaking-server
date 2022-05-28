@@ -10,7 +10,7 @@ const logUser = async (req, res) => {
 		return res.status(400).json({ error: 'Email and password are required' });
 	}
 
-	const [[[user]]] = await queryDB(userQueries.select(email));
+	const [[[user]], connection] = await queryDB(userQueries.select(email));
 
 	if (!Object.keys(user).length) {
 		return res.status(401).json({ error: 'Email not registered' });
@@ -19,14 +19,31 @@ const logUser = async (req, res) => {
 	const validPassword = await bcrypt.compare(password, user.password);
 	if (validPassword) {
 		const accessToken = jwt.sign(
-			{ UserInfo: { user: user.email } },
+			{ UserInfo: { user: email } },
 			process.env.ACCESS_TOKEN_SECRET,
-			{ expiresIn: '1d' }
+			{ expiresIn: '15s' }
 		);
-		res.json({ message: `User '${user.email}' logged in`, accessToken });
+		const refreshToken = jwt.sign(
+			{ user: email },
+			process.env.REFRESH_TOKEN_SECRET,
+			{ expiresIn: '24h' }
+		);
+
+		try {
+			await queryDB(userQueries.updateRefreshToken(user.id, refreshToken));
+			res.cookie('jwt', refreshToken, {
+				httpOnly: true,
+				// secure: true,
+				sameSite: 'None',
+				maxAge: 24 * 60 * 60 * 1000,
+			});
+			res.json({ accessToken });
+		} catch (error) {
+			res.status(500).json({ error: error.message });
+		}
 	} else {
 		res.status(401).json({ error: 'Invalid password' });
 	}
 };
 
-module.exports = { logUser };
+module.exports = logUser;
