@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 const logger = require('./middleware/logger');
+const verifyJWT = require('./middleware/verifyJWT');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,9 +17,12 @@ app.use(express.json());
 
 //ROUTES
 app.use('/', require('./routes/root'));
-app.use('/transactions', require('./routes/api/transactions'));
 app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
+
+//AUTH
+app.use(verifyJWT);
+app.use('/transactions', require('./routes/api/transactions'));
 
 //404
 app.all('*', (req, res) => {
