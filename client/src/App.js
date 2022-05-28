@@ -1,7 +1,13 @@
+import Register from './pages/Register';
+
 function App() {
 	return (
 		<div className="App">
-			<h1>STOCKTAKING APP</h1>
+			<header>
+				<h1>STOCKTAKING APP</h1>
+			</header>
+
+			<Register />
 		</div>
 	);
 }

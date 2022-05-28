@@ -1,13 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;400;600&display=swap');
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	text-align: center;
+	color: white;
+	background-color: rgb(48, 190, 35);
+	font-family: 'noto sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+		'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+		monospace;
+}
+
+#root {
+	background-color: rgb(20, 20, 20);
+	border: 0.1px solid transparent;
+	min-height: 100vh;
+}
+
+input {
+	color: white;
+	border: none;
+	padding: 0.4rem;
+	background-color: transparent;
+	border-bottom: 1px solid rgba(250, 249, 249, 0.349);
+}
+
+input[type='submit'] {
+	border: none;
+	color: black;
+	cursor: pointer;
+}
+
+.error {
+	color: rgb(170, 5, 5);
+	margin: 1rem 0;
+}
+
+.success {
+	color: rgb(5, 170, 5);
+	margin: 1rem 0;
+}
+
+header h1 {
+	border-bottom: 2px solid white;
+}
+
+/* REGISTER ===================================== */
+
+.Register {
+	width: fit-content;
+	margin: 0 auto;
+}
+
+.Register h1 {
+	font-size: 1.4rem;
+}
+
+.Register div {
+	width: fit-content;
+	margin: 0 auto;
+	text-align: left;
+}
+
+.Register input {
+	width: 200px;
+	margin-bottom: 0.6rem;
+}
+
+.Register input[type='submit'] {
+	padding: 0.4rem;
+	background-color: white;
+	border-radius: 5px;
+	border: 2px solid rgba(0, 0, 0, 0.397);
+	margin: 1rem 0;
 }
