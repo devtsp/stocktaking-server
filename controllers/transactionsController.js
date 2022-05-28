@@ -40,7 +40,12 @@ const removeTransaction = async (req, res) => {
 		return res.status(400).json({ error: 'Id field required' });
 	}
 	const transaction = { id, deletedAt: new Date().toISOString() };
-	await queryDB(transactionQueries.remove(transaction));
+	const [[rows], connection] = await queryDB(
+		transactionQueries.remove(transaction)
+	);
+	if (!rows.length) {
+		return res.status(204).end();
+	}
 	res.json({ message: `Object with id '${id}' deleted succesfully` });
 };
 
