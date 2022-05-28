@@ -5,7 +5,7 @@ const verifyJWT = (req, res, next) => {
 	if (!authHeader?.startsWith('Bearer ')) {
 		return res
 			.status(401)
-			.json({ error: "Auth header must be =  'Bearer: <token>'" });
+			.json({ error: "Auth header must be: 'Bearer: <token>'" });
 	}
 
 	const token = authHeader.split(' ')[1];
