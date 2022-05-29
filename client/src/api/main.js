@@ -1,3 +1,5 @@
 import axios from 'axios';
 
-export default axios.create({ baseURL: 'http://localhost:5000/' });
+const main = axios.create({ baseURL: 'http://localhost:5000/' });
+
+export default main;
