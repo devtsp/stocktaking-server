@@ -34,7 +34,7 @@ const logUser = async (req, res) => {
 			await queryDB(userQueries.updateRefreshToken(user.id, refreshToken));
 			res.cookie('jwt', refreshToken, {
 				httpOnly: true,
-				// secure: true,
+				secure: true,
 				sameSite: 'None',
 				maxAge: 24 * 60 * 60 * 1000,
 			});
