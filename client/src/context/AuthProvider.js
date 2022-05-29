@@ -4,7 +4,6 @@ const AuthContext = React.createContext({});
 
 export const AuthProvider = ({ children }) => {
 	const [auth, setAuth] = React.useState({});
-	console.log(auth);
 
 	return (
 		<AuthContext.Provider value={{ auth, setAuth }}>
