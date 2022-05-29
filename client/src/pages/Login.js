@@ -1,15 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import main from '../api/main';
-import AuthContext from '../context/AuthProvider';
+import useAuth from '../hooks/useAuth';
+import { axiosPrivate } from '../api/axios';
+import useRefreshToken from '../hooks/useRefreshToken';
 
 const Login = () => {
-	const { setAuth } = React.useContext(AuthContext);
+	const { auth, setAuth } = useAuth();
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [error, setError] = React.useState('');
 	const [success, setSuccess] = React.useState('');
+
+	const refresh = useRefreshToken();
 
 	const submitLogin = async e => {
 		e.preventDefault();
@@ -19,10 +22,19 @@ const Login = () => {
 		}
 
 		try {
-			const response = await main.post('/auth', { email, password });
-			console.log(response.data);
+			const response = await axiosPrivate.post(
+				'/auth',
+				{ email, password },
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					withCredentials: true,
+				}
+			);
 			const accessToken = response?.data?.accessToken;
-			setAuth({ email, password, accessToken });
+			setAuth({ email, accessToken });
+			console.log(auth);
 			setEmail('');
 			setPassword('');
 			setError('');
@@ -42,40 +54,43 @@ const Login = () => {
 	};
 
 	return (
-		<form className="Login" onSubmit={submitLogin}>
-			<h1>Login</h1>
-			<div>
-				<label htmlFor="login-email">Email</label> <br />
-				<input
-					type="text"
-					id="login-email"
-					onChange={e => setEmail(e.target.value)}
-					autoComplete="off"
-					value={email}
-					required
-				/>
-			</div>
-			<div>
-				<label htmlFor="login-password">Password</label> <br />
-				<input
-					type="password"
-					id="login-password"
-					onChange={e => setPassword(e.target.value)}
-					autoComplete="off"
-					value={password}
-					required
-				/>
-			</div>
-			{error && <div className="error">*{error}</div>}
-			{success && <div className="success">{success}</div>}
-			<div>
-				<input type="submit" value="Submit" />
-			</div>
-			<p>
-				Need an acount? <br />
-				<Link to="/register">Sign Up</Link>
-			</p>
-		</form>
+		<>
+			<form className="Login" onSubmit={submitLogin}>
+				<h1>Login</h1>
+				<div>
+					<label htmlFor="login-email">Email</label> <br />
+					<input
+						type="text"
+						id="login-email"
+						onChange={e => setEmail(e.target.value)}
+						autoComplete="off"
+						value={email}
+						required
+					/>
+				</div>
+				<div>
+					<label htmlFor="login-password">Password</label> <br />
+					<input
+						type="password"
+						id="login-password"
+						onChange={e => setPassword(e.target.value)}
+						autoComplete="off"
+						value={password}
+						required
+					/>
+				</div>
+				{error && <div className="error">*{error}</div>}
+				{success && <div className="success">{success}</div>}
+				<div>
+					<input type="submit" value="Submit" />
+				</div>
+				<p>
+					Need an acount? <br />
+					<Link to="/register">Sign Up</Link>
+				</p>
+			</form>
+			<button onClick={() => refresh()}>Refresh Token</button>
+		</>
 	);
 };
 
