@@ -6,12 +6,15 @@ const path = require('path');
 
 const logger = require('./middleware/logger');
 const verifyJWT = require('./middleware/verifyJWT');
+const credentials = require('./middleware/credentials');
+const corsOptions = require('./config/corsOptions');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-//MIDDLEWARE
-app.use(cors());
+//MIDDLEWAR
+app.use(credentials);
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
