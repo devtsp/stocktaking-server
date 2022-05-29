@@ -12,9 +12,9 @@ function App() {
 					<h1>STOCKTAKING APP</h1>
 				</header>
 				<Routes>
-					<Route path="dashboard" element={<Dashboard />} />
 					<Route path="register" element={<Register />} />
 					<Route path="login" element={<Login />} />
+					<Route path="dashboard" element={<Dashboard />} />
 				</Routes>
 			</Router>
 		</div>
