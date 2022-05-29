@@ -4,10 +4,11 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
-const logger = require('./middleware/logger');
-const verifyJWT = require('./middleware/verifyJWT');
 const credentials = require('./middleware/credentials');
 const corsOptions = require('./config/corsOptions');
+const logger = require('./middleware/logger');
+const verifyJWT = require('./middleware/verifyJWT');
+const handleErrors = require('./middleware/handleErrors');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -42,5 +43,7 @@ app.all('*', (req, res) => {
 		res.type('txt').send('404 Not Found');
 	}
 });
+
+app.use(handleErrors);
 
 app.listen(PORT, () => console.log(`>> Listening on port ${PORT}`));
