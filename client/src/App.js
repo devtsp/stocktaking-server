@@ -6,6 +6,7 @@ import LinkPage from './pages/Linkpage.js';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Operations from './pages/Operations';
 
 function App() {
 	return (
@@ -16,8 +17,9 @@ function App() {
 					<Route element={<Layout />}>
 						<Route path="/" element={<LinkPage />} />
 						<Route path="/login" element={<Login />} />
-						<Route path="register" element={<Register />} />
+						<Route path="/register" element={<Register />} />
 						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/operate" element={<Operations />} />
 					</Route>
 				</Routes>
 			</Router>
