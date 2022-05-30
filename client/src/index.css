@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;400;600&display=swap');
 
+:root {
+	font-size: 16px;
+}
+
 body {
 	margin: 0;
 	text-align: center;
 	color: white;
-	background-color: rgb(48, 190, 35);
+	background-color: rgb(51, 61, 51);
 	font-family: 'noto sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
 		'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
 		'Helvetica Neue', sans-serif;
@@ -17,13 +21,89 @@ code {
 		monospace;
 }
 
-#root {
-	background-color: rgb(20, 20, 20);
-	border: 0.1px solid transparent;
-	min-height: 100vh;
+/* APP =============================================================== */
+
+.App {
+	height: 100vh;
+	background-color: rgba(248, 245, 241, 0.062);
+	display: flex;
+	flex-direction: column;
+	justify-items: start;
+	font-size: 1.6rem;
 }
 
-input {
+/* HEADER ============================================================ */
+
+header {
+	background-color: rgba(240, 255, 255, 0.61);
+}
+
+header a {
+	text-decoration: none;
+	color: rgb(247, 247, 247);
+	text-align: left;
+}
+
+header h1 {
+	margin: 0;
+	padding: 1rem 3rem;
+	font-size: 1.4rem;
+}
+
+/* LAYOUT ======================================================== */
+
+main {
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* LINPKPAGE ============================================================= */
+
+.Linkpage h1 {
+	font-size: 2rem;
+	font-weight: 200;
+	margin-bottom: 2rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
+}
+
+.Linkpage a,
+.Linkpage:visited {
+	display: block;
+	color: yellowgreen;
+	margin: 1rem 0;
+}
+
+/* LOGIN/REGISTER FORMS ============================================ */
+
+form {
+	margin: 0;
+}
+
+form h1 {
+	font-size: 2rem;
+	font-weight: 200;
+	margin-bottom: 2rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
+}
+
+form div {
+	width: fit-content;
+	margin: 0 auto;
+	text-align: left;
+}
+
+form label {
+	font-weight: 200;
+}
+
+form input {
+	width: 20rem;
+	margin-bottom: 0.6rem;
+	font-size: 1.4rem;
 	color: white;
 	border: none;
 	padding: 0.4rem;
@@ -31,87 +111,51 @@ input {
 	border-bottom: 1px solid rgba(250, 249, 249, 0.349);
 }
 
-input[type='submit'] {
-	border: none;
-	color: black;
-	cursor: pointer;
-}
-
-.error {
+form .error {
 	color: rgb(170, 5, 5);
 	margin: 1rem 0;
 }
 
-.success {
-	color: rgb(5, 170, 5);
-	margin: 1rem 0;
-}
-
-header h1 {
-	border-bottom: 2px solid white;
-}
-
-/* REGISTER ===================================== */
-
-.Register {
-	width: fit-content;
-	margin: 0 auto;
-}
-
-.Register h1 {
-	font-size: 1.4rem;
-}
-
-.Register div {
-	width: fit-content;
-	margin: 0 auto;
-	text-align: left;
-}
-
-.Register input {
-	width: 200px;
-	margin-bottom: 0.6rem;
-}
-
-.Register input[type='submit'] {
+form input[type='submit'] {
+	cursor: pointer;
+	font-size: 1.6rem;
 	padding: 0.4rem;
-	background-color: white;
+	background-color: rgb(255, 255, 255);
+	color: rgb(51, 61, 51);
 	border-radius: 5px;
 	border: 2px solid rgba(0, 0, 0, 0.397);
-	margin: 1rem 0;
+	margin: 2rem 0;
 }
 
-/* LOGIN ============================================ */
-
-.Login {
-	width: fit-content;
-	margin: 0 auto;
+form p {
+	font-weight: 200;
+	margin: 0;
 }
 
-.Login h1 {
-	font-size: 1.4rem;
-}
-
-.Login div {
-	width: fit-content;
-	margin: 0 auto;
-	text-align: left;
-}
-
-.Login input {
-	width: 200px;
-	margin-bottom: 0.6rem;
-}
-
-.Login input[type='submit'] {
-	padding: 0.4rem;
-	background-color: white;
-	border-radius: 5px;
-	border: 2px solid rgba(0, 0, 0, 0.397);
-	margin: 1rem 0;
-}
-
-.Login a,
-.login a:visited {
+form a,
+form a:visited {
 	color: yellowgreen;
+}
+
+/* DAHSBOARD =========================================================================== */
+
+.Dashboard h1 {
+	font-size: 2rem;
+	font-weight: 200;
+	margin-bottom: 2rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
+}
+
+.Dashboard p {
+	min-width: 20rem;
+	display: flex;
+}
+
+.Dashboard p span:nth-child(1) {
+	margin-right: auto;
+}
+
+.Dashboard p span:nth-child(2) {
+	color: cornflowerblue;
 }
