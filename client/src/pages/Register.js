@@ -1,5 +1,5 @@
 import React from 'react';
-import main from '../api/main';
+import axios from '../api/axios';
 
 const Register = () => {
 	const [email, setEmail] = React.useState('');
@@ -15,13 +15,13 @@ const Register = () => {
 		}
 
 		try {
+			const response = await axios.post('/register', body);
+			console.log(response.data);
+			setEmail('');
+			setPassword('');
 			setError('');
-			await main.post('/register', body);
-			const { data } = await main.post('/auth', body);
-			const { accessToken } = data;
-			localStorage.setItem('accessToken', accessToken);
-			console.log(accessToken);
 		} catch (err) {
+			console.error(err.message);
 			setError(err.response.data.error);
 		}
 	};
