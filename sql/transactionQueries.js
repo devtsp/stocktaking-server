@@ -17,11 +17,8 @@ const update = ({ id, validFields, updatedAt }) => {
 	return `UPDATE transactions SET ${formattedFields}, modifiedAt = "${updatedAt}" WHERE id = "${id}"`;
 };
 
-const getBalance = user => {
-	const query = `SELECT SUM(amount) as balance FROM transactions WHERE user = "${user}"`;
-	console.log(query);
-	return query;
-};
+const getBalance = user =>
+	`SELECT SUM(amount) as balance FROM transactions WHERE user = "${user}"`;
 
 module.exports = {
 	selectAll,
