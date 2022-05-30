@@ -1,8 +1,8 @@
-const selectAll = () =>
-	'SELECT * FROM transactions WHERE deletedAt IS NULL ORDER BY createdAt DESC';
+const selectAll = user =>
+	`SELECT * FROM transactions WHERE deletedAt IS NULL AND user = ${user} ORDER BY createdAt DESC`;
 
-const insert = ({ id, createdAt, concept, amount, type }) =>
-	`INSERT INTO transactions( id, createdAt, concept, amount, type ) VALUES( "${id}", "${createdAt}", "${concept}", ${amount}, "${type}" )`;
+const insert = ({ id, createdAt, concept, amount, type, user }) =>
+	`INSERT INTO transactions( id, createdAt, concept, amount, type, user ) VALUES( "${id}", "${createdAt}", "${concept}", ${amount}, "${type}", "${user}" )`;
 
 const remove = ({ id, deletedAt }) =>
 	`UPDATE transactions SET deletedAt = "${deletedAt}" WHERE id = '${id}'`;
@@ -17,7 +17,11 @@ const update = ({ id, validFields, updatedAt }) => {
 	return `UPDATE transactions SET ${formattedFields}, modifiedAt = "${updatedAt}" WHERE id = "${id}"`;
 };
 
-const getBalance = () => 'SELECT SUM(amount) as balance FROM transactions';
+const getBalance = user => {
+	const query = `SELECT SUM(amount) as balance FROM transactions WHERE user = "${user}"`;
+	console.log(query);
+	return query;
+};
 
 module.exports = {
 	selectAll,

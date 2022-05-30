@@ -4,7 +4,12 @@ const queryDB = require('../sql/dbConn');
 const transactionQueries = require('../sql/transactionQueries');
 
 const getAllTransactions = async (req, res) => {
-	const [[rows]] = await queryDB(transactionQueries.selectAll());
+	const user = req.user;
+	if (!user) {
+		return res.status(401).json({ error: 'Not user found' });
+	}
+
+	const [[rows]] = await queryDB(transactionQueries.selectAll(user));
 	if (!rows.length) {
 		return res.status(204).end();
 	}
@@ -12,6 +17,11 @@ const getAllTransactions = async (req, res) => {
 };
 
 const createTransaction = async (req, res) => {
+	const user = req.user;
+	if (!user) {
+		return res.status(401).json({ error: 'Not user found' });
+	}
+
 	const { concept, amount, type } = req.body;
 	if (!concept) {
 		return res.status(400).json({ error: "'Concept' field is required" });
@@ -29,6 +39,7 @@ const createTransaction = async (req, res) => {
 		concept,
 		amount: type === 'IN' ? +amount : -amount,
 		type,
+		user,
 	};
 	try {
 		await queryDB(transactionQueries.insert(transaction));
@@ -81,7 +92,12 @@ const updateTransaction = async (req, res) => {
 };
 
 const getBalance = async (req, res) => {
-	const [[balance]] = await queryDB(transactionQueries.getBalance());
+	const user = req.user;
+	if (!user) {
+		return res.status(401).json({ error: 'Not user found' });
+	}
+	const [[balance]] = await queryDB(transactionQueries.getBalance(user));
+	console.log(balance);
 	res.json(...balance);
 };
 
