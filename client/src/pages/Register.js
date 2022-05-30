@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import axios from '../api/axios';
 
 const Register = () => {
@@ -28,7 +30,7 @@ const Register = () => {
 
 	return (
 		<form className="Register" onSubmit={submitRegister}>
-			<h1>Register New Account</h1>
+			<h1>REGISTER</h1>
 			<div>
 				<label htmlFor="register-email">Email</label> <br />
 				<input
@@ -36,6 +38,7 @@ const Register = () => {
 					id="register-email"
 					onChange={e => setEmail(e.target.value)}
 					autoComplete="off"
+					value={email}
 					required
 				/>
 			</div>
@@ -46,6 +49,7 @@ const Register = () => {
 					id="register-password"
 					onChange={e => setPassword(e.target.value)}
 					autoComplete="off"
+					value={password}
 					required
 				/>
 			</div>
@@ -53,6 +57,10 @@ const Register = () => {
 			<div>
 				<input type="submit" value="Submit" />
 			</div>
+			<p>
+				Already have an account? <br />
+				<Link to="/">Go to login Page</Link>
+			</p>
 		</form>
 	);
 };
