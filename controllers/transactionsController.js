@@ -97,7 +97,6 @@ const getBalance = async (req, res) => {
 		return res.status(401).json({ error: 'Not user found' });
 	}
 	const [[balance]] = await queryDB(transactionQueries.getBalance(user));
-	console.log(balance);
 	res.json(...balance);
 };
 
