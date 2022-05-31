@@ -1,8 +1,13 @@
 import React from 'react';
-import main from '../api/main';
+import { useNavigate } from 'react-router-dom';
+
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const Dashboard = () => {
-	const [balance, setBalance] = React.useState();
+	const navigate = useNavigate();
+
+	const [balance, setBalance] = React.useState(null);
+	const axiosPrivate = useAxiosPrivate();
 
 	React.useEffect(() => {
 		let isMounted = true;
@@ -10,13 +15,13 @@ const Dashboard = () => {
 
 		const getBalance = async () => {
 			try {
-				const response = await main.get('/transactions/balance', {
+				const response = await axiosPrivate.get('/transactions/balance', {
 					signal: controller.signal,
 				});
-				console.log(response.data);
-				isMounted && setBalance(response.data);
+				isMounted && setBalance(response.data.balance);
 			} catch (error) {
-				console.log(error);
+				console.error(error.message);
+				navigate('/login');
 			}
 		};
 
@@ -26,12 +31,15 @@ const Dashboard = () => {
 			isMounted = false;
 			controller.abort();
 		};
-	}, [setBalance]);
+	}, [axiosPrivate]);
+
 	return (
-		<div>
-			<h1>Dasboard</h1>
-			<ul></ul>
-		</div>
+		<section className="Dashboard">
+			<h1>Dashboard</h1>
+			<p>
+				<span>Balance:</span> <span>{balance || 0}</span>
+			</p>
+		</section>
 	);
 };
 
