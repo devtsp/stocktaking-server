@@ -11,11 +11,8 @@ const Header = () => {
 			<Link to="/">
 				<h1>HOME</h1>
 			</Link>
-			<Link to="/dashboard">
-				<h1>DASHBOARD</h1>
-			</Link>
-			<Link to="/operate">
-				<h1>OPERATE</h1>
+			<Link to="/operations">
+				<h1>OPERATIONS</h1>
 			</Link>
 
 			{auth?.user ? (
