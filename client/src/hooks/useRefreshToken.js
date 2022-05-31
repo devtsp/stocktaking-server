@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import useAuth from './useAuth';
 import axios from '../api/axios';
 
-function useRefreshToken() {
+const useRefreshToken = () => {
 	const { setAuth } = useAuth();
 	const refresh = async () => {
 		const response = await axios.get('/refresh', {
@@ -17,6 +17,6 @@ function useRefreshToken() {
 		return response.data.accessToken;
 	};
 	return refresh;
-}
+};
 
 export default useRefreshToken;
