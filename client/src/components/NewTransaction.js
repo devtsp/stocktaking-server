@@ -2,7 +2,7 @@ import React from 'react';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
-const Transaction = () => {
+const NewTransaction = () => {
 	const axiosPrivate = useAxiosPrivate();
 	const [amount, setAmount] = React.useState('');
 	const [concept, setConcept] = React.useState('');
@@ -41,7 +41,7 @@ const Transaction = () => {
 	};
 
 	return (
-		<form className="Transaction" onSubmit={submitTransaction}>
+		<form className="NewTransaction" onSubmit={submitTransaction}>
 			<h1>New Transaction</h1>
 			<div>
 				<label htmlFor="transaction-amount">Amount</label> <br />
@@ -119,4 +119,4 @@ const conceptArray = [
 	'other',
 ];
 
-export default Transaction;
+export default NewTransaction;

@@ -4,7 +4,7 @@ import { FiDelete } from 'react-icons/fi';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
-const PastTransactions = ({ setIsEditing, setTransactionEdit }) => {
+const History = ({ setIsEditing, setTransactionEdit }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const [transactions, setTransactions] = React.useState([]);
 
@@ -33,48 +33,48 @@ const PastTransactions = ({ setIsEditing, setTransactionEdit }) => {
 	}, [axiosPrivate]);
 
 	return (
-		<section className="PastTransactions">
+		<section className="History">
 			{transactions ? (
+				<table>
+					<thead>
+						<tr>
+							<th>Concept</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+						{transactions.map((transaction, i) => (
+							<tr key={transaction.id}>
+								<td>{transaction.concept}</td>
+								<td
+									style={{
+										color: +transaction.amount < 0 ? 'red' : 'yellowgreen',
+									}}
+								>
+									{transaction.amount}
+								</td>
+								<td onClick={e => handleEdit(transaction)}>
+									<button>
+										<AiFillEdit />
+									</button>
+								</td>
+								<td onClick={e => handleDelete(transaction)}>
+									<button>
+										<FiDelete />
+									</button>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			) : (
 				<>
 					<h1>History</h1>
-					<table>
-						<thead>
-							<tr>
-								<th>Concept</th>
-								<th>Amount</th>
-							</tr>
-						</thead>
-						<tbody>
-							{transactions.map((transaction, i) => (
-								<tr key={transaction.id}>
-									<td>{transaction.concept}</td>
-									<td
-										style={{
-											color: +transaction.amount < 0 ? 'red' : 'yellowgreen',
-										}}
-									>
-										{transaction.amount}
-									</td>
-									<td onClick={e => handleEdit(transaction)}>
-										<button>
-											<AiFillEdit />
-										</button>
-									</td>
-									<td onClick={e => handleDelete(transaction)}>
-										<button>
-											<FiDelete />
-										</button>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
+					<p>No transactions to display yet.</p>
 				</>
-			) : (
-				<h2>missing</h2>
 			)}
 		</section>
 	);
 };
 
-export default PastTransactions;
+export default History;

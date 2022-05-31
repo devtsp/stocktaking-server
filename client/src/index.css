@@ -20,6 +20,15 @@ code {
 		monospace;
 }
 
+/* GRAL OVERRIDES ================================================================== */
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
 button {
 	background: none;
 	color: inherit;
@@ -231,34 +240,27 @@ form a:visited {
 
 /* NEW TRANSACTION ==================================================================================== */
 
-.Transaction h2 {
+.NewTransaction h2 {
 	font-size: 1.6rem;
 	font-weight: 200;
 }
 
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-}
-
-.Transaction option {
+.NewTransaction option {
 	font-weight: 200 !important;
 }
 
 /* HISTORY TABLE ================================================================================== */
 
-.PastTransactions {
+.History {
 	/* border: 2px solid rgba(0, 0, 0, 0.315); */
 	font-weight: 200;
 }
 
-.PastTransactions table {
+.History table {
 	border-collapse: collapse;
 }
 
-.PastTransactions h1 {
+.History h1 {
 	font-size: 2rem;
 	font-weight: 200;
 	margin: 0.6rem 0 0;
@@ -266,22 +268,22 @@ input[type='number']::-webkit-outer-spin-button {
 	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-.PastTransactions tr {
+.History tr {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.PastTransactions td,
-.PastTransactions th {
+.History td,
+.History th {
 	text-align: left;
 	padding: 0 1rem;
 }
 
-.PastTransactions th {
+.History th {
 	font-weight: 400;
 	padding: 0.6rem 1rem;
 }
 
-.PastTransactions svg {
+.History svg {
 	color: azure;
 }
 
@@ -348,6 +350,10 @@ input[type='number']::-webkit-outer-spin-button {
 	text-align: center;
 }
 
+.EditPopup form select {
+	text-align: center;
+}
+
 /* BREAKPOINTS ========================================================================== */
 
 @media screen and (max-width: 600px) {
@@ -367,15 +373,15 @@ input[type='number']::-webkit-outer-spin-button {
 		margin-top: 1rem;
 	}
 
-	.Transaction {
+	.NewTransaction {
 		margin-right: 3rem;
 	}
 
-	.Transaction h1 {
+	.NewTransaction h1 {
 		text-align: left;
 	}
 
-	.PastTransactions h1 {
+	.History h1 {
 		text-align: left;
 	}
 }
