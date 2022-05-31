@@ -4,16 +4,17 @@ import { FiDelete } from 'react-icons/fi';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
-const PastTransactions = () => {
+const PastTransactions = ({ setIsEditing }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const [transactions, setTransactions] = React.useState([]);
 
-	const handleDelete = id => {
-		console.log('Delete ' + id);
+	const handleDelete = operation => {
+		console.log(JSON.stringify(operation));
 	};
 
-	const handleEdit = id => {
-		console.log('Edit ' + id);
+	const handleEdit = operation => {
+		console.log(JSON.stringify(operation));
+		setIsEditing(true);
 	};
 
 	React.useEffect(() => {
@@ -29,6 +30,7 @@ const PastTransactions = () => {
 
 		getPastTransactions();
 	}, [axiosPrivate]);
+
 	return (
 		<section className="PastTransactions">
 			{transactions ? (
@@ -52,12 +54,12 @@ const PastTransactions = () => {
 									>
 										{transaction.amount}
 									</td>
-									<td onClick={e => handleEdit(transaction.id)}>
+									<td onClick={e => handleEdit(transaction)}>
 										<button>
 											<AiFillEdit />
 										</button>
 									</td>
-									<td onClick={e => handleDelete(transaction.id)}>
+									<td onClick={e => handleDelete(transaction)}>
 										<button>
 											<FiDelete />
 										</button>

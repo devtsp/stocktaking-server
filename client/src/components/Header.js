@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaRegUserCircle } from 'react-icons/fa';
 
 import useAuth from '../hooks/useAuth';
 
@@ -16,7 +17,10 @@ const Header = () => {
 			</Link>
 
 			{auth?.user ? (
-				<span>{auth.user}</span>
+				<span>
+					{' '}
+					<FaRegUserCircle /> {auth.user}
+				</span>
 			) : (
 				<Link to="/login">
 					<h1>LOGIN</h1>

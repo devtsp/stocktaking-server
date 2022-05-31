@@ -8,7 +8,6 @@ body {
 	margin: 0;
 	text-align: center;
 	color: white;
-	background-color: rgb(51, 61, 51);
 	font-family: 'noto sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
 		'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
 		'Helvetica Neue', sans-serif;
@@ -37,7 +36,7 @@ button {
 
 #root {
 	min-height: 100vh;
-	background-color: rgba(248, 245, 241, 0.062);
+	background-color: darkslategrey;
 	display: flex;
 	flex-direction: column;
 	justify-items: flex-start;
@@ -47,7 +46,7 @@ button {
 /* HEADER ============================================================ */
 
 header {
-	background-color: rgba(240, 255, 255, 0.61);
+	background-color: rgba(240, 255, 255, 0.219);
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
@@ -72,6 +71,13 @@ header span {
 	color: black;
 	margin-left: auto;
 	padding: 0 2rem;
+	display: flex;
+	align-items: center;
+}
+
+header svg {
+	color: black;
+	padding: 0 0.4rem;
 }
 
 /* LAYOUT ======================================================== */
@@ -81,23 +87,6 @@ main {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-/* LINPKPAGE ============================================================= */
-
-.Linkpage h1 {
-	font-size: 2rem;
-	font-weight: 200;
-	margin-bottom: 2rem;
-	padding-bottom: 0.4rem;
-	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
-}
-
-.Linkpage a,
-.Linkpage:visited {
-	display: block;
-	color: yellowgreen;
-	margin: 1rem 0;
 }
 
 /* LOGIN/REGISTER FORMS ============================================ */
@@ -111,7 +100,7 @@ form h1 {
 	font-weight: 200;
 	margin-bottom: 2rem;
 	padding-bottom: 0.4rem;
-	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
+	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 form h2 {
@@ -140,7 +129,7 @@ form select {
 	padding: 0.4rem;
 	padding-left: 1rem;
 	background-color: transparent;
-	border-bottom: 1px solid rgba(250, 249, 249, 0.349);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 	border-radius: 0;
 }
 
@@ -150,7 +139,7 @@ form select:focus {
 }
 
 form option {
-	background-color: rgb(51, 61, 51);
+	background-color: darkslategrey;
 }
 
 form .field {
@@ -201,7 +190,7 @@ form a:visited {
 	font-weight: 200;
 	margin-bottom: 2rem;
 	padding-bottom: 0.4rem;
-	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
+	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 .Dashboard p {
@@ -268,11 +257,11 @@ input[type='number']::-webkit-outer-spin-button {
 	font-weight: 200;
 	margin: 0.6rem 0 0;
 	padding-bottom: 0.4rem;
-	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
+	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 .PastTransactions tr {
-	border-bottom: 1px solid rgb(228, 219, 219);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .PastTransactions td,
@@ -284,6 +273,24 @@ input[type='number']::-webkit-outer-spin-button {
 .PastTransactions th {
 	font-weight: 400;
 	padding: 0.6rem 1rem;
+}
+
+.PastTransactions svg {
+	color: azure;
+}
+
+/* EDIT POPUP ============================================================================= */
+
+.EditPopup {
+	min-width: 20rem;
+	position: relative;
+}
+
+.cancel-button {
+	position: absolute;
+	right: 0;
+	font-size: 2rem;
+	color: cornflowerblue;
 }
 
 /* BREAKPOINTS ========================================================================== */
@@ -310,6 +317,10 @@ input[type='number']::-webkit-outer-spin-button {
 	}
 
 	.Transaction h1 {
+		text-align: left;
+	}
+
+	.PastTransactions h1 {
 		text-align: left;
 	}
 }
