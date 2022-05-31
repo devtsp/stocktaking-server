@@ -1,4 +1,6 @@
 import React from 'react';
+import { AiFillEdit } from 'react-icons/ai';
+import { FiDelete } from 'react-icons/fi';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
@@ -26,7 +28,7 @@ const PastTransactions = () => {
 		};
 
 		getPastTransactions();
-	}, []);
+	}, [axiosPrivate]);
 	return (
 		<section className="PastTransactions">
 			{transactions ? (
@@ -37,7 +39,6 @@ const PastTransactions = () => {
 							<tr>
 								<th>Concept</th>
 								<th>Amount</th>
-								<th colSpan="2">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -51,8 +52,16 @@ const PastTransactions = () => {
 									>
 										{transaction.amount}
 									</td>
-									<td onClick={e => handleEdit(transaction.id)}>EDIT</td>
-									<td onClick={e => handleDelete(transaction.id)}>DEL</td>
+									<td onClick={e => handleEdit(transaction.id)}>
+										<button>
+											<AiFillEdit />
+										</button>
+									</td>
+									<td onClick={e => handleDelete(transaction.id)}>
+										<button>
+											<FiDelete />
+										</button>
+									</td>
 								</tr>
 							))}
 						</tbody>

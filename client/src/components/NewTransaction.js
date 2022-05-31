@@ -25,6 +25,8 @@ const Transaction = () => {
 			setAmount('');
 			setConcept('');
 			setType('');
+			setError('');
+			window.location.reload();
 		} catch (err) {
 			if (!err?.response) {
 				setError('No server Response');
@@ -44,7 +46,7 @@ const Transaction = () => {
 			<div>
 				<label htmlFor="transaction-amount">Amount</label> <br />
 				<input
-					type="text"
+					type="number"
 					id="transaction-amount"
 					onChange={e => setAmount(e.target.value)}
 					autoComplete="off"
@@ -57,9 +59,12 @@ const Transaction = () => {
 				<select
 					id="transaction-concept"
 					onChange={e => setConcept(e.target.value)}
+					defaultValue=""
 					required
 				>
-					<option disabled>Select..</option>
+					<option disabled value="">
+						Select
+					</option>
 					{conceptArray.map((concept, i) => (
 						<option value={concept} key={i}>
 							{concept}
