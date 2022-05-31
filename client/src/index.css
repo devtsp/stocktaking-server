@@ -32,6 +32,12 @@ button {
 	align-items: center;
 }
 
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 /* APP =============================================================== */
 
 #root {
@@ -282,15 +288,64 @@ input[type='number']::-webkit-outer-spin-button {
 /* EDIT POPUP ============================================================================= */
 
 .EditPopup {
-	min-width: 20rem;
+	width: 20rem;
 	position: relative;
+}
+
+.EditPopup h1 {
+	font-size: 2rem;
+	font-weight: 200;
+	margin: 0.6rem 0 1rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 .cancel-button {
 	position: absolute;
 	right: 0;
 	font-size: 2rem;
-	color: cornflowerblue;
+	color: white;
+}
+
+.transaction-info {
+	text-align: center;
+	margin: 2rem 0;
+	border: 2px solid rgba(128, 128, 128, 0.267);
+	border-radius: 1rem;
+	margin: 1.4rem auto;
+	width: 80%;
+	background-color: rgba(240, 248, 255, 0.034);
+}
+
+.transaction-info h2 {
+	font-size: 1.4rem;
+	font-weight: 400;
+	margin: 0.4rem 0;
+	border-bottom: 2px solid rgba(128, 128, 128, 0.267);
+}
+
+.transaction-info span {
+	font-size: 1.2rem;
+	line-height: 1;
+}
+
+.transaction-info ul li {
+	line-height: 1;
+	margin: 0.8rem 0;
+}
+
+.transaction-info ul h3 {
+	font-size: 1.4rem;
+	font-weight: 200;
+	margin: 0;
+}
+
+.EditPopup form div {
+	text-align: center;
+}
+
+.EditPopup form input {
+	text-align: center;
 }
 
 /* BREAKPOINTS ========================================================================== */

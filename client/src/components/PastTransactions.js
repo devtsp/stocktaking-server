@@ -4,7 +4,7 @@ import { FiDelete } from 'react-icons/fi';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
-const PastTransactions = ({ setIsEditing }) => {
+const PastTransactions = ({ setIsEditing, setTransactionEdit }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const [transactions, setTransactions] = React.useState([]);
 
@@ -14,6 +14,7 @@ const PastTransactions = ({ setIsEditing }) => {
 
 	const handleEdit = operation => {
 		console.log(JSON.stringify(operation));
+		setTransactionEdit(operation);
 		setIsEditing(true);
 	};
 
