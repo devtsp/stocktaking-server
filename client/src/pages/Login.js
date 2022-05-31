@@ -1,10 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
 
 const Login = () => {
+	const navigate = useNavigate();
+
 	const { setAuth } = useAuth();
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
@@ -29,9 +32,11 @@ const Login = () => {
 				}
 			);
 			const accessToken = response?.data?.accessToken;
-			setAuth({ email, accessToken });
+			const user = jwtDecode(accessToken)?.UserInfo.user;
+			setAuth({ user, accessToken });
 			setEmail('');
 			setPassword('');
+			navigate('/dashboard');
 		} catch (err) {
 			if (!err?.response) {
 				setError('No server Response');

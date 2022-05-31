@@ -5,7 +5,7 @@ const insert = ({ id, createdAt, concept, amount, type, user }) =>
 	`INSERT INTO transactions( id, createdAt, concept, amount, type, user ) VALUES( "${id}", "${createdAt}", "${concept}", ${amount}, "${type}", "${user}" )`;
 
 const remove = ({ id, deletedAt }) =>
-	`UPDATE transactions SET deletedAt = "${deletedAt}" WHERE id = '${id}'`;
+	`UPDATE transactions SET deletedAt = "${deletedAt}" WHERE id = "${id}"`;
 
 const select = id =>
 	`SELECT * FROM transactions WHERE id = "${id}" AND deletedAt IS NULL`;

@@ -4,7 +4,6 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const Transaction = () => {
 	const axiosPrivate = useAxiosPrivate();
-
 	const [amount, setAmount] = React.useState('');
 	const [concept, setConcept] = React.useState('');
 	const [type, setType] = React.useState('');
@@ -41,11 +40,11 @@ const Transaction = () => {
 
 	return (
 		<form className="Transaction" onSubmit={submitTransaction}>
-			<h1>TRANSACTION</h1>
+			<h1>New Transaction</h1>
 			<div>
 				<label htmlFor="transaction-amount">Amount</label> <br />
 				<input
-					type="number"
+					type="text"
 					id="transaction-amount"
 					onChange={e => setAmount(e.target.value)}
 					autoComplete="off"
@@ -60,7 +59,7 @@ const Transaction = () => {
 					onChange={e => setConcept(e.target.value)}
 					required
 				>
-					<option>Select..</option>
+					<option disabled>Select..</option>
 					{conceptArray.map((concept, i) => (
 						<option value={concept} key={i}>
 							{concept}

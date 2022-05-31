@@ -1,13 +1,14 @@
 import React from 'react';
 
-import Transaction from './Transaction';
+import NewTransaction from '../components/NewTransaction';
+import PastTransactions from '../components/PastTransactions';
 
 const Operations = () => {
 	return (
-		<section>
-			<h1>Operations</h1>
-			<Transaction />
-		</section>
+		<div className="Operations">
+			<NewTransaction />
+			<PastTransactions />
+		</div>
 	);
 };
 

@@ -1,29 +1,32 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Layout from './components/Layout';
+import { AuthProvider } from './context/AuthProvider';
+import PersistLogin from './components/PersistLogin';
+
 import Header from './components/Header';
-import LinkPage from './pages/Linkpage.js';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Operations from './pages/Operations';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
 	return (
-		<div className="App">
-			<Router>
-				<Header />
-				<Routes>
-					<Route element={<Layout />}>
-						<Route path="/" element={<LinkPage />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/register" element={<Register />} />
-						<Route path="/dashboard" element={<Dashboard />} />
-						<Route path="/operate" element={<Operations />} />
-					</Route>
-				</Routes>
-			</Router>
-		</div>
+		<AuthProvider>
+			<PersistLogin>
+				<Router>
+					<Header />
+					<Routes>
+						<Route element={<Layout />}>
+							<Route path="/" element={<Dashboard />} />
+							<Route path="/operations" element={<Operations />} />
+							<Route path="/login" element={<Login />} />
+							<Route path="/register" element={<Register />} />
+						</Route>
+					</Routes>
+				</Router>
+			</PersistLogin>
+		</AuthProvider>
 	);
 }
 

@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 const Linkpage = () => {
 	return (
 		<section className="Linkpage">
-			<h1>LINKPAGE</h1>
 			<p>
-				<Link to="/dashboard">Go to Dashboard</Link>
-				<Link to="/login">Go to Login Page</Link>
-				<Link to="/register">Go to Register Page</Link>
+				<Link to="/operate">Operate</Link>
+				<Link to="/dashboard">Dashboard</Link>
+				<Link to="/login">Login</Link>
+				<Link to="/register">Register</Link>
 			</p>
 		</section>
 	);
