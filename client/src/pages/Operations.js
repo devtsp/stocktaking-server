@@ -2,7 +2,7 @@ import React from 'react';
 import EditPopup from '../components/EditPopup';
 
 import NewTransaction from '../components/NewTransaction';
-import PastTransactions from '../components/PastTransactions';
+import History from '../components/History';
 
 const Operations = () => {
 	const [isEditing, setIsEditing] = React.useState(false);
@@ -18,7 +18,7 @@ const Operations = () => {
 			) : (
 				<>
 					<NewTransaction />
-					<PastTransactions
+					<History
 						setIsEditing={setIsEditing}
 						setTransactionEdit={setTransactionEdit}
 					/>
