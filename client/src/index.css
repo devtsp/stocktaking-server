@@ -23,12 +23,12 @@ code {
 
 /* APP =============================================================== */
 
-.App {
-	height: 100vh;
+#root {
+	min-height: 100vh;
 	background-color: rgba(248, 245, 241, 0.062);
 	display: flex;
 	flex-direction: column;
-	justify-items: start;
+	justify-items: flex-start;
 	font-size: 1.6rem;
 }
 
@@ -36,6 +36,9 @@ code {
 
 header {
 	background-color: rgba(240, 255, 255, 0.61);
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
 }
 
 header a {
@@ -46,8 +49,15 @@ header a {
 
 header h1 {
 	margin: 0;
-	padding: 1rem 3rem;
+	margin-right: auto;
+	padding: 1rem;
 	font-size: 1.4rem;
+}
+
+header span {
+	color: black;
+	margin-left: auto;
+	padding: 0 2rem;
 }
 
 /* LAYOUT ======================================================== */
@@ -90,8 +100,13 @@ form h1 {
 	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
 }
 
+form h2 {
+	text-align: left;
+	margin-bottom: 0.4rem;
+}
+
 form div {
-	width: fit-content;
+	width: 20rem;
 	margin: 0 auto;
 	text-align: left;
 }
@@ -100,20 +115,48 @@ form label {
 	font-weight: 200;
 }
 
-form input {
-	width: 20rem;
+form input,
+form select {
+	box-sizing: border-box;
+	width: 100%;
 	margin-bottom: 0.6rem;
 	font-size: 1.4rem;
 	color: white;
 	border: none;
 	padding: 0.4rem;
+	padding-left: 1rem;
 	background-color: transparent;
 	border-bottom: 1px solid rgba(250, 249, 249, 0.349);
+	border-radius: 0;
+}
+
+form input:focus,
+form select:focus {
+	outline: none;
+}
+
+form option {
+	background-color: rgb(51, 61, 51);
+}
+
+form .field {
+	margin: 0;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+form input[type='radio'] {
+	font-size: 3rem;
+	width: 1rem;
+	margin: auto 0.8rem;
 }
 
 form .error {
-	color: rgb(170, 5, 5);
+	color: rgb(83, 40, 40);
 	margin: 1rem 0;
+	width: 20rem;
 }
 
 form input[type='submit'] {
@@ -158,4 +201,57 @@ form a:visited {
 
 .Dashboard p span:nth-child(2) {
 	color: cornflowerblue;
+}
+
+.Dashboard a,
+.Dashboard a:visited {
+	color: yellowgreen;
+	border: none;
+	display: block;
+	margin-top: 10rem;
+}
+
+/* OPERATIONS PAGE ================================================================= */
+
+.Operations {
+	/* outline: 2px solid white; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* NEW TRANSACTION ==================================================================================== */
+
+.Transaction h2 {
+	font-size: 1.6rem;
+	font-weight: 200;
+}
+
+/* HISTORY TABLE ================================================================================== */
+
+.PastTransactions {
+	border: 2px solid rgba(0, 0, 0, 0.315);
+	font-weight: 200;
+}
+
+.PastTransactions table {
+	border-collapse: collapse;
+}
+
+.PastTransactions h1 {
+	font-size: 2rem;
+	font-weight: 200;
+	margin: 0.6rem 0 0;
+	padding-bottom: 0.4rem;
+	border-bottom: 3px solid rgba(255, 255, 255, 0.568);
+}
+
+.PastTransactions tr {
+	border-bottom: 1px solid rgb(228, 219, 219);
+}
+
+.PastTransactions td,
+.PastTransactions th {
+	text-align: left;
+	padding: 0 1rem;
 }
