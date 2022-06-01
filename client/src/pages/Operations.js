@@ -1,29 +1,38 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 import EditTranasction from '../components/EditTransaction';
 
 import NewTransaction from '../components/NewTransaction';
 import TransactionHistory from '../components/TransactionHistory';
+import useAuth from '../hooks/useAuth';
 
 const Operations = () => {
 	const [isEditing, setIsEditing] = React.useState(false);
 	const [transactionEdit, setTransactionEdit] = React.useState({});
+	const { auth } = useAuth();
 	return (
-		<div className="Operations">
-			{isEditing ? (
-				<EditTranasction
-					setIsEditing={setIsEditing}
-					transactionEdit={transactionEdit}
-				/>
+		<>
+			{auth?.user ? (
+				<div className="Operations">
+					{isEditing ? (
+						<EditTranasction
+							setIsEditing={setIsEditing}
+							transactionEdit={transactionEdit}
+						/>
+					) : (
+						<>
+							<NewTransaction />
+							<TransactionHistory
+								setIsEditing={setIsEditing}
+								setTransactionEdit={setTransactionEdit}
+							/>
+						</>
+					)}
+				</div>
 			) : (
-				<>
-					<NewTransaction />
-					<TransactionHistory
-						setIsEditing={setIsEditing}
-						setTransactionEdit={setTransactionEdit}
-					/>
-				</>
+				<Navigate to="/login" />
 			)}
-		</div>
+		</>
 	);
 };
 

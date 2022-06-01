@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import axios from '../api/axios';
 
 const Register = () => {
+	const navigate = useNavigate();
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [error, setError] = React.useState('');
@@ -22,6 +23,7 @@ const Register = () => {
 			setEmail('');
 			setPassword('');
 			setError('');
+			navigate('/login');
 		} catch (err) {
 			console.error(err.message);
 			setError(err.response.data.error);

@@ -36,7 +36,7 @@ const Login = () => {
 			setAuth({ user, accessToken });
 			setEmail('');
 			setPassword('');
-			navigate('/dashboard');
+			navigate('/');
 		} catch (err) {
 			if (!err?.response) {
 				setError('No server Response');
