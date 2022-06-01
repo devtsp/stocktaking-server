@@ -8,8 +8,16 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const [transactions, setTransactions] = React.useState([]);
 
-	const handleDelete = operation => {
-		console.log(JSON.stringify(operation));
+	const handleDelete = async transaction => {
+		console.log(transaction);
+		const toSend = { id: transaction.id };
+		console.log(toSend);
+		try {
+			await axiosPrivate.delete('/transactions', { data: toSend });
+			window.location.reload();
+		} catch (err) {
+			console.error(err.response);
+		}
 	};
 
 	const handleEdit = operation => {
@@ -44,29 +52,35 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 						</tr>
 					</thead>
 					<tbody>
-						{transactions.map((transaction, i) => (
-							<tr key={transaction.id}>
-								<td
-									style={{
-										color: +transaction.amount < 0 ? 'red' : 'yellowgreen',
-									}}
-								>
-									{transaction.amount}
-								</td>
-								<td>{transaction.concept}</td>
-								<td>{transaction.createdAt.split('T')[0]}</td>
-								<td onClick={e => handleEdit(transaction)}>
-									<button>
-										<AiFillEdit />
-									</button>
-								</td>
-								<td onClick={e => handleDelete(transaction)}>
-									<button>
-										<FiDelete />
-									</button>
-								</td>
-							</tr>
-						))}
+						{transactions.map((transaction, i) => {
+							const originalDate = new Date(transaction.createdAt);
+							const formattedDate = `${originalDate.getDay()}/${
+								originalDate.getMonth() + 1
+							}/${originalDate.getFullYear()}`;
+							return (
+								<tr key={transaction.id}>
+									<td
+										style={{
+											color: +transaction.amount < 0 ? 'red' : 'yellowgreen',
+										}}
+									>
+										{transaction.amount}
+									</td>
+									<td>{transaction.concept}</td>
+									<td>{formattedDate}</td>
+									<td onClick={e => handleEdit(transaction)}>
+										<button>
+											<AiFillEdit />
+										</button>
+									</td>
+									<td onClick={e => handleDelete(transaction)}>
+										<button>
+											<FiDelete />
+										</button>
+									</td>
+								</tr>
+							);
+						})}
 					</tbody>
 				</table>
 			) : (
