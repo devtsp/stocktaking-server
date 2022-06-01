@@ -9,7 +9,9 @@ const getAllTransactions = async (req, res) => {
 		return res.status(401).json({ error: 'Not user found' });
 	}
 
-	const [[rows]] = await queryDB(transactionQueries.selectAll(user));
+	const [[rows]] = await queryDB(
+		transactionQueries.selectAll(user, req?.limit || null)
+	);
 	if (!rows.length) {
 		return res.status(204).end();
 	}

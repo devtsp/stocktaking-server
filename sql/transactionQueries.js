@@ -1,5 +1,7 @@
-const selectAll = user =>
-	`SELECT * FROM transactions WHERE deletedAt IS NULL AND user = ${user} ORDER BY createdAt DESC`;
+const selectAll = (user, limit) =>
+	`SELECT * FROM transactions WHERE deletedAt IS NULL AND user = "${user}" ORDER BY createdAt DESC ${
+		limit ? `LIMIT ${LIMIT}` : ''
+	}`;
 
 const insert = ({ id, createdAt, concept, amount, type, user }) =>
 	`INSERT INTO transactions( id, createdAt, concept, amount, type, user ) VALUES( "${id}", "${createdAt}", "${concept}", ${amount}, "${type}", "${user}" )`;
