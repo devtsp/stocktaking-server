@@ -82,7 +82,16 @@ const updateTransaction = async (req, res) => {
 		return res.status(400).json({ error: 'Empty fields' });
 	}
 
-	const transaction = { validFields, id, updatedAt: new Date().toISOString() };
+	console.log(validFields);
+	const transaction = {
+		...Object.fromEntries(validFields),
+		id,
+		updatedAt: new Date().toISOString(),
+		type: result[0].type,
+		amount: result[0].type === 'IN' ? +Math.abs(amount) : -Math.abs(amount),
+	};
+
+	console.log(transaction);
 	try {
 		await queryDB(transactionQueries.update(transaction), connection);
 		res.json({ message: `Object with id '${id}' updated succesfully` });

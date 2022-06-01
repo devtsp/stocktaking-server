@@ -10,8 +10,9 @@ const remove = ({ id, deletedAt }) =>
 const select = id =>
 	`SELECT * FROM transactions WHERE id = "${id}" AND deletedAt IS NULL`;
 
-const update = ({ id, validFields, updatedAt }) => {
-	const formattedFields = validFields.map(
+const update = ({ id, updatedAt, ...rest }) => {
+	console.log(rest);
+	const formattedFields = Object.entries(rest).map(
 		([key, value]) => ` ${key} = "${value}"`
 	);
 	return `UPDATE transactions SET ${formattedFields}, modifiedAt = "${updatedAt}" WHERE id = "${id}"`;

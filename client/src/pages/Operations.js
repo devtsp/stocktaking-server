@@ -1,8 +1,8 @@
 import React from 'react';
-import EditPopup from '../components/EditPopup';
+import EditTranasction from '../components/EditTransaction';
 
 import NewTransaction from '../components/NewTransaction';
-import History from '../components/History';
+import TransactionHistory from '../components/TransactionHistory';
 
 const Operations = () => {
 	const [isEditing, setIsEditing] = React.useState(false);
@@ -10,15 +10,14 @@ const Operations = () => {
 	return (
 		<div className="Operations">
 			{isEditing ? (
-				<EditPopup
+				<EditTranasction
 					setIsEditing={setIsEditing}
 					transactionEdit={transactionEdit}
-					setTransactionEdit={setTransactionEdit}
 				/>
 			) : (
 				<>
 					<NewTransaction />
-					<History
+					<TransactionHistory
 						setIsEditing={setIsEditing}
 						setTransactionEdit={setTransactionEdit}
 					/>

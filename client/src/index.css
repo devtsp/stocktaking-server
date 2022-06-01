@@ -249,18 +249,17 @@ form a:visited {
 	font-weight: 200 !important;
 }
 
-/* HISTORY TABLE ================================================================================== */
+/* TRANSACTION HISTORY ================================================================================== */
 
-.History {
-	/* border: 2px solid rgba(0, 0, 0, 0.315); */
+.TransactionHistory {
 	font-weight: 200;
 }
 
-.History table {
+.TransactionHistory table {
 	border-collapse: collapse;
 }
 
-.History h1 {
+.TransactionHistory h1 {
 	font-size: 2rem;
 	font-weight: 200;
 	margin: 0.6rem 0 0;
@@ -268,33 +267,33 @@ form a:visited {
 	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-.History tr {
+.TransactionHistory tr {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.History td,
-.History th {
+.TransactionHistory td,
+.TransactionHistory th {
 	text-align: left;
 	padding: 0 1rem;
 }
 
-.History th {
+.TransactionHistory th {
 	font-weight: 400;
 	padding: 0.6rem 1rem;
 }
 
-.History svg {
+.TransactionHistory svg {
 	color: azure;
 }
 
-/* EDIT POPUP ============================================================================= */
+/* EDIT TRANSACTION ============================================================================= */
 
-.EditPopup {
+.EditTransaction {
 	width: 20rem;
 	position: relative;
 }
 
-.EditPopup h1 {
+.EditTransaction h1 {
 	font-size: 2rem;
 	font-weight: 200;
 	margin: 0.6rem 0 1rem;
@@ -342,15 +341,15 @@ form a:visited {
 	margin: 0;
 }
 
-.EditPopup form div {
+.EditTransaction form div {
 	text-align: center;
 }
 
-.EditPopup form input {
+.EditTransaction form input {
 	text-align: center;
 }
 
-.EditPopup form select {
+.EditTransaction form select {
 	text-align: center;
 }
 
@@ -381,7 +380,7 @@ form a:visited {
 		text-align: left;
 	}
 
-	.History h1 {
+	.TransactionHistory h1 {
 		text-align: left;
 	}
 }

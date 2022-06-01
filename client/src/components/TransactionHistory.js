@@ -4,7 +4,7 @@ import { FiDelete } from 'react-icons/fi';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
-const History = ({ setIsEditing, setTransactionEdit }) => {
+const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const [transactions, setTransactions] = React.useState([]);
 
@@ -13,7 +13,6 @@ const History = ({ setIsEditing, setTransactionEdit }) => {
 	};
 
 	const handleEdit = operation => {
-		console.log(JSON.stringify(operation));
 		setTransactionEdit(operation);
 		setIsEditing(true);
 	};
@@ -33,19 +32,20 @@ const History = ({ setIsEditing, setTransactionEdit }) => {
 	}, [axiosPrivate]);
 
 	return (
-		<section className="History">
+		<section className="TransactionHistory">
+			<h1>Transaction History</h1>
 			{transactions ? (
 				<table>
 					<thead>
 						<tr>
-							<th>Concept</th>
 							<th>Amount</th>
+							<th>Concept</th>
+							<th>Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						{transactions.map((transaction, i) => (
 							<tr key={transaction.id}>
-								<td>{transaction.concept}</td>
 								<td
 									style={{
 										color: +transaction.amount < 0 ? 'red' : 'yellowgreen',
@@ -53,6 +53,8 @@ const History = ({ setIsEditing, setTransactionEdit }) => {
 								>
 									{transaction.amount}
 								</td>
+								<td>{transaction.concept}</td>
+								<td>{transaction.createdAt.split('T')[0]}</td>
 								<td onClick={e => handleEdit(transaction)}>
 									<button>
 										<AiFillEdit />
@@ -68,13 +70,10 @@ const History = ({ setIsEditing, setTransactionEdit }) => {
 					</tbody>
 				</table>
 			) : (
-				<>
-					<h1>History</h1>
-					<p>No transactions to display yet.</p>
-				</>
+				<p>No transactions to display yet.</p>
 			)}
 		</section>
 	);
 };
 
-export default History;
+export default TransactionHistory;
