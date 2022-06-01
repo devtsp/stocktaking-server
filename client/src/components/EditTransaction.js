@@ -8,7 +8,13 @@ const EditTransaction = ({ setIsEditing, transactionEdit }) => {
 	const [amount, setAmount] = React.useState(transactionEdit.amount);
 	const [concept, setConcept] = React.useState(transactionEdit.concept);
 	const [error, setError] = React.useState('');
-	const { id, concept: prevConcept, amount: prevAmount } = transactionEdit;
+	const {
+		id,
+		concept: prevConcept,
+		amount: prevAmount,
+		createdAt,
+		modifiedAt,
+	} = transactionEdit;
 
 	const handleSubmit = async e => {
 		e.preventDefault();
@@ -44,9 +50,19 @@ const EditTransaction = ({ setIsEditing, transactionEdit }) => {
 						<span>{prevConcept}</span>
 					</li>
 					<li>
-						<h3>Transaction Amount:</h3>
+						<h3>Amount:</h3>
 						<span>{prevAmount}</span>
 					</li>
+					<li>
+						<h3>First Created At:</h3>
+						<span>{Date(createdAt).toString().split('GMT')[0]}</span>
+					</li>
+					{modifiedAt && (
+						<li>
+							<h3>Last Modified:</h3>
+							<span>{Date(modifiedAt).toString().split('GMT')[0]}</span>
+						</li>
+					)}
 				</ul>
 			</div>
 			<form onSubmit={handleSubmit}>
