@@ -58,41 +58,63 @@ ul {
 	font-size: 1.6rem;
 }
 
-/* HEADER ============================================================ */
+/* NAV ============================================================ */
 
-header {
+nav {
 	background-color: rgba(240, 255, 255, 0.219);
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
 	padding: 0 3rem;
+	height: 3rem;
 }
 
-header a {
+nav a {
 	text-decoration: none;
 	color: rgb(247, 247, 247);
 	text-align: left;
 }
 
-header h1 {
+nav h1 {
 	margin: 0;
-	margin-right: auto;
-	padding: 1rem;
+	padding: 0 0.6rem;
 	font-size: 1.4rem;
 	font-weight: 400;
 }
 
-header span {
+.user-menu-button {
 	color: black;
+	border-right: 1px solid rgba(0, 0, 0, 0.397);
+	height: 100%;
 	margin-left: auto;
-	padding: 0 2rem;
-	display: flex;
+	padding: 0 1rem;
+	display: inline-flex;
 	align-items: center;
 }
 
-header svg {
+.logout {
+	display: inline-flex;
+	align-items: center;
+	height: 100%;
+	padding: 0 1rem;
+	background: linear-gradient(
+		to right,
+		rgba(250, 250, 250, 0.096),
+		transparent
+	);
+	color: deepskyblue;
+	font-weight: 200;
+	cursor: pointer;
+}
+
+.logout span {
+	display: inline-block;
+	height: fit-content;
+}
+
+nav svg {
 	color: black;
-	padding: 0 0.4rem;
+	padding: 0 0 0 0.4rem;
 }
 
 /* LAYOUT ======================================================== */
@@ -198,9 +220,13 @@ form a:visited {
 	color: yellowgreen;
 }
 
-/* DAHSBOARD =========================================================================== */
+/* HOME =========================================================================== */
 
-.Dashboard h1 {
+.Home {
+	max-width: 80%;
+}
+
+.Home h1 {
 	font-size: 2rem;
 	font-weight: 200;
 	margin-bottom: 2rem;
@@ -208,25 +234,30 @@ form a:visited {
 	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-.Dashboard p {
+.Home p {
 	min-width: 20rem;
 	display: flex;
+	font-size: 3rem;
 }
 
-.Dashboard p span:nth-child(1) {
+.Home p span:nth-child(1) {
 	margin-right: auto;
 }
 
-.Dashboard p span:nth-child(2) {
+.Home p span:nth-child(2) {
 	color: cornflowerblue;
 }
 
-.Dashboard a,
-.Dashboard a:visited {
+.Home a,
+.Home a:visited {
 	color: yellowgreen;
 	border: none;
 	display: block;
 	margin-top: 10rem;
+}
+
+.Home .TransactionHistory h1 {
+	text-align: left;
 }
 
 /* OPERATIONS PAGE ================================================================= */
@@ -355,12 +386,6 @@ form a:visited {
 
 /* BREAKPOINTS ========================================================================== */
 
-@media screen and (max-width: 600px) {
-	:root {
-		font-size: 12px;
-	}
-}
-
 @media screen and (min-width: 900px) {
 	.Operations {
 		margin-top: 2rem;
@@ -382,5 +407,24 @@ form a:visited {
 
 	.TransactionHistory h1 {
 		text-align: left;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	:root {
+		font-size: 12px;
+	}
+	td,
+	th {
+		padding: 0 0.4rem !important;
+	}
+	nav {
+		padding: 0rem;
+	}
+}
+
+@media screen and (max-width: 360px) {
+	:root {
+		font-size: 10px;
 	}
 }
