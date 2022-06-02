@@ -10,7 +10,7 @@ const getAllTransactions = async (req, res) => {
 	}
 
 	const [[rows]] = await queryDB(
-		transactionQueries.selectAll(user, req?.limit || null)
+		transactionQueries.selectAll(user, +req?.query?.limit || null)
 	);
 	if (!rows.length) {
 		return res.status(204).end();
