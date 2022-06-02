@@ -44,8 +44,8 @@ const createTransaction = async (req, res) => {
 		user,
 	};
 	try {
-		await queryDB(transactionQueries.insert(transaction));
-		res.status(201).json(transaction);
+		const [[rows]] = await queryDB(transactionQueries.insert(transaction));
+		res.status(201).json(rows[0]);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -56,14 +56,11 @@ const removeTransaction = async (req, res) => {
 	if (!id) {
 		return res.status(400).json({ error: 'Id field required' });
 	}
-	const transaction = { id, deletedAt: new Date().toISOString() };
-	const [[rows], connection] = await queryDB(
-		transactionQueries.remove(transaction)
-	);
-	if (!rows.length) {
-		return res.status(204).end();
-	}
-	res.json({ message: `Object with id '${id}' deleted succesfully` });
+
+	const [[result], connection] = await queryDB(transactionQueries.select(id));
+	const transaction = { ...result[0], deletedAt: new Date().toISOString() };
+	await queryDB(transactionQueries.remove(transaction), connection);
+	res.json(transaction);
 };
 
 const updateTransaction = async (req, res) => {
@@ -84,19 +81,15 @@ const updateTransaction = async (req, res) => {
 		return res.status(400).json({ error: 'Empty fields' });
 	}
 
-	console.log(validFields);
 	const transaction = {
+		...result[0],
 		...Object.fromEntries(validFields),
-		id,
-		updatedAt: new Date().toISOString(),
-		type: result[0].type,
+		modifiedAt: new Date().toISOString(),
 		amount: result[0].type === 'IN' ? +Math.abs(amount) : -Math.abs(amount),
 	};
-
-	console.log(transaction);
 	try {
 		await queryDB(transactionQueries.update(transaction), connection);
-		res.json({ message: `Object with id '${id}' updated succesfully` });
+		res.json(transaction);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
