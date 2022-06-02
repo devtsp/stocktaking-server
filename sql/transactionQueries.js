@@ -1,6 +1,6 @@
 const selectAll = (user, limit) =>
 	`SELECT * FROM transactions WHERE deletedAt IS NULL AND user = "${user}" ORDER BY createdAt DESC ${
-		limit ? `LIMIT ${LIMIT}` : ''
+		limit ? `LIMIT ${limit}` : ''
 	}`;
 
 const insert = ({ id, createdAt, concept, amount, type, user }) =>
@@ -12,12 +12,11 @@ const remove = ({ id, deletedAt }) =>
 const select = id =>
 	`SELECT * FROM transactions WHERE id = "${id}" AND deletedAt IS NULL`;
 
-const update = ({ id, updatedAt, ...rest }) => {
-	console.log(rest);
+const update = ({ id, modifiedAt, ...rest }) => {
 	const formattedFields = Object.entries(rest).map(
-		([key, value]) => ` ${key} = "${value}"`
+		([key, value]) => ` ${key} = ${value != null ? `"${value}"` : `NULL`}`
 	);
-	return `UPDATE transactions SET ${formattedFields}, modifiedAt = "${updatedAt}" WHERE id = "${id}"`;
+	return `UPDATE transactions SET ${formattedFields}, modifiedAt = "${modifiedAt}" WHERE id = "${id}"`;
 };
 
 const getBalance = user =>
