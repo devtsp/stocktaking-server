@@ -31,7 +31,7 @@ const NewTransaction = () => {
 				concept,
 			});
 			transactions.unshift(response.data);
-			setTransactions(transactions);
+			setTransactions([...transactions]);
 			setAmount('');
 			setConcept('');
 			setType('');
