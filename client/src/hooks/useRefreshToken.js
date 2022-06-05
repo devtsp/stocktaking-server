@@ -7,13 +7,18 @@ const useRefreshToken = () => {
 	const { setAuth } = useAuth();
 
 	const refresh = async () => {
-		const response = await axios.get('/refresh', {
-			withCredentials: true,
-		});
-		const accessToken = response?.data?.accessToken;
-		const user = jwtDecode(accessToken)?.UserInfo.user;
-		setAuth({ user, accessToken });
-		return response.data.accessToken;
+		try {
+			const response = await axios.get('/refresh', {
+				withCredentials: true,
+			});
+			const accessToken = response?.data?.accessToken;
+			const user = jwtDecode(accessToken)?.UserInfo.user;
+			setAuth({ user, accessToken });
+			return response.data.accessToken;
+		} catch (err) {
+			console.error(err.message);
+			setAuth({ user: null, refreshToken: null });
+		}
 	};
 
 	return refresh;
