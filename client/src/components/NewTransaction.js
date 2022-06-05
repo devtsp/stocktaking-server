@@ -14,6 +14,7 @@ const NewTransaction = () => {
 	const [mounted, setIsMounted] = React.useState(false);
 
 	React.useEffect(() => {
+		setError('');
 		setIsMounted(true);
 	}, []);
 
