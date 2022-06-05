@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 export const TransactionContext = React.createContext({});
 
-export const TransactionProvider = ({ children }) => {
+export const TransactionProvider = () => {
 	const [transactions, setTransactions] = React.useState([]);
 
 	return (

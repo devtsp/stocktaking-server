@@ -293,6 +293,7 @@ form a:visited {
 /* NEW TRANSACTION ==================================================================================== */
 
 .NewTransaction {
+	margin-top: 2rem;
 	padding: 0 2rem;
 	border-radius: 0.3rem;
 	border: 5px solid rgba(167, 203, 231, 0.214);

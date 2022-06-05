@@ -34,7 +34,7 @@ const Home = () => {
 
 		const getLastTransactions = async () => {
 			try {
-				const response = await axiosPrivate.get('/transactions', {
+				const response = await axiosPrivate.get('/transactions?limit=10', {
 					signal: controller.signal,
 				});
 				isMounted && setTransactions(response?.data);
@@ -53,14 +53,14 @@ const Home = () => {
 		fetchData();
 
 		return () => {
-			// isMounted = false;
-			// !loading && controller.abort();
+			isMounted = false;
+			controller.abort();
 		};
 	}, []);
 
 	return (
 		<>
-			{auth?.user ? (
+			{auth?.user && !loading ? (
 				<section
 					className={`Home transition1 ${
 						!mounted ? 'transition1-start' : 'transition1-end'
@@ -76,7 +76,7 @@ const Home = () => {
 								<tbody>
 									{transactions.map((transaction, i) => {
 										const originalDate = new Date(transaction.createdAt);
-										const formattedDate = `${originalDate.getDay()}/${
+										const formattedDate = `${originalDate.getDate()}/${
 											originalDate.getMonth() + 1
 										}/${originalDate.getFullYear()}`;
 										return (

@@ -20,7 +20,7 @@ const update = ({ id, modifiedAt, ...rest }) => {
 };
 
 const getBalance = user =>
-	`SELECT SUM(amount) as balance FROM transactions WHERE user = "${user}"`;
+	`SELECT SUM(amount) as balance FROM transactions WHERE user = "${user}" AND deletedAt IS NULL`;
 
 module.exports = {
 	selectAll,

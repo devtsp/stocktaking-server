@@ -71,7 +71,7 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 					<tbody>
 						{transactions.map((transaction, i) => {
 							const originalDate = new Date(transaction.createdAt);
-							const formattedDate = `${originalDate.getDay()}/${
+							const formattedDate = `${originalDate.getDate()}/${
 								originalDate.getMonth() + 1
 							}/${originalDate.getFullYear()}`;
 							return (
