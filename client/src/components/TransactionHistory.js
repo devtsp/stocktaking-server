@@ -5,7 +5,7 @@ import { FiDelete } from 'react-icons/fi';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useTransactions from '../hooks/useTransactions';
 
-const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
+const TransactionHistory = ({ editing, setEditing }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const { transactions, setTransactions } = useTransactions();
 
@@ -20,11 +20,6 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 		} catch (err) {
 			console.error(err.response.message);
 		}
-	};
-
-	const handleEdit = operation => {
-		setTransactionEdit(operation);
-		setIsEditing(true);
 	};
 
 	React.useEffect(() => {
@@ -85,7 +80,7 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 									</td>
 									<td>{transaction.concept}</td>
 									<td>{formattedDate}</td>
-									<td onClick={e => handleEdit(transaction)}>
+									<td onClick={e => setEditing([true, transaction])}>
 										<button>
 											<AiFillEdit />
 										</button>

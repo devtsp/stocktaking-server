@@ -3,18 +3,19 @@ import { MdClose } from 'react-icons/md';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
-const EditTransaction = ({ setIsEditing, transactionEdit }) => {
-	const axiosPrivate = useAxiosPrivate();
-	const [amount, setAmount] = React.useState(transactionEdit.amount);
-	const [concept, setConcept] = React.useState(transactionEdit.concept);
-	const [error, setError] = React.useState('');
+const EditTransaction = ({ editing, setEditing }) => {
 	const {
 		id,
 		concept: prevConcept,
 		amount: prevAmount,
 		createdAt,
 		modifiedAt,
-	} = transactionEdit;
+	} = editing[1];
+	const [amount, setAmount] = React.useState(prevAmount);
+	const [concept, setConcept] = React.useState(prevConcept);
+	const [error, setError] = React.useState('');
+
+	const axiosPrivate = useAxiosPrivate();
 
 	const [mounted, setIsMounted] = React.useState(false);
 	React.useEffect(() => {
@@ -30,7 +31,7 @@ const EditTransaction = ({ setIsEditing, transactionEdit }) => {
 		};
 		try {
 			await axiosPrivate.patch('/transactions', body);
-			setIsEditing(false);
+			setEditing([false, {}]);
 		} catch (err) {
 			console.error(error.message);
 			setError(err.message);
@@ -43,7 +44,7 @@ const EditTransaction = ({ setIsEditing, transactionEdit }) => {
 				!mounted ? 'transition1-start' : 'transition1-end'
 			} `}
 		>
-			<button className="cancel-button" onClick={() => setIsEditing(false)}>
+			<button className="cancel-button" onClick={() => setEditing([false, {}])}>
 				<MdClose />
 			</button>
 			<h1>Edit Transaction</h1>

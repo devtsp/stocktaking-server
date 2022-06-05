@@ -7,25 +7,18 @@ import TransactionHistory from '../components/TransactionHistory';
 import useAuth from '../hooks/useAuth';
 
 const Operations = () => {
-	const [isEditing, setIsEditing] = React.useState(false);
-	const [transactionEdit, setTransactionEdit] = React.useState({});
+	const [editing, setEditing] = React.useState([false, {}]);
 	const { auth } = useAuth();
 	return (
 		<>
 			{auth?.user ? (
 				<div className="Operations">
-					{isEditing ? (
-						<EditTranasction
-							setIsEditing={setIsEditing}
-							transactionEdit={transactionEdit}
-						/>
+					{editing[0] ? (
+						<EditTranasction editing={editing} setEditing={setEditing} />
 					) : (
 						<>
 							<NewTransaction />
-							<TransactionHistory
-								setIsEditing={setIsEditing}
-								setTransactionEdit={setTransactionEdit}
-							/>
+							<TransactionHistory editing={editing} setEditing={setEditing} />
 						</>
 					)}
 				</div>
