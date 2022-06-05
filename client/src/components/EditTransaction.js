@@ -64,12 +64,28 @@ const EditTransaction = ({ setIsEditing, transactionEdit }) => {
 					</li>
 					<li>
 						<h3>First Created At:</h3>
-						<span>{Date(createdAt).toString().split('GMT')[0]}</span>
+						<span>
+							{
+								createdAt
+									.toString()
+									.split('GMT')[0]
+									.replace('T', '  ')
+									.split('.')[0]
+							}
+						</span>
 					</li>
 					{modifiedAt && (
 						<li>
 							<h3>Last Modified:</h3>
-							<span>{Date(modifiedAt).toString().split('GMT')[0]}</span>
+							<span>
+								{
+									modifiedAt
+										.toString()
+										.split('GMT')[0]
+										.replace('T', '  ')
+										.split('.')[0]
+								}
+							</span>
 						</li>
 					)}
 				</ul>
