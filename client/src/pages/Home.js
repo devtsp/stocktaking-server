@@ -3,12 +3,13 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useTransactions from '../hooks/useTransactions';
 
 const Home = () => {
 	const navigate = useNavigate();
 
 	const [balance, setBalance] = React.useState(null);
-	const [lastTransactions, setLatTransactions] = React.useState([]);
+	const [transactions, setTransactions] = React.useState(null);
 
 	const { auth } = useAuth();
 	const axiosPrivate = useAxiosPrivate();
@@ -31,8 +32,10 @@ const Home = () => {
 
 		const getLastTransactions = async () => {
 			try {
-				const response = await axiosPrivate.get('/transactions');
-				setLatTransactions(response?.data);
+				const response = await axiosPrivate.get('/transactions', {
+					signal: controller.signal,
+				});
+				isMounted && setTransactions(response?.data);
 			} catch (err) {
 				console.error(err.message);
 			}
@@ -56,10 +59,10 @@ const Home = () => {
 					</p>
 					<section className="TransactionHistory">
 						<h1>Last Movements</h1>
-						{lastTransactions ? (
+						{transactions ? (
 							<table>
 								<tbody>
-									{lastTransactions.map((transaction, i) => {
+									{transactions.map((transaction, i) => {
 										const originalDate = new Date(transaction.createdAt);
 										const formattedDate = `${originalDate.getDay()}/${
 											originalDate.getMonth() + 1

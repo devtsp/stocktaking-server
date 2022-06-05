@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useRefreshToken from '../hooks/useAuth';
+import useRefreshToken from '../hooks/useRefreshToken';
 import useAuth from '../hooks/useAuth';
 
 const PersistLogin = ({ children }) => {
@@ -20,7 +20,7 @@ const PersistLogin = ({ children }) => {
 		};
 
 		!auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
-	}, [auth?.accessToken, refresh]);
+	}, []);
 
 	return isLoading ? <p>Loading..</p> : children;
 };
