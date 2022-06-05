@@ -1,9 +1,12 @@
 import React from 'react';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useTransactions from '../hooks/useTransactions';
 
 const NewTransaction = () => {
 	const axiosPrivate = useAxiosPrivate();
+	const { transactions, setTransactions } = useTransactions();
+
 	const [amount, setAmount] = React.useState('');
 	const [concept, setConcept] = React.useState('');
 	const [type, setType] = React.useState('');
@@ -17,16 +20,17 @@ const NewTransaction = () => {
 		}
 
 		try {
-			const response = await axiosPrivate.post(
-				'/transactions',
-				JSON.stringify({ amount, type, concept })
-			);
-			console.log(response.data);
+			const response = await axiosPrivate.post('/transactions', {
+				amount,
+				type,
+				concept,
+			});
+			transactions.unshift(response.data);
+			setTransactions(transactions);
 			setAmount('');
 			setConcept('');
 			setType('');
 			setError('');
-			window.location.reload();
 		} catch (err) {
 			if (!err?.response) {
 				setError('No server Response');

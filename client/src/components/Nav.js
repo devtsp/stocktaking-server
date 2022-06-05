@@ -12,7 +12,7 @@ const Nav = () => {
 	const handleLogout = async () => {
 		try {
 			await axiosPrivate.post('/logout');
-			setAuth({});
+			setAuth({ user: null, accessToken: null });
 		} catch (err) {
 			console.error(err.message);
 		}

@@ -38,14 +38,15 @@ const createTransaction = async (req, res) => {
 	const transaction = {
 		id: uuid(),
 		createdAt: new Date().toISOString(),
+		modifiedAt: null,
 		concept,
 		amount: type === 'IN' ? +amount : -amount,
 		type,
 		user,
 	};
 	try {
-		const [[rows]] = await queryDB(transactionQueries.insert(transaction));
-		res.status(201).json(rows[0]);
+		await queryDB(transactionQueries.insert(transaction));
+		res.status(201).json(transaction);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -53,6 +54,7 @@ const createTransaction = async (req, res) => {
 
 const removeTransaction = async (req, res) => {
 	const { id } = req.body;
+	console.log(id);
 	if (!id) {
 		return res.status(400).json({ error: 'Id field required' });
 	}

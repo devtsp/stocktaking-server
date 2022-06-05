@@ -3,20 +3,20 @@ import { AiFillEdit } from 'react-icons/ai';
 import { FiDelete } from 'react-icons/fi';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useTransactions from '../hooks/useTransactions';
 
 const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 	const axiosPrivate = useAxiosPrivate();
-	const [transactions, setTransactions] = React.useState([]);
+	const { transactions, setTransactions } = useTransactions();
 
-	const handleDelete = async transaction => {
-		console.log(transaction);
-		const toSend = { id: transaction.id };
-		console.log(toSend);
+	const handleDelete = async ({ id }) => {
 		try {
-			await axiosPrivate.delete('/transactions', { data: toSend });
-			window.location.reload();
+			await axiosPrivate.delete('/transactions', {
+				data: { id },
+			});
+			setTransactions(transactions.filter(tr => tr.id !== id));
 		} catch (err) {
-			console.error(err.response);
+			console.error(err.response.message);
 		}
 	};
 
@@ -26,18 +26,28 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 	};
 
 	React.useEffect(() => {
+		let isMounted = true;
+		const controller = new AbortController();
+
 		const getPastTransactions = async () => {
 			try {
-				const response = await axiosPrivate.get('/transactions');
+				const response = await axiosPrivate.get('/transactions', {
+					signal: controller.signal,
+				});
 				const transactions = response?.data;
-				setTransactions(transactions);
+				isMounted && setTransactions(transactions);
 			} catch (err) {
 				console.error(err.message);
 			}
 		};
 
 		getPastTransactions();
-	}, [axiosPrivate]);
+
+		return () => {
+			isMounted = false;
+			controller.abort();
+		};
+	}, []);
 
 	return (
 		<section className="TransactionHistory">
