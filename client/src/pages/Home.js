@@ -14,8 +14,11 @@ const Home = () => {
 	const { auth } = useAuth();
 	const axiosPrivate = useAxiosPrivate();
 
+	const [mounted, setIsMounted] = React.useState(false);
+
 	React.useEffect(() => {
 		let isMounted = true;
+		setIsMounted(true);
 		const controller = new AbortController();
 
 		const getBalance = async () => {
@@ -58,7 +61,11 @@ const Home = () => {
 	return (
 		<>
 			{auth?.user ? (
-				<section className="Home">
+				<section
+					className={`Home transition1 ${
+						!mounted ? 'transition1-start' : 'transition1-end'
+					} `}
+				>
 					<p>
 						<span>Balance:</span> <span>{balance || 0}</span>
 					</p>
