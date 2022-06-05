@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 
 import useAuth from '../hooks/useAuth';
@@ -22,12 +22,18 @@ const Nav = () => {
 		<>
 			{auth?.user && (
 				<nav>
-					<Link to="/">
+					<NavLink
+						to="/"
+						style={({ isActive }) => (isActive ? activeTabStyle : {})}
+					>
 						<h1>HOME</h1>
-					</Link>
-					<Link to="/operations">
+					</NavLink>
+					<NavLink
+						to="/operations"
+						style={({ isActive }) => (isActive ? activeTabStyle : {})}
+					>
 						<h1>OPERATIONS</h1>
-					</Link>
+					</NavLink>
 					<span className="user-menu-button">
 						{auth.user}
 						<FaRegUserCircle />
@@ -39,6 +45,11 @@ const Nav = () => {
 			)}
 		</>
 	);
+};
+
+const activeTabStyle = {
+	color: 'deepskyblue',
+	borderBottom: '2px solid deepskyblue',
 };
 
 export default Nav;

@@ -16,6 +16,11 @@ const EditTransaction = ({ setIsEditing, transactionEdit }) => {
 		modifiedAt,
 	} = transactionEdit;
 
+	const [mounted, setIsMounted] = React.useState(false);
+	React.useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
 	const handleSubmit = async e => {
 		e.preventDefault();
 		const body = {
@@ -33,7 +38,11 @@ const EditTransaction = ({ setIsEditing, transactionEdit }) => {
 	};
 
 	return (
-		<div className="EditTransaction">
+		<div
+			className={`EditTransaction transition1 ${
+				!mounted ? 'transition1-start' : 'transition1-end'
+			} `}
+		>
 			<button className="cancel-button" onClick={() => setIsEditing(false)}>
 				<MdClose />
 			</button>

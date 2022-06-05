@@ -11,6 +11,11 @@ const NewTransaction = () => {
 	const [concept, setConcept] = React.useState('');
 	const [type, setType] = React.useState('');
 	const [error, setError] = React.useState('');
+	const [mounted, setIsMounted] = React.useState(false);
+
+	React.useEffect(() => {
+		setIsMounted(true);
+	}, []);
 
 	const submitTransaction = async e => {
 		e.preventDefault();
@@ -45,7 +50,12 @@ const NewTransaction = () => {
 	};
 
 	return (
-		<form className="NewTransaction" onSubmit={submitTransaction}>
+		<form
+			className={`NewTransaction transition1 ${
+				!mounted ? 'transition1-start' : 'transition1-end'
+			}`}
+			onSubmit={submitTransaction}
+		>
 			<h1>New Transaction</h1>
 			<div>
 				<label htmlFor="transaction-amount">Amount</label> <br />

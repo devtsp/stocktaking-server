@@ -56,6 +56,7 @@ ul {
 	flex-direction: column;
 	justify-items: flex-start;
 	font-size: 1.6rem;
+	overflow-x: auto;
 }
 
 /* NAV ============================================================ */
@@ -71,13 +72,18 @@ nav {
 
 nav a {
 	text-decoration: none;
+	padding: 0 1rem;
 	color: rgb(247, 247, 247);
 	text-align: left;
+	height: 100%;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	transition: color 300ms;
 }
 
 nav h1 {
 	margin: 0;
-	padding: 0 0.6rem;
 	font-size: 1.4rem;
 	font-weight: 400;
 }
@@ -90,6 +96,11 @@ nav h1 {
 	padding: 0 1rem;
 	display: inline-flex;
 	align-items: center;
+}
+
+nav svg {
+	color: black;
+	padding: 0 0 0 0.4rem;
 }
 
 .logout {
@@ -107,14 +118,13 @@ nav h1 {
 	cursor: pointer;
 }
 
+.logout:hover {
+	text-decoration: underline;
+}
+
 .logout span {
 	display: inline-block;
 	height: fit-content;
-}
-
-nav svg {
-	color: black;
-	padding: 0 0 0 0.4rem;
 }
 
 /* LAYOUT ======================================================== */
@@ -124,12 +134,15 @@ main {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	overflow: auto;
 }
 
 /* LOGIN/REGISTER FORMS ============================================ */
 
 form {
 	margin: 0;
+	width: fit-content;
+	margin: auto;
 }
 
 form h1 {
@@ -210,6 +223,10 @@ form input[type='submit'] {
 	margin: 2rem 0;
 }
 
+form input[type='submit']:hover {
+	border-color: darkseagreen;
+}
+
 form p {
 	font-weight: 200;
 	margin: 0;
@@ -234,18 +251,22 @@ form a:visited {
 	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-.Home p {
-	min-width: 20rem;
+.Home p:nth-child(1) {
+	font-size: 2rem;
 	display: flex;
-	font-size: 3rem;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	padding: 1rem 0;
+	border-radius: 0.3rem;
+	border: 5px solid rgba(167, 203, 231, 0.214);
+	border-top: none;
+	border-bottom: none;
+	box-shadow: 0 0 50px -5px rgba(255, 255, 255, 0.063) inset,
+		0px 0px 50px -5px rgba(0, 0, 0, 0.288);
 }
 
-.Home p span:nth-child(1) {
-	margin-right: auto;
-}
-
-.Home p span:nth-child(2) {
-	color: cornflowerblue;
+.Home p span {
+	padding: 0 1rem;
 }
 
 .Home a,
@@ -271,6 +292,16 @@ form a:visited {
 
 /* NEW TRANSACTION ==================================================================================== */
 
+.NewTransaction {
+	padding: 0 2rem;
+	border-radius: 0.3rem;
+	border: 5px solid rgba(167, 203, 231, 0.214);
+	border-top: none;
+	border-bottom: none;
+	box-shadow: 0 0 50px -5px rgba(255, 255, 255, 0.063) inset,
+		0px 0px 50px -5px rgba(0, 0, 0, 0.288);
+}
+
 .NewTransaction h2 {
 	font-size: 1.6rem;
 	font-weight: 200;
@@ -293,7 +324,7 @@ form a:visited {
 .TransactionHistory h1 {
 	font-size: 2rem;
 	font-weight: 200;
-	margin: 0.6rem 0 0;
+	margin: 2rem 0 0;
 	padding-bottom: 0.4rem;
 	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
@@ -322,6 +353,13 @@ form a:visited {
 .EditTransaction {
 	width: 20rem;
 	position: relative;
+	padding: 0 2rem;
+	border-radius: 0.3rem;
+	border: 5px solid rgba(167, 203, 231, 0.214);
+	border-top: none;
+	border-bottom: none;
+	box-shadow: 0 0 50px -5px rgba(255, 255, 255, 0.063) inset,
+		0px 0px 50px -5px rgba(0, 0, 0, 0.288);
 }
 
 .EditTransaction h1 {
@@ -335,6 +373,7 @@ form a:visited {
 .cancel-button {
 	position: absolute;
 	right: 0;
+	padding: 0.4rem;
 	font-size: 2rem;
 	color: white;
 }
@@ -384,6 +423,20 @@ form a:visited {
 	text-align: center;
 }
 
+/* TRANSITIONS =========================================================================== */
+
+.transition1 {
+	transition: opacity 0.3s;
+}
+
+.transition1-start {
+	opacity: 0;
+}
+
+.transition1-end {
+	opacity: 1;
+}
+
 /* BREAKPOINTS ========================================================================== */
 
 @media screen and (min-width: 900px) {
@@ -391,6 +444,10 @@ form a:visited {
 		margin-top: 2rem;
 		flex-direction: row;
 		align-items: flex-start;
+	}
+
+	.NewTransaction {
+		margin: 0;
 	}
 
 	.Operations h1 {
@@ -414,17 +471,21 @@ form a:visited {
 	:root {
 		font-size: 12px;
 	}
-	td,
-	th {
-		padding: 0 0.4rem !important;
+
+	.Opearations th,
+	.Operations td {
+		padding: 0.2rem;
 	}
 	nav {
 		padding: 0rem;
 	}
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 400px) {
 	:root {
 		font-size: 10px;
+	}
+	nav svg {
+		display: none;
 	}
 }

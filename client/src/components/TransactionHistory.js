@@ -9,6 +9,8 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const { transactions, setTransactions } = useTransactions();
 
+	const [mounted, setIsMounted] = React.useState(false);
+
 	const handleDelete = async ({ id }) => {
 		try {
 			await axiosPrivate.delete('/transactions', {
@@ -27,6 +29,7 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 
 	React.useEffect(() => {
 		let isMounted = true;
+		setIsMounted(true);
 		const controller = new AbortController();
 
 		const getPastTransactions = async () => {
@@ -50,7 +53,11 @@ const TransactionHistory = ({ setIsEditing, setTransactionEdit }) => {
 	}, []);
 
 	return (
-		<section className="TransactionHistory">
+		<section
+			className={`TransactionHistory transition1 ${
+				!mounted ? 'transition1-start' : 'transition1-end'
+			}`}
+		>
 			<h1>Transaction History</h1>
 			{transactions ? (
 				<table>

@@ -3,13 +3,13 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import useTransactions from '../hooks/useTransactions';
 
 const Home = () => {
 	const navigate = useNavigate();
 
 	const [balance, setBalance] = React.useState(null);
 	const [transactions, setTransactions] = React.useState(null);
+	const [loading, setIsLoading] = React.useState(false);
 
 	const { auth } = useAuth();
 	const axiosPrivate = useAxiosPrivate();
@@ -26,7 +26,6 @@ const Home = () => {
 				isMounted && setBalance(response.data.balance);
 			} catch (error) {
 				console.error(error.message);
-				navigate('/login');
 			}
 		};
 
@@ -41,12 +40,18 @@ const Home = () => {
 			}
 		};
 
-		getBalance();
-		getLastTransactions();
+		const fetchData = async () => {
+			setIsLoading(true);
+			await getBalance();
+			await getLastTransactions();
+			setIsLoading(false);
+		};
+
+		fetchData();
 
 		return () => {
-			isMounted = false;
-			controller.abort();
+			// isMounted = false;
+			// !loading && controller.abort();
 		};
 	}, []);
 
