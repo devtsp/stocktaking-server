@@ -5,6 +5,7 @@ const userQueries = require('../sql/userQueries');
 
 const refreshToken = async (req, res) => {
 	const refreshToken = req.cookies?.jwt;
+
 	if (!refreshToken) {
 		return res.sendStatus(401);
 	}
@@ -12,6 +13,7 @@ const refreshToken = async (req, res) => {
 	const [[rows], connection] = await queryDB(
 		userQueries.getByRefreshToken(refreshToken)
 	);
+
 	if (!rows.length) {
 		return res.sendStatus(403);
 	}
@@ -32,6 +34,7 @@ const refreshToken = async (req, res) => {
 			process.env.ACCESS_TOKEN_SECRET,
 			{ expiresIn: '10m' }
 		);
+
 		res.json({ accessToken });
 	});
 };

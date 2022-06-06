@@ -6,14 +6,15 @@ const userQueries = require('../sql/userQueries');
 
 const logUser = async (req, res) => {
 	const { email, password } = req.body;
+
 	if (!email || !password) {
-		return res.status(400).json({ error: 'Email and password are required' });
+		return res.status(400).json('Email and password are required');
 	}
 
 	const [[rows], connection] = await queryDB(userQueries.select(email));
 
 	if (!Object.keys(rows).length) {
-		return res.status(401).json({ error: 'Email not registered' });
+		return res.status(401).json('Email not registered');
 	}
 
 	const user = rows[0];
@@ -24,6 +25,7 @@ const logUser = async (req, res) => {
 			process.env.ACCESS_TOKEN_SECRET,
 			{ expiresIn: '10m' }
 		);
+
 		const refreshToken = jwt.sign(
 			{ user: email },
 			process.env.REFRESH_TOKEN_SECRET,
@@ -32,18 +34,20 @@ const logUser = async (req, res) => {
 
 		try {
 			await queryDB(userQueries.updateRefreshToken(user.id, refreshToken));
+
 			res.cookie('jwt', refreshToken, {
 				httpOnly: true,
 				secure: true,
 				sameSite: 'None',
 				maxAge: 24 * 60 * 60 * 1000,
 			});
+
 			res.json({ accessToken });
 		} catch (error) {
-			res.status(500).json({ error: error.message });
+			res.status(500).json(error.message);
 		}
 	} else {
-		res.status(401).json({ error: 'Invalid password' });
+		res.status(401).json('Invalid password');
 	}
 };
 
