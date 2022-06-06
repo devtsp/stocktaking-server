@@ -325,9 +325,65 @@ form a:visited {
 .TransactionHistory h1 {
 	font-size: 2rem;
 	font-weight: 200;
-	margin: 2rem 0 0;
+	margin: 2rem 0 1.2rem;
 	padding-bottom: 0.4rem;
 	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.TransactionHistory form .filter-select {
+	width: fit-content;
+	margin: 0 1rem 0.4rem 0.4rem !important;
+	cursor: pointer;
+}
+
+.TransactionHistory li {
+	height: fit-content;
+	line-height: 1;
+}
+
+.TransactionHistory form label {
+	position: absolute;
+	left: 9999999999999999px;
+}
+
+.TransactionHistory .filter-tag-list {
+	width: 30rem;
+	text-align: left;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.TransactionHistory form .filter-tag {
+	display: inline-flex;
+	align-items: flex-start;
+	padding: 0.1rem 0.2rem 0.2rem 0.4rem;
+	border: 1px solid rgba(255, 255, 255, 0.129);
+	border-radius: 0.6rem;
+	margin: 0.4rem;
+	background-color: rgba(127, 255, 212, 0.116);
+	cursor: pointer;
+}
+
+.TransactionHistory .filter-tag span {
+	padding-right: 0.2rem;
+	font-size: 1.2rem;
+	line-height: 1;
+}
+
+.TransactionHistory form div {
+	display: flex;
+	align-items: center;
+	width: fit-content;
+}
+
+.TransactionHistory table {
+	margin: auto;
+}
+
+.TransactionHistory form li {
+	display: inline-flex;
+	align-items: center;
 }
 
 .TransactionHistory tr {
@@ -345,7 +401,7 @@ form a:visited {
 	padding: 0.6rem 1rem;
 }
 
-.TransactionHistory svg {
+.TransactionHistory table svg {
 	color: azure;
 }
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { AiFillEdit } from 'react-icons/ai';
-import { FiDelete } from 'react-icons/fi';
+import { FiDelete, FiFilter } from 'react-icons/fi';
+import { MdClose } from 'react-icons/md';
+import { IconContext } from 'react-icons';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useTransactions from '../hooks/useTransactions';
@@ -8,19 +10,8 @@ import useTransactions from '../hooks/useTransactions';
 const TransactionHistory = ({ editing, setEditing }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const { transactions, setTransactions } = useTransactions();
-
+	const [filters, setFilters] = React.useState([]);
 	const [mounted, setIsMounted] = React.useState(false);
-
-	const handleDelete = async ({ id }) => {
-		try {
-			await axiosPrivate.delete('/transactions', {
-				data: { id },
-			});
-			setTransactions(transactions.filter(tr => tr.id !== id));
-		} catch (err) {
-			console.error(err.response.message);
-		}
-	};
 
 	React.useEffect(() => {
 		let isMounted = true;
@@ -47,6 +38,42 @@ const TransactionHistory = ({ editing, setEditing }) => {
 		};
 	}, []);
 
+	const handleDelete = async ({ id }) => {
+		try {
+			await axiosPrivate.delete('/transactions', {
+				data: { id },
+			});
+			setTransactions(transactions.filter(tr => tr.id !== id));
+		} catch (err) {
+			console.error(err.response.message);
+		}
+	};
+
+	const handleDeleteFilter = (e, filter) => {
+		const updatedFilters = filters.length
+			? [...filters].filter(f => f !== filter)
+			: [e.target.value];
+		setFilters(updatedFilters);
+	};
+
+	const handleAddFilter = e => {
+		const updatedFilters = filters.length
+			? [...new Set([...filters, e.target.value])]
+			: [e.target.value];
+		setFilters(updatedFilters);
+	};
+
+	const filterTransactionsCallback = transaction => {
+		return filters.length ? filters.includes(transaction.concept) : true;
+	};
+
+	const formatDate = UTCDate => {
+		const originalDate = new Date(UTCDate);
+		return `${originalDate.getDate()}/${
+			originalDate.getMonth() + 1
+		}/${originalDate.getFullYear()}`;
+	};
+
 	return (
 		<section
 			className={`TransactionHistory transition1 ${
@@ -55,51 +82,101 @@ const TransactionHistory = ({ editing, setEditing }) => {
 		>
 			<h1>Transaction History</h1>
 			{transactions ? (
-				<table>
-					<thead>
-						<tr>
-							<th>Amount</th>
-							<th>Concept</th>
-							<th>Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						{transactions.map((transaction, i) => {
-							const originalDate = new Date(transaction.createdAt);
-							const formattedDate = `${originalDate.getDate()}/${
-								originalDate.getMonth() + 1
-							}/${originalDate.getFullYear()}`;
-							return (
-								<tr key={transaction.id}>
-									<td
-										style={{
-											color: +transaction.amount < 0 ? 'red' : 'yellowgreen',
-										}}
+				<>
+					<form>
+						{filters && (
+							<ul className="filter-tag-list">
+								<li>
+									<label htmlFor="filter-select">Filter Transactions</label>
+									<IconContext.Provider value={{ size: '2rem' }}>
+										<FiFilter />
+									</IconContext.Provider>
+									<select
+										className="filter-select"
+										value="Filter Concept"
+										onChange={e => handleAddFilter(e)}
 									>
-										{transaction.amount}
-									</td>
-									<td>{transaction.concept}</td>
-									<td>{formattedDate}</td>
-									<td onClick={e => setEditing([true, transaction])}>
-										<button>
-											<AiFillEdit />
-										</button>
-									</td>
-									<td onClick={e => handleDelete(transaction)}>
-										<button>
-											<FiDelete />
-										</button>
-									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>
+										<option>Filter Concept</option>
+										{conceptArray.map((concept, i) => (
+											<option value={concept} key={i}>
+												{concept}
+											</option>
+										))}
+									</select>
+								</li>
+								{filters.map(filter => (
+									<li
+										key={filter}
+										className="filter-tag"
+										onClick={e => handleDeleteFilter(e, filter)}
+									>
+										<span> {filter}</span>
+										<IconContext.Provider value={{ size: '1rem' }}>
+											<MdClose />
+										</IconContext.Provider>{' '}
+									</li>
+								))}
+							</ul>
+						)}
+					</form>
+					<table>
+						<thead>
+							<tr>
+								<th>Amount</th>
+								<th>Concept</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							{transactions
+								.filter(filterTransactionsCallback)
+								.map(transaction => {
+									const date = formatDate(transaction.createdAt);
+									return (
+										<tr key={transaction.id}>
+											<td
+												style={{
+													color:
+														+transaction.amount < 0 ? 'red' : 'yellowgreen',
+												}}
+											>
+												{transaction.amount}
+											</td>
+											<td>{transaction.concept}</td>
+											<td>{date}</td>
+											<td onClick={e => setEditing([true, transaction])}>
+												<button>
+													<AiFillEdit />
+												</button>
+											</td>
+											<td onClick={e => handleDelete(transaction)}>
+												<button>
+													<FiDelete />
+												</button>
+											</td>
+										</tr>
+									);
+								})}
+						</tbody>
+					</table>
+				</>
 			) : (
 				<p>No transactions to display yet.</p>
 			)}
 		</section>
 	);
 };
+
+const conceptArray = [
+	'groceries',
+	'loan',
+	'fees',
+	'rent',
+	'salary',
+	'gas',
+	'medic',
+	'shopping',
+	'other',
+];
 
 export default TransactionHistory;
