@@ -23,7 +23,7 @@ const Login = () => {
 		try {
 			const response = await axios.post(
 				'/auth',
-				JSON.stringify({ email, password }),
+				{ email, password },
 				{
 					headers: {
 						'Content-Type': 'application/json',
@@ -38,15 +38,8 @@ const Login = () => {
 			setPassword('');
 			navigate('/');
 		} catch (err) {
-			if (!err?.response) {
-				setError('No server Response');
-			} else if (err.response?.status === 400) {
-				setError('Missing Email or Password');
-			} else if (err.response?.status === 401) {
-				setError('Unauthorized');
-			} else {
-				setError('Login Failed');
-			}
+			console.error(err.response.data);
+			setError(err.response.data);
 		}
 	};
 
