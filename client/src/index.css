@@ -24,6 +24,10 @@ code {
 
 /* GRAL OVERRIDES ================================================================== */
 
+* {
+	box-sizing: border-box;
+}
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
 	-webkit-appearance: none;
@@ -234,6 +238,11 @@ form input[type='submit']:hover {
 	border-color: darkseagreen;
 }
 
+form input[type='submit']:disabled {
+	cursor: context-menu;
+	opacity: 0.2;
+}
+
 form p {
 	font-weight: 200;
 	margin: 0;
@@ -241,7 +250,7 @@ form p {
 
 form a,
 form a:visited {
-	color: yellowgreen;
+	color: skyblue;
 }
 
 .Login,
@@ -270,8 +279,23 @@ form a:visited {
 
 form .error {
 	color: rgb(83, 40, 40);
-	margin: 1rem 0;
-	width: 20rem;
+	font-weight: 400;
+	text-align: center;
+	background-color: rgba(220, 144, 144, 0.131);
+	margin: 0.4rem 0;
+	padding: 0.4rem;
+	border-radius: 0.4rem;
+	line-height: 1;
+}
+
+form .success {
+	color: rgb(133, 183, 33);
+	text-align: center;
+	background-color: rgba(195, 220, 144, 0.131);
+	margin: 0.4rem 0;
+	padding: 0.4rem;
+	border-radius: 0.4rem;
+	line-height: 1;
 }
 
 .instructions {
@@ -279,14 +303,28 @@ form .error {
 	color: rgb(208, 215, 221);
 	margin-bottom: 1rem;
 	position: absolute;
+	z-index: 2;
 	background-color: rgb(34, 34, 34);
 	width: 18rem;
 	border-radius: 5px;
 	padding: 1rem;
 }
 
+.instructions::before {
+	content: '';
+	position: absolute;
+	top: -0.4rem;
+	left: 2rem;
+	border: 0.5rem solid rgb(34, 34, 34);
+	transform: rotate(45deg);
+}
+
+.instructions p {
+	display: flex;
+}
+
 .instructions svg {
-	margin-right: 0.2rem;
+	margin-right: 0.4rem;
 	vertical-align: top;
 	size: 2rem;
 }

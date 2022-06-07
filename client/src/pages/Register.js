@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { IconContext } from 'react-icons';
 import {
 	AiOutlineCheckCircle,
 	AiOutlineCloseCircle,
@@ -16,7 +15,7 @@ const Register = () => {
 	const errRef = React.useRef();
 
 	const [email, setEmail] = React.useState('');
-	const [validEmail, setValidEmail] = React.useState(false);
+	const [validEmail, setValidEmail] = React.useState();
 	const [emailFocus, setEmailFocus] = React.useState(false);
 
 	const [password, setPassword] = React.useState('');
@@ -42,7 +41,9 @@ const Register = () => {
 	React.useEffect(() => {
 		const result = PASSWORD_REGEX.test(password);
 		setValidPassword(result);
+	}, [password]);
 
+	React.useEffect(() => {
 		const passwordsMatch = password === repeatPassword;
 		setValidRepeatPassword(passwordsMatch);
 	}, [password, repeatPassword]);
@@ -53,6 +54,15 @@ const Register = () => {
 
 	const submitRegister = async e => {
 		e.preventDefault();
+
+		const validEmail = EMAIL_REGEX.test(email);
+		const validPassword = PASSWORD_REGEX.test(password);
+
+		if (!validEmail || !validPassword) {
+			setError('Invalid Entry');
+			return;
+		}
+
 		const body = { email, password };
 
 		if (!email.trim() || !password.trim()) {
@@ -66,7 +76,7 @@ const Register = () => {
 			setEmail('');
 			setPassword('');
 			setError('');
-			navigate('/login');
+			setSuccess('Registered new user Successfully');
 		} catch (err) {
 			console.error(err.message);
 			setError(err.response.data.error);
@@ -96,43 +106,119 @@ const Register = () => {
 					autoComplete="off"
 					required
 					aria-invalid={validEmail ? 'false' : 'true'}
-					aria-describedby="uidnote"
+					aria-describedby="email-note"
 					onFocus={() => setEmailFocus(true)}
 					onBlur={() => setEmailFocus(false)}
 					ref={emailRef}
 				/>
 				<div>
 					<p
-						id="uidnote"
 						className={
 							emailFocus && email && !validEmail ? 'instructions' : 'offscreen'
 						}
 					>
-						{' '}
-						<AiOutlineInfoCircle />{' '}
-						<span>Enter a valid email format, ex: NewUser@gmail.com</span>
+						<AiOutlineInfoCircle />
+						<span id="email-note">
+							Enter a valid email format, ex: NewUser@gmail.com
+						</span>
 					</p>
 				</div>
 			</div>
 			<div>
-				<label htmlFor="register-password">Password</label> <br />
+				<label htmlFor="register-password" className="login-label">
+					Password
+					{password ? (
+						validPassword ? (
+							<AiOutlineCheckCircle className="valid" />
+						) : (
+							<AiOutlineCloseCircle className="invalid" />
+						)
+					) : (
+						''
+					)}
+				</label>
 				<input
 					type="password"
 					id="register-password"
 					onChange={e => setPassword(e.target.value)}
 					autoComplete="off"
-					value={password}
 					required
+					aria-invalid={validPassword ? 'false' : 'true'}
+					aria-describedby="password-note"
+					onFocus={() => setPasswordFocus(true)}
+					onBlur={() => setPasswordFocus(false)}
+				/>
+				<div>
+					<p
+						className={
+							passwordFocus && !validPassword ? 'instructions' : 'offscreen'
+						}
+					>
+						<AiOutlineInfoCircle />
+						<span id="password-note">
+							Password must have 8 to 30 characters, contain at least one
+							uppercase letter, one lowercase letter and a digit
+						</span>
+					</p>
+				</div>
+			</div>
+			<div>
+				<label htmlFor="register-repeat-password" className="login-label">
+					Confirm Password{' '}
+					{repeatPassword ? (
+						validRepeatPassword ? (
+							<AiOutlineCheckCircle className="valid" />
+						) : (
+							<AiOutlineCloseCircle className="invalid" />
+						)
+					) : (
+						''
+					)}
+				</label>
+				<input
+					type="password"
+					id="register-repeat-password"
+					onChange={e => setRepeatPassword(e.target.value)}
+					autoComplete="off"
+					required
+					aria-invalid={validPassword ? 'false' : 'true'}
+					aria-describedby="confirm-password-note"
+					onFocus={() => setRepeatPasswordFocus(true)}
+					onBlur={() => setRepeatPasswordFocus(false)}
+				/>
+				<div>
+					<p
+						className={
+							repeatPassword && repeatPasswordFocus && !validRepeatPassword
+								? 'instructions'
+								: 'offscreen'
+						}
+					>
+						<AiOutlineInfoCircle />
+						<span id="confirm-password-note">Passwords must match</span>
+					</p>
+				</div>
+			</div>
+			<div>
+				<input
+					type="submit"
+					value="Submit"
+					disabled={
+						!validEmail || !validPassword || !validRepeatPassword ? true : false
+					}
 				/>
 			</div>
-			<p
-				ref={errRef}
-				className={error ? 'error' : 'offscreen'}
-				aria-live="assertive"
-			></p>
-			<div>
-				<input type="submit" value="Submit" />
-			</div>
+			{success && (
+				<div>
+					<p className="success">{success}</p>
+				</div>
+			)}
+			{error && (
+				<div>
+					<p className="error">{error}</p>
+				</div>
+			)}
+
 			<p>
 				Already have an account? <br />
 				<Link to="/login">Go to login Page</Link>
@@ -142,9 +228,8 @@ const Register = () => {
 };
 
 const EMAIL_REGEX =
-	/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+	/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 
-const PASSWORD_REGEX =
-	/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}$/gm;
+const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}/;
 
 export default Register;
