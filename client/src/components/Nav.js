@@ -34,10 +34,10 @@ const Nav = () => {
 					>
 						<h1>OPERATIONS</h1>
 					</NavLink>
-					<span className="user-menu-button">
-						{auth.user}
+					<div className="user-menu-button">
+						<span>{auth.user}</span>
 						<FaRegUserCircle />
-					</span>
+					</div>
 					<div className="logout">
 						<span onClick={e => handleLogout()}>logout</span>
 					</div>

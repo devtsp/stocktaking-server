@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
 	AiOutlineCheckCircle,
 	AiOutlineCloseCircle,
@@ -9,10 +9,8 @@ import {
 import axios from '../api/axios';
 
 const Register = () => {
-	const navigate = useNavigate();
-
 	const emailRef = React.useRef();
-	const errRef = React.useRef();
+	const errorRef = React.useRef();
 
 	const [email, setEmail] = React.useState('');
 	const [validEmail, setValidEmail] = React.useState();
@@ -75,11 +73,13 @@ const Register = () => {
 			console.log(response.data);
 			setEmail('');
 			setPassword('');
+			setRepeatPassword('');
 			setError('');
 			setSuccess('Registered new user Successfully');
 		} catch (err) {
 			console.error(err.message);
-			setError(err.response.data.error);
+			setError(err.response.data);
+			errorRef.current.focus();
 		}
 	};
 
@@ -110,6 +110,7 @@ const Register = () => {
 					onFocus={() => setEmailFocus(true)}
 					onBlur={() => setEmailFocus(false)}
 					ref={emailRef}
+					value={email}
 				/>
 				<div>
 					<p
@@ -147,6 +148,7 @@ const Register = () => {
 					aria-describedby="password-note"
 					onFocus={() => setPasswordFocus(true)}
 					onBlur={() => setPasswordFocus(false)}
+					value={password}
 				/>
 				<div>
 					<p
@@ -185,6 +187,7 @@ const Register = () => {
 					aria-describedby="confirm-password-note"
 					onFocus={() => setRepeatPasswordFocus(true)}
 					onBlur={() => setRepeatPasswordFocus(false)}
+					value={repeatPassword}
 				/>
 				<div>
 					<p
@@ -213,11 +216,13 @@ const Register = () => {
 					<p className="success">{success}</p>
 				</div>
 			)}
-			{error && (
-				<div>
-					<p className="error">{error}</p>
-				</div>
-			)}
+			<p
+				ref={errorRef}
+				aria-live="assertive"
+				className={error ? 'error' : 'offscreen'}
+			>
+				{error}
+			</p>
 
 			<p>
 				Already have an account? <br />

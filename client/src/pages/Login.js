@@ -1,20 +1,31 @@
 import React from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
 
 const Login = () => {
-	const navigate = useNavigate();
 	const { auth, setAuth } = useAuth();
+
+	const emailRef = React.useRef();
+	const errorRef = React.useRef();
 
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [error, setError] = React.useState('');
 
+	React.useEffect(() => {
+		!auth.user && emailRef.current.focus();
+	}, []);
+
+	React.useEffect(() => {
+		setError('');
+	}, [email, password]);
+
 	const submitLogin = async e => {
 		e.preventDefault();
+
 		if (!email.trim() || !password.trim()) {
 			setError('Fields must not be empty');
 			return;
@@ -36,10 +47,10 @@ const Login = () => {
 			setAuth({ user, accessToken });
 			setEmail('');
 			setPassword('');
-			navigate('/');
 		} catch (err) {
 			console.error(err.response.data);
 			setError(err.response.data);
+			errorRef.current.focus();
 		}
 	};
 
@@ -56,6 +67,7 @@ const Login = () => {
 							onChange={e => setEmail(e.target.value)}
 							autoComplete="off"
 							value={email}
+							ref={emailRef}
 							required
 						/>
 					</div>
@@ -70,7 +82,13 @@ const Login = () => {
 							required
 						/>
 					</div>
-					{error && <div className="error">*{error}</div>}
+					<p
+						ref={errorRef}
+						aria-live="assertive"
+						className={error ? 'error' : 'offscreen'}
+					>
+						{error}
+					</p>
 					<div>
 						<input type="submit" value="Submit" />
 					</div>

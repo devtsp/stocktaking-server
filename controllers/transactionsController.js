@@ -15,7 +15,7 @@ const getAllTransactions = async (req, res) => {
 	);
 
 	if (!rows.length) {
-		res.sendStatus(204);
+		return res.sendStatus(204);
 	}
 
 	res.json(rows);

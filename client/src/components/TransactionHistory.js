@@ -81,7 +81,7 @@ const TransactionHistory = ({ editing, setEditing }) => {
 			}`}
 		>
 			<h1>Transaction History</h1>
-			{transactions ? (
+			{transactions.length ? (
 				<>
 					<form>
 						{filters && (

@@ -106,20 +106,24 @@ nav h1 {
 
 .user-menu-button {
 	color: black;
-	border-right: 1px solid rgba(0, 0, 0, 0.397);
-	height: 100%;
+	height: fit-content;
 	margin-left: auto;
 	padding: 0 1rem;
 	display: inline-flex;
 	align-items: center;
 }
 
-nav svg {
+.user-menu-button span {
+	line-height: 0;
+}
+
+.user-menu-button svg {
 	color: black;
 	padding: 0 0 0 0.4rem;
 }
 
 .logout {
+	border-left: 1px solid rgba(0, 0, 0, 0.397);
 	display: inline-flex;
 	align-items: center;
 	height: 100%;
@@ -487,6 +491,10 @@ form .success {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.TransactionHistory table {
+	width: 100%;
+}
+
 .TransactionHistory td,
 .TransactionHistory th {
 	text-align: left;
@@ -505,9 +513,13 @@ form .success {
 /* EDIT TRANSACTION ============================================================================= */
 
 .EditTransaction {
-	width: 20rem;
+	margin-top: 2rem;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 	position: relative;
-	padding: 0 2rem;
+	padding: 0 1rem;
 	border-radius: 0.3rem;
 	border: 5px solid rgba(167, 203, 231, 0.214);
 	border-top: none;
@@ -519,7 +531,7 @@ form .success {
 .EditTransaction h1 {
 	font-size: 2rem;
 	font-weight: 200;
-	margin: 0.6rem 0 1rem;
+	margin: 0.6rem 0;
 	padding-bottom: 0.4rem;
 	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
 }
@@ -565,16 +577,8 @@ form .success {
 	margin: 0;
 }
 
-.EditTransaction form div {
-	text-align: center;
-}
-
-.EditTransaction form input {
-	text-align: center;
-}
-
-.EditTransaction form select {
-	text-align: center;
+.EditTransaction form {
+	margin: 0 auto;
 }
 
 /* TRANSITIONS =========================================================================== */
@@ -621,7 +625,7 @@ form .success {
 	}
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
 	:root {
 		font-size: 12px;
 	}
