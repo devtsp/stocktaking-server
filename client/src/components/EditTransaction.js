@@ -2,6 +2,7 @@ import React from 'react';
 import { MdClose } from 'react-icons/md';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useTransactions from '../hooks/useTransactions';
 
 const EditTransaction = ({ editing, setEditing }) => {
 	const {
@@ -11,11 +12,13 @@ const EditTransaction = ({ editing, setEditing }) => {
 		createdAt,
 		modifiedAt,
 	} = editing[1];
+
 	const [amount, setAmount] = React.useState(prevAmount);
 	const [concept, setConcept] = React.useState(prevConcept);
 	const [error, setError] = React.useState('');
 
 	const axiosPrivate = useAxiosPrivate();
+	const { setTransactions } = useTransactions();
 
 	const [mounted, setIsMounted] = React.useState(false);
 	React.useEffect(() => {
@@ -30,8 +33,11 @@ const EditTransaction = ({ editing, setEditing }) => {
 			id,
 		};
 		try {
-			await axiosPrivate.patch('/transactions', body);
+			const response = await axiosPrivate.patch('/transactions', body);
 			setEditing([false, {}]);
+			setTransactions(prev =>
+				[...prev].map(tr => (tr.id !== id ? tr : response.data))
+			);
 		} catch (err) {
 			console.error(error.message);
 			setError(err.message);
