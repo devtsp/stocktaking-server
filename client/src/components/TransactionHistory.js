@@ -7,9 +7,10 @@ import { IconContext } from 'react-icons';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useTransactions from '../hooks/useTransactions';
 
-const TransactionHistory = ({ editing, setEditing }) => {
+const TransactionHistory = ({ setEditing, setDeleting }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const { transactions, setTransactions } = useTransactions();
+
 	const [filters, setFilters] = React.useState([]);
 	const [mounted, setIsMounted] = React.useState(false);
 
@@ -37,17 +38,6 @@ const TransactionHistory = ({ editing, setEditing }) => {
 			controller.abort();
 		};
 	}, []);
-
-	const handleDelete = async ({ id }) => {
-		try {
-			await axiosPrivate.delete('/transactions', {
-				data: { id },
-			});
-			setTransactions(transactions.filter(tr => tr.id !== id));
-		} catch (err) {
-			console.error(err.response.message);
-		}
-	};
 
 	const handleDeleteFilter = (e, filter) => {
 		const updatedFilters = filters.length
@@ -149,7 +139,7 @@ const TransactionHistory = ({ editing, setEditing }) => {
 													<AiFillEdit />
 												</button>
 											</td>
-											<td onClick={e => handleDelete(transaction)}>
+											<td onClick={e => setDeleting([true, transaction])}>
 												<button>
 													<FiDelete />
 												</button>

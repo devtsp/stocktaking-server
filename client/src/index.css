@@ -581,6 +581,90 @@ form .success {
 	margin: 0 auto;
 }
 
+/* DELETE TRANSACTION =================================================================== */
+
+.DeleteTransaction {
+	max-width: 30rem;
+	margin-top: 2rem;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	position: relative;
+	padding: 0 1rem;
+	border-radius: 0.3rem;
+	border: 5px solid rgba(167, 203, 231, 0.214);
+	border-top: none;
+	border-bottom: none;
+	box-shadow: 0 0 50px -5px rgba(255, 255, 255, 0.063) inset,
+		0px 0px 50px -5px rgba(0, 0, 0, 0.288);
+}
+
+.DeleteTransaction h1 {
+	font-size: 2rem;
+	font-weight: 200;
+	margin: 0.6rem 0;
+	padding-bottom: 0.4rem;
+	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.DeleteTransaction .delete-confirmation {
+	padding: 1rem !important;
+	color: rgba(93, 10, 10, 0.897);
+	line-height: 1;
+	font-size: 1.4rem;
+}
+
+.DeleteTransaction form {
+	margin: 1rem auto;
+	width: 80%;
+	margin: auto;
+}
+
+.DeleteTransaction form > div {
+	border: 1px solid rgba(0, 0, 0, 0.296);
+	border-radius: 5px;
+	margin: 1rem 0;
+	width: 100%;
+}
+
+.DeleteTransaction form .field {
+	display: flex;
+	justify-content: flex-start;
+	padding-left: 6rem;
+}
+
+.DeleteTransaction form label {
+	font-size: 2rem;
+	font-weight: 400;
+	cursor: pointer;
+}
+
+.DeleteTransaction form .field:nth-child(1) label {
+	color: rgb(237, 185, 185);
+}
+
+.DeleteTransaction form .field:nth-child(1) {
+	background-color: rgba(255, 0, 0, 0.105);
+}
+
+.DeleteTransaction form .field:nth-child(2) label {
+	color: rgb(219, 238, 215);
+}
+
+.DeleteTransaction form .field:nth-child(2) {
+	background-color: rgba(4, 255, 0, 0.034);
+}
+
+.DeleteTransaction form div input {
+	flex-grow: 0;
+}
+
+.DeleteTransaction input[type='Submit'] {
+	margin: 0.2rem 0 1.2rem;
+	width: 70%;
+}
+
 /* TRANSITIONS =========================================================================== */
 
 .transition1 {
