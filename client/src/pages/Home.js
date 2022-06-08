@@ -5,10 +5,8 @@ import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const Home = () => {
-	const navigate = useNavigate();
-
-	const [balance, setBalance] = React.useState(null);
-	const [transactions, setTransactions] = React.useState(null);
+	const [balance, setBalance] = React.useState(0);
+	const [transactions, setTransactions] = React.useState([]);
 	const [loading, setIsLoading] = React.useState(false);
 
 	const { auth } = useAuth();
@@ -37,7 +35,7 @@ const Home = () => {
 				const response = await axiosPrivate.get('/transactions?limit=10', {
 					signal: controller.signal,
 				});
-				isMounted && setTransactions(response?.data);
+				isMounted && response.data && setTransactions(response.data);
 			} catch (err) {
 				console.error(err.message);
 			}

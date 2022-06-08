@@ -25,7 +25,7 @@ const TransactionHistory = ({ setEditing, setDeleting }) => {
 					signal: controller.signal,
 				});
 				const transactions = response?.data;
-				isMounted && setTransactions(transactions);
+				isMounted && response.data && setTransactions(transactions);
 			} catch (err) {
 				console.error(err.message);
 			}

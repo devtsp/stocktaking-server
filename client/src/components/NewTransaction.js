@@ -5,7 +5,7 @@ import useTransactions from '../hooks/useTransactions';
 
 const NewTransaction = () => {
 	const axiosPrivate = useAxiosPrivate();
-	const { transactions, setTransactions } = useTransactions([]);
+	const { transactions, setTransactions } = useTransactions();
 
 	const [amount, setAmount] = React.useState('');
 	const [concept, setConcept] = React.useState('');
@@ -31,9 +31,10 @@ const NewTransaction = () => {
 				type,
 				concept,
 			});
-			console.log(response.data);
+
 			transactions.unshift(response.data);
 			setTransactions([...transactions]);
+
 			setAmount('');
 			setConcept('');
 			setType('');
