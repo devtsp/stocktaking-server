@@ -25,8 +25,10 @@ const Home = () => {
 					signal: controller.signal,
 				});
 				isMounted && setBalance(response.data.balance);
-			} catch (error) {
-				console.error(error.message);
+			} catch (err) {
+				if (err.message !== 'canceled') {
+					console.error(err);
+				}
 			}
 		};
 
@@ -37,7 +39,9 @@ const Home = () => {
 				});
 				isMounted && response.data && setTransactions(response.data);
 			} catch (err) {
-				console.error(err.message);
+				if (err.message !== 'canceled') {
+					console.error(err);
+				}
 			}
 		};
 

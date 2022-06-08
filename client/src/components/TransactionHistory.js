@@ -27,7 +27,9 @@ const TransactionHistory = ({ setEditing, setDeleting }) => {
 				const transactions = response?.data;
 				isMounted && response.data && setTransactions(transactions);
 			} catch (err) {
-				console.error(err.message);
+				if (err.message !== 'canceled') {
+					console.error(err);
+				}
 			}
 		};
 
