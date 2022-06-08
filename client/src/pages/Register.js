@@ -70,7 +70,6 @@ const Register = () => {
 
 		try {
 			const response = await axios.post('/register', body);
-			console.log(response.data);
 			setEmail('');
 			setPassword('');
 			setRepeatPassword('');

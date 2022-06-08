@@ -15,7 +15,7 @@ const Operations = () => {
 		<>
 			{!auth.user && <Navigate to="/login" />}
 
-			<div className="Operations">
+			<section className="Operations">
 				{editing[0] && (
 					<EditTranasction editing={editing} setEditing={setEditing} />
 				)}
@@ -33,7 +33,7 @@ const Operations = () => {
 						/>
 					</>
 				)}
-			</div>
+			</section>
 		</>
 	);
 };

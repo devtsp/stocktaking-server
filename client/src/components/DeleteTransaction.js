@@ -1,6 +1,7 @@
 import React from 'react';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useTransactions from '../hooks/useTransactions';
 
 const DeleteTransaction = ({ deleting, setDeleting }) => {
 	const { id, concept, amount, createdAt, modifiedAt } = deleting[1];
@@ -8,6 +9,7 @@ const DeleteTransaction = ({ deleting, setDeleting }) => {
 	const [confirm, setConfirm] = React.useState(false);
 
 	const axiosPrivate = useAxiosPrivate();
+	const { setTransactions } = useTransactions();
 
 	const handleDelete = async e => {
 		e.preventDefault();
@@ -19,6 +21,7 @@ const DeleteTransaction = ({ deleting, setDeleting }) => {
 				data: { id },
 			});
 			setDeleting([false, {}]);
+			setTransactions(prev => [...prev].filter(tr => tr.id !== id));
 		} catch (err) {
 			console.error(err.response.message);
 		}

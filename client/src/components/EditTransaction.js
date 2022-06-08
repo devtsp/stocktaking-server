@@ -39,7 +39,7 @@ const EditTransaction = ({ editing, setEditing }) => {
 	};
 
 	return (
-		<div
+		<article
 			className={`EditTransaction transition1 ${
 				!mounted ? 'transition1-start' : 'transition1-end'
 			} `}
@@ -122,7 +122,7 @@ const EditTransaction = ({ editing, setEditing }) => {
 					<input type="submit" value="Confirm" />
 				</div>
 			</form>
-		</div>
+		</article>
 	);
 };
 

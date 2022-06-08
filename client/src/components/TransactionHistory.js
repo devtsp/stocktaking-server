@@ -65,7 +65,7 @@ const TransactionHistory = ({ setEditing, setDeleting }) => {
 	};
 
 	return (
-		<section
+		<article
 			className={`TransactionHistory transition1 ${
 				!mounted ? 'transition1-start' : 'transition1-end'
 			}`}
@@ -153,7 +153,7 @@ const TransactionHistory = ({ setEditing, setDeleting }) => {
 			) : (
 				<p>No transactions to display yet.</p>
 			)}
-		</section>
+		</article>
 	);
 };
 
