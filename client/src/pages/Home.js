@@ -1,5 +1,7 @@
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+
+import { AiOutlineRight } from 'react-icons/ai';
 
 import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
@@ -71,37 +73,46 @@ const Home = () => {
 					<p>
 						<span>Balance:</span> <span>{balance || 0}</span>
 					</p>
-					<section className="TransactionHistory">
+					<article className="TransactionHistory">
 						<h1>Last Movements</h1>
-						{transactions ? (
-							<table>
-								<tbody>
-									{transactions.map((transaction, i) => {
-										const originalDate = new Date(transaction.createdAt);
-										const formattedDate = `${originalDate.getDate()}/${
-											originalDate.getMonth() + 1
-										}/${originalDate.getFullYear()}`;
-										return (
-											<tr key={transaction.id}>
-												<td
-													style={{
-														color:
-															+transaction.amount < 0 ? 'red' : 'yellowgreen',
-													}}
-												>
-													{transaction.amount}
-												</td>
-												<td>{transaction.concept}</td>
-												<td>{formattedDate}</td>
-											</tr>
-										);
-									})}
-								</tbody>
-							</table>
+						{transactions.length ? (
+							<>
+								<div className="transparency-mask"></div>
+								<table>
+									<tbody>
+										{transactions.map((transaction, i) => {
+											const originalDate = new Date(transaction.createdAt);
+											const formattedDate = `${originalDate.getDate()}/${
+												originalDate.getMonth() + 1
+											}/${originalDate.getFullYear()}`;
+											return (
+												<tr key={transaction.id}>
+													<td
+														style={{
+															color:
+																+transaction.amount < 0 ? 'red' : 'yellowgreen',
+														}}
+													>
+														{transaction.amount}
+													</td>
+													<td>{transaction.concept}</td>
+													<td>{formattedDate}</td>
+												</tr>
+											);
+										})}
+									</tbody>
+								</table>
+								<div>. . . .</div>
+							</>
 						) : (
-							<p>No transactions to display yet.</p>
+							<p>
+								No transactions to display yet.{' '}
+								<Link to="/operations">
+									Start Operating <AiOutlineRight />
+								</Link>
+							</p>
 						)}
-					</section>
+					</article>
 				</section>
 			) : (
 				<Navigate to="/login" />
