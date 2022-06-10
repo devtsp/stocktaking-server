@@ -18,10 +18,9 @@ const logoutUser = async (req, res) => {
 		return res.sendStatus(204);
 	}
 
-	const user = rows[0];
+	res.clearCookie('jwt', { secure: true, httpOnly: true, sameSite: 'None' });
 	await queryDB(tokenQueries.removeRefreshToken(refreshToken), connection);
 
-	res.clearCookie('jwt', { secure: true, httpOnly: true, sameSite: 'None' });
 	res.sendStatus(204);
 };
 

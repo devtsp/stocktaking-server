@@ -6,6 +6,7 @@ const userQueries = require('../sql/userQueries');
 const tokenQueries = require('../sql/tokenQueries');
 
 const logUser = async (req, res) => {
+	const cookies = req.cookies;
 	const { email, password } = req.body;
 
 	if (!email || !password) {
@@ -24,7 +25,7 @@ const logUser = async (req, res) => {
 		const accessToken = jwt.sign(
 			{ UserInfo: { email: user.email, userId: user.id } },
 			process.env.ACCESS_TOKEN_SECRET,
-			{ expiresIn: '10m' }
+			{ expiresIn: '10s' }
 		);
 
 		const refreshToken = jwt.sign(
@@ -33,8 +34,20 @@ const logUser = async (req, res) => {
 			{ expiresIn: '24h' }
 		);
 
+		if (cookies?.jwt) {
+			res.clearCookie('jwt', {
+				secure: true,
+				httpOnly: true,
+				sameSite: 'None',
+			});
+			await queryDB(tokenQueries.removeRefreshToken(cookies.jwt));
+		}
+
 		try {
-			await queryDB(tokenQueries.updateRefreshToken(user.id, refreshToken));
+			await queryDB(
+				tokenQueries.addRefreshToken(user.id, refreshToken),
+				connection
+			);
 
 			res.cookie('jwt', refreshToken, {
 				httpOnly: true,
