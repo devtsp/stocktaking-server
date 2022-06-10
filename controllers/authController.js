@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const queryDB = require('../sql/dbConn');
 const userQueries = require('../sql/userQueries');
+const tokenQueries = require('../sql/tokenQueries');
 
 const logUser = async (req, res) => {
 	const { email, password } = req.body;
@@ -21,19 +22,19 @@ const logUser = async (req, res) => {
 	const validPassword = await bcrypt.compare(password, user.password);
 	if (validPassword) {
 		const accessToken = jwt.sign(
-			{ UserInfo: { user: email } },
+			{ UserInfo: { email: user.email, userId: user.id } },
 			process.env.ACCESS_TOKEN_SECRET,
 			{ expiresIn: '10m' }
 		);
 
 		const refreshToken = jwt.sign(
-			{ user: email },
+			{ userId: user.id },
 			process.env.REFRESH_TOKEN_SECRET,
 			{ expiresIn: '24h' }
 		);
 
 		try {
-			await queryDB(userQueries.updateRefreshToken(user.id, refreshToken));
+			await queryDB(tokenQueries.updateRefreshToken(user.id, refreshToken));
 
 			res.cookie('jwt', refreshToken, {
 				httpOnly: true,

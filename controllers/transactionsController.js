@@ -4,14 +4,14 @@ const queryDB = require('../sql/dbConn');
 const transactionQueries = require('../sql/transactionQueries');
 
 const getAllTransactions = async (req, res) => {
-	const user = req.user;
+	const userId = req.userId;
 
-	if (!user) {
+	if (!userId) {
 		return res.status(401).json('User not found');
 	}
 
 	const [[rows]] = await queryDB(
-		transactionQueries.selectAll(user, +req?.query?.limit || null)
+		transactionQueries.selectAll(userId, +req?.query?.limit || null)
 	);
 
 	if (!rows.length) {
@@ -22,9 +22,9 @@ const getAllTransactions = async (req, res) => {
 };
 
 const createTransaction = async (req, res) => {
-	const user = req.user;
+	const userId = req.userId;
 
-	if (!user) {
+	if (!userId) {
 		return res.status(401).json('User not found');
 	}
 
@@ -47,7 +47,7 @@ const createTransaction = async (req, res) => {
 		concept,
 		amount: type === 'IN' ? +amount : -amount,
 		type,
-		user,
+		userId,
 	};
 
 	try {
@@ -111,13 +111,13 @@ const updateTransaction = async (req, res) => {
 };
 
 const getBalance = async (req, res) => {
-	const user = req.user;
+	const userId = req.userId;
 
-	if (!user) {
+	if (!userId) {
 		return res.status(401).json('User not found');
 	}
 
-	const [[balance]] = await queryDB(transactionQueries.getBalance(user));
+	const [[balance]] = await queryDB(transactionQueries.getBalance(userId));
 
 	res.json(...balance);
 };
