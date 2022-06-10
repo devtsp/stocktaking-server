@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
@@ -16,7 +15,7 @@ const Login = () => {
 	const [error, setError] = React.useState('');
 
 	React.useEffect(() => {
-		!auth.user && emailRef.current.focus();
+		!auth.accessToken && emailRef.current.focus();
 	}, []);
 
 	React.useEffect(() => {
@@ -43,8 +42,7 @@ const Login = () => {
 				}
 			);
 			const accessToken = response?.data?.accessToken;
-			const user = jwtDecode(accessToken)?.UserInfo.user;
-			setAuth({ user, accessToken });
+			setAuth({ accessToken });
 			setEmail('');
 			setPassword('');
 		} catch (err) {
@@ -56,7 +54,7 @@ const Login = () => {
 
 	return (
 		<>
-			{!auth.user ? (
+			{!auth.accessToken ? (
 				<form className="Login" onSubmit={submitLogin}>
 					<h1>LOGIN</h1>
 					<div>

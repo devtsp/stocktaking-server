@@ -1,5 +1,3 @@
-import jwtDecode from 'jwt-decode';
-
 import useAuth from './useAuth';
 import axios from '../api/axios';
 
@@ -12,12 +10,11 @@ const useRefreshToken = () => {
 				withCredentials: true,
 			});
 			const accessToken = response?.data?.accessToken;
-			const user = jwtDecode(accessToken)?.UserInfo.user;
-			setAuth({ user, accessToken });
+			setAuth({ accessToken });
 			return response.data.accessToken;
 		} catch (err) {
 			console.error(err.message);
-			setAuth({ user: null, refreshToken: null });
+			setAuth({ refreshToken: null });
 		}
 	};
 

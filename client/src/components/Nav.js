@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
+import jwt_decode from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
@@ -12,7 +13,7 @@ const Nav = () => {
 	const handleLogout = async () => {
 		try {
 			await axiosPrivate.post('/logout');
-			setAuth({ user: null, accessToken: null });
+			setAuth({ accessToken: null });
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -20,7 +21,7 @@ const Nav = () => {
 
 	return (
 		<>
-			{auth?.user && (
+			{auth?.accessToken && (
 				<nav>
 					<NavLink
 						to="/"
@@ -35,7 +36,9 @@ const Nav = () => {
 						<h1>OPERATIONS</h1>
 					</NavLink>
 					<div className="user-menu-button">
-						<span>{auth.user}</span>
+						<span>
+							{jwt_decode(auth.accessToken).UserInfo.email.split('@')[0]}
+						</span>
 						<FaRegUserCircle />
 					</div>
 					<div className="logout">

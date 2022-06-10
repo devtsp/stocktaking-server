@@ -64,7 +64,7 @@ const Home = () => {
 
 	return (
 		<>
-			{auth?.user && !loading ? (
+			{auth?.accessToken && !loading ? (
 				<section
 					className={`Home transition1 ${
 						!mounted ? 'transition1-start' : 'transition1-end'

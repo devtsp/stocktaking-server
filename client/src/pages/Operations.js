@@ -13,7 +13,7 @@ const Operations = () => {
 	const { auth } = useAuth();
 	return (
 		<>
-			{!auth.user && <Navigate to="/login" />}
+			{!auth.accessToken && <Navigate to="/login" />}
 
 			<section className="Operations">
 				{editing[0] && (
