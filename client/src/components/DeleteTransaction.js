@@ -14,7 +14,10 @@ const DeleteTransaction = ({ deleting, setDeleting }) => {
 	const handleDelete = async e => {
 		e.preventDefault();
 
-		!confirm && setDeleting([false, {}]);
+		if (!confirm) {
+			setDeleting([false, {}]);
+			return;
+		}
 
 		try {
 			await axiosPrivate.delete('/transactions', {
