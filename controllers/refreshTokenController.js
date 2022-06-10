@@ -21,14 +21,15 @@ const refreshToken = async (req, res) => {
 	const foundUser = rows[0];
 
 	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-		if (err || foundUser.email !== decoded.user) {
+		if (err || foundUser.id !== decoded.userId) {
 			return res.sendStatus(403);
 		}
 
 		const accessToken = jwt.sign(
 			{
 				UserInfo: {
-					user: decoded.user,
+					email: decoded.email,
+					userId: decoded.userId,
 				},
 			},
 			process.env.ACCESS_TOKEN_SECRET,

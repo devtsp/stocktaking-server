@@ -28,7 +28,7 @@ const logUser = async (req, res) => {
 		);
 
 		const refreshToken = jwt.sign(
-			{ userId: user.id },
+			{ email: user.email, userId: user.id },
 			process.env.REFRESH_TOKEN_SECRET,
 			{ expiresIn: '24h' }
 		);

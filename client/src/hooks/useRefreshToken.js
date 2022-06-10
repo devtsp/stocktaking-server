@@ -14,7 +14,7 @@ const useRefreshToken = () => {
 			return response.data.accessToken;
 		} catch (err) {
 			console.error(err.message);
-			setAuth({ refreshToken: null });
+			setAuth({ acessToken: null });
 		}
 	};
 

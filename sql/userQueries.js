@@ -10,4 +10,8 @@ const updateRefreshToken = (id, refreshToken) => {
 	return `UPDATE users SET refreshToken = "${refreshToken}" WHERE id = "${id}"`;
 };
 
-module.exports = { select, insert, updateRefreshToken };
+const getByRefreshToken = token => {
+	return `SELECT u.id, rt.refreshToken FROM users u JOIN refresh_tokens rt ON u.id = rt.tokenUserId WHERE refreshToken = "${token}";`;
+};
+
+module.exports = { select, insert, updateRefreshToken, getByRefreshToken };
