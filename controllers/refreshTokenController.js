@@ -41,7 +41,6 @@ const refreshToken = async (req, res) => {
 			if (err || foundUser.id !== decoded.userId) {
 				return res.sendStatus(403);
 			}
-
 			const accessToken = jwt.sign(
 				{
 					UserInfo: {
@@ -54,14 +53,13 @@ const refreshToken = async (req, res) => {
 			);
 
 			const newRefreshToken = jwt.sign(
-				{ email: decoded.email, userId: decoded.id },
+				{ email: decoded.email, userId: decoded.userId },
 				process.env.REFRESH_TOKEN_SECRET,
 				{ expiresIn: '24h' }
 			);
 
 			await queryDB(
-				tokenQueries.updateRefreshToken(refreshToken, newRefreshToken),
-				connection
+				tokenQueries.updateRefreshToken(refreshToken, newRefreshToken)
 			);
 
 			res.cookie('jwt', newRefreshToken, {
