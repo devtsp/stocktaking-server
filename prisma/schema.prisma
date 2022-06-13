@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Refresh_token {
+  id           Int    @id @default(autoincrement())
+  tokenUserId  String @db.VarChar(300)
+  refreshToken String @db.VarChar(300)
+  users        User   @relation(fields: [tokenUserId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tokenUserId")
+
+  @@index([tokenUserId], map: "user_id_idx")
+}
+
+model Transaction {
+  id                String           @id @db.VarChar(300)
+  transactionUserId String           @db.VarChar(300)
+  amount            Float            @db.Float
+  concept           String           @db.VarChar(30)
+  type              Transaction_type
+  createdAt         String           @db.VarChar(30)
+  modifiedAt        String?          @db.VarChar(30)
+  deletedAt         String?          @db.VarChar(30)
+  users             User             @relation(fields: [transactionUserId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactionUserId")
+
+  @@index([transactionUserId], map: "transactionUserId_idx")
+}
+
+model User {
+  id             String          @id @db.VarChar(300)
+  email          String          @db.VarChar(45)
+  password       String          @db.VarChar(300)
+  refresh_tokens Refresh_token[]
+  transactions   Transaction[]
+}
+
+enum Transaction_type {
+  IN
+  OUT
+}
