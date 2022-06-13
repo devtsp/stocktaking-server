@@ -26,8 +26,8 @@ const useAxiosPrivate = () => {
 			async error => {
 				const prevRequest = error?.config;
 				if (error?.response?.status === 403 && !prevRequest?.sent) {
-					const { accessToken: newAccessToken } = await refresh();
-					prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+					const accessToken = await refresh();
+					prevRequest.headers['Authorization'] = `Bearer ${accessToken}`;
 					prevRequest.sent = true;
 					return axiosPrivate(prevRequest);
 				}

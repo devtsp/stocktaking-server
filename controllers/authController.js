@@ -3,8 +3,10 @@ const jwt = require('jsonwebtoken');
 
 const queryDB = require('../sql/dbConn');
 const userQueries = require('../sql/userQueries');
+const tokenQueries = require('../sql/tokenQueries');
 
 const logUser = async (req, res) => {
+	const cookies = req.cookies;
 	const { email, password } = req.body;
 
 	if (!email || !password) {
@@ -21,19 +23,31 @@ const logUser = async (req, res) => {
 	const validPassword = await bcrypt.compare(password, user.password);
 	if (validPassword) {
 		const accessToken = jwt.sign(
-			{ UserInfo: { user: email } },
+			{ UserInfo: { email: user.email, userId: user.id } },
 			process.env.ACCESS_TOKEN_SECRET,
-			{ expiresIn: '10m' }
+			{ expiresIn: '10s' }
 		);
 
 		const refreshToken = jwt.sign(
-			{ user: email },
+			{ email: user.email, userId: user.id },
 			process.env.REFRESH_TOKEN_SECRET,
 			{ expiresIn: '24h' }
 		);
 
+		if (cookies?.jwt) {
+			res.clearCookie('jwt', {
+				secure: true,
+				httpOnly: true,
+				sameSite: 'None',
+			});
+			await queryDB(tokenQueries.removeRefreshToken(cookies.jwt));
+		}
+
 		try {
-			await queryDB(userQueries.updateRefreshToken(user.id, refreshToken));
+			await queryDB(
+				tokenQueries.addRefreshToken(user.id, refreshToken),
+				connection
+			);
 
 			res.cookie('jwt', refreshToken, {
 				httpOnly: true,

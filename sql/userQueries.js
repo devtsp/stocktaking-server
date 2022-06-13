@@ -1,12 +1,27 @@
-const select = email => `SELECT * from users WHERE email = '${email}'`;
+const select = email => {
+	return `SELECT * FROM users WHERE email = "${email}"`;
+};
 
-const insert = (email, hashedPassword, id) =>
-	`INSERT INTO users(email, password, id) VALUES('${email}', '${hashedPassword}', '${id}')`;
+const getUserById = userId => {
+	return `SELECT -+ FROM users WHERE id = ${userId}`;
+};
 
-const updateRefreshToken = (id, refreshToken) =>
-	`UPDATE users SET refreshToken = '${refreshToken}' WHERE id = '${id}'`;
+const insert = (email, hashedPassword, id) => {
+	return `INSERT INTO users(email, password, id) VALUES("${email}", "${hashedPassword}", "${id}")`;
+};
 
-const getByRefreshToken = refreshToken =>
-	`SELECT * from users WHERE refreshToken = '${refreshToken}'`;
+const updateRefreshToken = (id, refreshToken) => {
+	return `UPDATE users SET refreshToken = "${refreshToken}" WHERE id = "${id}"`;
+};
 
-module.exports = { select, insert, updateRefreshToken, getByRefreshToken };
+const getByRefreshToken = token => {
+	return `SELECT u.id, rt.refreshToken FROM users u JOIN refresh_tokens rt ON u.id = rt.tokenUserId WHERE refreshToken = "${token}";`;
+};
+
+module.exports = {
+	select,
+	insert,
+	updateRefreshToken,
+	getByRefreshToken,
+	getUserById,
+};

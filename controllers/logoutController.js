@@ -1,5 +1,6 @@
 const queryDB = require('../sql/dbConn');
 const userQueries = require('../sql/userQueries');
+const tokenQueries = require('../sql/tokenQueries');
 
 const logoutUser = async (req, res) => {
 	const refreshToken = req.cookies?.jwt;
@@ -17,10 +18,9 @@ const logoutUser = async (req, res) => {
 		return res.sendStatus(204);
 	}
 
-	const user = rows[0];
-	await queryDB(userQueries.updateRefreshToken(user.id, ''), connection);
-
 	res.clearCookie('jwt', { secure: true, httpOnly: true, sameSite: 'None' });
+	await queryDB(tokenQueries.removeRefreshToken(refreshToken), connection);
+
 	res.sendStatus(204);
 };
 
