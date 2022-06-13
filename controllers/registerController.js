@@ -1,8 +1,7 @@
 const { v4: uuid } = require('uuid');
 const bcrypt = require('bcrypt');
-
-const queryDB = require('../sql/dbConn');
-const userQueries = require('../sql/userQueries');
+const PrismaClient = require('@prisma/client').PrismaClient;
+const prisma = new PrismaClient();
 
 const registerNewUser = async (req, res) => {
 	const { email, password } = req.body;
@@ -11,9 +10,9 @@ const registerNewUser = async (req, res) => {
 		return res.status(400).json('Email and password are required');
 	}
 
-	const [[rows], connection] = await queryDB(userQueries.select(email));
+	const foundUser = await prisma.user.findFirst({ where: { email } });
 
-	if (rows.length) {
+	if (foundUser) {
 		return res.status(409).json('Email already registered');
 	}
 
@@ -21,8 +20,11 @@ const registerNewUser = async (req, res) => {
 		const id = uuid();
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-		await queryDB(userQueries.insert(email, hashedPassword, id), connection);
-		res.status(201).json(`User created with email "${email}"`);
+		const newUser = await prisma.user.create({
+			data: { email, password: hashedPassword, id },
+		});
+
+		res.status(201).json(newUser);
 	} catch (error) {
 		res.status(500).json(error.message);
 	}
