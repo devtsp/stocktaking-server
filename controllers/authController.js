@@ -1,12 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const PrismaClient = require('@prisma/client').PrismaClient;
 const prisma = new PrismaClient();
-
-const queryDB = require('../sql/dbConn');
-const userQueries = require('../sql/userQueries');
-const tokenQueries = require('../sql/tokenQueries');
 
 const logUser = async (req, res) => {
 	const cookies = req.cookies;
