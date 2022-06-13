@@ -1,15 +1,16 @@
 -- CreateTable
-CREATE TABLE `Refresh_token` (
+CREATE TABLE `refresh_token` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `tokenUserId` VARCHAR(300) NOT NULL,
     `refreshToken` VARCHAR(300) NOT NULL,
 
+    UNIQUE INDEX `refreshToken`(`refreshToken`),
     INDEX `user_id_idx`(`tokenUserId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Transaction` (
+CREATE TABLE `transaction` (
     `id` VARCHAR(300) NOT NULL,
     `transactionUserId` VARCHAR(300) NOT NULL,
     `amount` FLOAT NOT NULL,
@@ -24,7 +25,7 @@ CREATE TABLE `Transaction` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE `user` (
     `id` VARCHAR(300) NOT NULL,
     `email` VARCHAR(45) NOT NULL,
     `password` VARCHAR(300) NOT NULL,
@@ -33,7 +34,7 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Refresh_token` ADD CONSTRAINT `tokenUserId` FOREIGN KEY (`tokenUserId`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `refresh_token` ADD CONSTRAINT `tokenUserId` FOREIGN KEY (`tokenUserId`) REFERENCES `user`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `Transaction` ADD CONSTRAINT `transactionUserId` FOREIGN KEY (`transactionUserId`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `transaction` ADD CONSTRAINT `transactionUserId` FOREIGN KEY (`transactionUserId`) REFERENCES `user`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
