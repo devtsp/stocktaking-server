@@ -31,11 +31,12 @@ const refreshToken = async (req, res) => {
 			async (err, decoded) => {
 				!err &&
 					(await prisma.refresh_token.deleteMany({
-						where: { userId: decoded.userId },
+						where: { tokenUserId: decoded.userId },
 					}));
 				// !err && queryDB(tokenQueries.removeAllUserTokens(decoded.userId));
 			}
 		);
+		prisma.$disconnect();
 		return res.sendStatus(403);
 	}
 
@@ -48,6 +49,7 @@ const refreshToken = async (req, res) => {
 			}
 
 			if (err || foundUser.user.id !== decoded.userId) {
+				prisma.$disconnect();
 				return res.sendStatus(403);
 			}
 
@@ -80,6 +82,7 @@ const refreshToken = async (req, res) => {
 				maxAge: 24 * 60 * 60 * 1000,
 			});
 
+			prisma.$disconnect();
 			res.json({ accessToken });
 		}
 	);

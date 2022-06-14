@@ -14,6 +14,7 @@ const logUser = async (req, res) => {
 	const foundUser = await prisma.user.findFirst({ where: { email } });
 
 	if (!foundUser) {
+		prisma.$disconnect();
 		return res.status(401).json('Email not registered');
 	}
 
@@ -71,8 +72,8 @@ const logUser = async (req, res) => {
 			await prisma.$disconnect();
 		}
 	} else {
-		res.status(401).json('Invalid password');
 		await prisma.$disconnect();
+		res.status(401).json('Invalid password');
 	}
 };
 
