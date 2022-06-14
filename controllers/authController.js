@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const PrismaClient = require('@prisma/client').PrismaClient;
-const prisma = new PrismaClient();
+
+const prisma = require('../prisma/prismaClient');
 
 const logUser = async (req, res) => {
 	const cookies = req.cookies;
@@ -11,49 +11,48 @@ const logUser = async (req, res) => {
 		return res.status(400).json('Email and password are required');
 	}
 
-	const foundUser = await prisma.user.findFirst({ where: { email } });
+	try {
+		const foundUser = await prisma.user.findFirst({ where: { email } });
 
-	if (!foundUser) {
-		prisma.$disconnect();
-		return res.status(401).json('Email not registered');
-	}
-
-	const validPassword = await bcrypt.compare(password, foundUser.password);
-
-	if (validPassword) {
-		const accessToken = jwt.sign(
-			{ UserInfo: { email: foundUser.email, userId: foundUser.id } },
-			process.env.ACCESS_TOKEN_SECRET,
-			{ expiresIn: '10m' }
-		);
-
-		const refreshToken = jwt.sign(
-			{ email: foundUser.email, userId: foundUser.id },
-			process.env.REFRESH_TOKEN_SECRET,
-			{ expiresIn: '24h' }
-		);
-
-		if (cookies?.jwt) {
-			res.clearCookie('jwt', {
-				secure: true,
-				httpOnly: true,
-				sameSite: 'None',
-			});
-
-			const previousToken = cookies.jwt;
-
-			const foundToken = await prisma.refresh_token.findFirst({
-				where: { refreshToken: previousToken },
-			});
-
-			if (foundToken) {
-				await prisma.refresh_token.delete({
-					where: { refreshToken: previousToken },
-				});
-			}
+		if (!foundUser) {
+			return res.status(401).json('Email not registered');
 		}
 
-		try {
+		const validPassword = await bcrypt.compare(password, foundUser.password);
+
+		if (validPassword) {
+			const accessToken = jwt.sign(
+				{ UserInfo: { email: foundUser.email, userId: foundUser.id } },
+				process.env.ACCESS_TOKEN_SECRET,
+				{ expiresIn: '10m' }
+			);
+
+			const refreshToken = jwt.sign(
+				{ email: foundUser.email, userId: foundUser.id },
+				process.env.REFRESH_TOKEN_SECRET,
+				{ expiresIn: '24h' }
+			);
+
+			if (cookies?.jwt) {
+				res.clearCookie('jwt', {
+					secure: true,
+					httpOnly: true,
+					sameSite: 'None',
+				});
+
+				const previousToken = cookies.jwt;
+
+				const foundToken = await prisma.refresh_token.findFirst({
+					where: { refreshToken: previousToken },
+				});
+
+				if (foundToken) {
+					await prisma.refresh_token.delete({
+						where: { refreshToken: previousToken },
+					});
+				}
+			}
+
 			await prisma.refresh_token.create({
 				data: { tokenUserId: foundUser.id, refreshToken },
 			});
@@ -66,14 +65,11 @@ const logUser = async (req, res) => {
 			});
 
 			res.json({ accessToken });
-		} catch (error) {
-			res.status(500).json(error.message);
-		} finally {
-			await prisma.$disconnect();
+		} else {
+			res.status(401).json('Invalid password');
 		}
-	} else {
-		await prisma.$disconnect();
-		res.status(401).json('Invalid password');
+	} catch (err) {
+		res.status(500).json(err.message);
 	}
 };
 
