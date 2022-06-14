@@ -1,24 +1,28 @@
 const { v4: uuid } = require('uuid');
-
-const queryDB = require('../sql/dbConn');
-const transactionQueries = require('../sql/transactionQueries');
+const PrismaClient = require('@prisma/client').PrismaClient;
+const prisma = new PrismaClient();
 
 const getAllTransactions = async (req, res) => {
-	const userId = req.userId;
+	const { userId } = req;
 
 	if (!userId) {
 		return res.status(401).json('User not found');
 	}
 
-	const [[rows]] = await queryDB(
-		transactionQueries.selectAll(userId, +req?.query?.limit || null)
-	);
+	const { limit } = req.query;
 
-	if (!rows.length) {
+	const foundTransactions = await prisma.transaction.findMany({
+		where: { transactionUserId: userId, deletedAt: null },
+		orderBy: [{ createdAt: 'desc' }],
+		...(limit && { take: +limit }),
+	});
+
+	if (!foundTransactions.length) {
 		return res.sendStatus(204);
 	}
 
-	res.json(rows);
+	prisma.$disconnect();
+	res.json(foundTransactions);
 };
 
 const createTransaction = async (req, res) => {
@@ -33,9 +37,11 @@ const createTransaction = async (req, res) => {
 	if (!concept) {
 		return res.status(400).json("'Concept' field is required");
 	}
+
 	if (!amount) {
 		return res.status(400).json("'Amount' field is required");
 	}
+
 	if (!type) {
 		return res.status(400).json("'Type' field is required");
 	}
@@ -43,18 +49,19 @@ const createTransaction = async (req, res) => {
 	const transaction = {
 		id: uuid(),
 		createdAt: new Date().toISOString(),
-		modifiedAt: null,
 		concept,
 		amount: type === 'IN' ? +amount : -amount,
 		type,
-		userId,
+		transactionUserId: userId,
 	};
 
 	try {
-		await queryDB(transactionQueries.insert(transaction));
-		res.status(201).json(transaction);
+		const result = await prisma.transaction.create({ data: transaction });
+		res.status(201).json(result);
 	} catch (error) {
 		res.status(500).json(error.message);
+	} finally {
+		prisma.$disconnect();
 	}
 };
 
@@ -65,48 +72,56 @@ const removeTransaction = async (req, res) => {
 		return res.status(400).json('Id field required');
 	}
 
-	const [[result], connection] = await queryDB(transactionQueries.select(id));
+	const result = await prisma.transaction.update({
+		data: { deletedAt: new Date().toISOString() },
+		where: { id },
+	});
 
-	const transaction = { ...result[0], deletedAt: new Date().toISOString() };
-
-	await queryDB(transactionQueries.remove(transaction), connection);
-
-	res.json(transaction);
+	prisma.$disconnect();
+	res.json(result);
 };
 
 const updateTransaction = async (req, res) => {
-	const { id, amount, concept } = req.body;
+	let { id, concept, amount } = req.body;
 
 	if (!id) {
 		return res.status(400).json('Id field required');
 	}
 
-	const [[result], connection] = await queryDB(transactionQueries.select(id));
+	const foundTransaction = await prisma.transaction.findUnique({
+		where: { id },
+	});
 
-	if (!Object.keys(result).length) {
+	if (!foundTransaction) {
+		prisma.$disconnect();
 		return res.status(204).end();
 	}
 
-	const validFields = Object.entries({ amount, concept }).filter(
-		([key, value]) => !!value
-	);
-
-	if (!validFields.length) {
+	if (!concept && !amount) {
+		prisma.$disconnect();
 		return res.status(400).json('Empty fields');
 	}
 
-	const transaction = {
-		...result[0],
-		...Object.fromEntries(validFields),
-		modifiedAt: new Date().toISOString(),
-		amount: result[0].type === 'IN' ? +Math.abs(amount) : -Math.abs(amount),
-	};
+	if (amount) {
+		amount =
+			foundTransaction.type === 'IN' ? +Math.abs(amount) : -Math.abs(amount);
+	}
 
 	try {
-		await queryDB(transactionQueries.update(transaction), connection);
-		res.json(transaction);
+		const result = await prisma.transaction.update({
+			data: {
+				modifiedAt: new Date().toISOString(),
+				amount,
+				concept,
+			},
+			where: { id },
+		});
+
+		res.json(result);
 	} catch (error) {
 		res.status(500).json(error.message);
+	} finally {
+		prisma.$disconnect();
 	}
 };
 
@@ -117,9 +132,15 @@ const getBalance = async (req, res) => {
 		return res.status(401).json('User not found');
 	}
 
-	const [[balance]] = await queryDB(transactionQueries.getBalance(userId));
+	const foundBalance = await prisma.transaction.aggregate({
+		_sum: {
+			amount: true,
+		},
+		where: { transactionUserId: userId },
+	});
 
-	res.json(...balance);
+	prisma.$disconnect();
+	res.json(foundBalance._sum.amount);
 };
 
 module.exports = {
