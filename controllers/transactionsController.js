@@ -3,15 +3,20 @@ const PrismaClient = require('@prisma/client').PrismaClient;
 const prisma = new PrismaClient();
 
 const getAllTransactions = async (req, res) => {
-	const userId = req.userId;
+	const { userId } = req;
 
 	if (!userId) {
 		return res.status(401).json('User not found');
 	}
 
+	const { limit } = req.query;
+
+	console.log(limit);
+
 	const foundTransactions = await prisma.transaction.findMany({
 		where: { transactionUserId: userId, deletedAt: null },
 		orderBy: [{ createdAt: 'desc' }],
+		...(limit && { take: +limit }),
 	});
 
 	if (!foundTransactions.length) {
@@ -137,7 +142,7 @@ const getBalance = async (req, res) => {
 	});
 
 	prisma.$disconnect();
-	res.json(foundBalance);
+	res.json(foundBalance._sum.amount);
 };
 
 module.exports = {

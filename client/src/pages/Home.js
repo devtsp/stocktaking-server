@@ -26,7 +26,7 @@ const Home = () => {
 				const response = await axiosPrivate.get('/transactions/balance', {
 					signal: controller.signal,
 				});
-				isMounted && setBalance(response.data.balance);
+				isMounted && setBalance(response.data);
 			} catch (err) {
 				if (err.message !== 'canceled') {
 					console.error(err);
