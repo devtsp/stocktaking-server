@@ -4,7 +4,7 @@ CREATE TABLE `refresh_token` (
     `tokenUserId` VARCHAR(300) NOT NULL,
     `refreshToken` VARCHAR(300) NOT NULL,
 
-    UNIQUE INDEX `refreshToken`(`refreshToken`),
+    UNIQUE INDEX `refresh_token_refreshToken_key`(`refreshToken`),
     INDEX `user_id_idx`(`tokenUserId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
