@@ -11,8 +11,6 @@ const getAllTransactions = async (req, res) => {
 
 	const { limit } = req.query;
 
-	console.log(limit);
-
 	const foundTransactions = await prisma.transaction.findMany({
 		where: { transactionUserId: userId, deletedAt: null },
 		orderBy: [{ createdAt: 'desc' }],
