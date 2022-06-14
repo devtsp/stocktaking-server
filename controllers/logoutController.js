@@ -16,7 +16,7 @@ const logoutUser = async (req, res) => {
 
 	if (!foundUser) {
 		res.clearCookie('jwt', {
-			// secure: true,
+			secure: true,
 			httpOnly: true,
 			sameSite: 'None',
 		});
@@ -25,7 +25,7 @@ const logoutUser = async (req, res) => {
 	}
 
 	res.clearCookie('jwt', {
-		// secure: true,
+		secure: true,
 		httpOnly: true,
 		sameSite: 'None',
 	});

@@ -17,7 +17,7 @@ const refreshToken = async (req, res) => {
 	});
 
 	res.clearCookie('jwt', {
-		// secure: true,
+		secure: true,
 		httpOnly: true,
 		sameSite: 'None',
 	});
@@ -33,7 +33,6 @@ const refreshToken = async (req, res) => {
 					(await prisma.refresh_token.deleteMany({
 						where: { tokenUserId: decoded.userId },
 					}));
-				// !err && queryDB(tokenQueries.removeAllUserTokens(decoded.userId));
 			}
 		);
 		prisma.$disconnect();
@@ -77,7 +76,7 @@ const refreshToken = async (req, res) => {
 
 			res.cookie('jwt', newRefreshToken, {
 				httpOnly: true,
-				// secure: true,
+				secure: true,
 				sameSite: 'None',
 				maxAge: 24 * 60 * 60 * 1000,
 			});
