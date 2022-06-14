@@ -342,6 +342,7 @@ form .success {
 
 .Home {
 	max-width: 80%;
+	margin: auto;
 }
 
 .Home h1 {
