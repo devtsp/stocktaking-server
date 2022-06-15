@@ -2,6 +2,7 @@ import React from 'react';
 import { MdClose } from 'react-icons/md';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useLoading from '../hooks/useLoading';
 import useTransactions from '../hooks/useTransactions';
 
 const EditTransaction = ({ editing, setEditing }) => {
@@ -19,6 +20,7 @@ const EditTransaction = ({ editing, setEditing }) => {
 
 	const axiosPrivate = useAxiosPrivate();
 	const { setTransactions } = useTransactions();
+	const { setIsFetching } = useLoading();
 
 	const [mounted, setIsMounted] = React.useState(false);
 	React.useEffect(() => {
@@ -33,6 +35,7 @@ const EditTransaction = ({ editing, setEditing }) => {
 			id,
 		};
 		try {
+			setIsFetching(true);
 			const response = await axiosPrivate.patch('/transactions', body);
 			setEditing([false, {}]);
 			setTransactions(prev =>
@@ -41,6 +44,8 @@ const EditTransaction = ({ editing, setEditing }) => {
 		} catch (err) {
 			console.error(error.message);
 			setError(err.message);
+		} finally {
+			setIsFetching(false);
 		}
 	};
 

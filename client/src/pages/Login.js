@@ -3,8 +3,10 @@ import { Link, Navigate } from 'react-router-dom';
 
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
+import useLoading from '../hooks/useLoading';
 
 const Login = () => {
+	const { setIsFetching } = useLoading();
 	const { auth, setAuth } = useAuth();
 
 	const emailRef = React.useRef();
@@ -31,6 +33,7 @@ const Login = () => {
 		}
 
 		try {
+			setIsFetching(true);
 			const response = await axios.post(
 				'/auth',
 				{ email, password },
@@ -49,6 +52,8 @@ const Login = () => {
 			console.error(err.response.data);
 			setError(err.response.data);
 			errorRef.current.focus();
+		} finally {
+			setIsFetching(false);
 		}
 	};
 

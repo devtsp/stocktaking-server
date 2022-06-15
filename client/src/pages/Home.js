@@ -5,20 +5,21 @@ import { AiOutlineRight } from 'react-icons/ai';
 
 import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useLoading from '../hooks/useLoading';
 
 const Home = () => {
 	const [balance, setBalance] = React.useState(0);
 	const [transactions, setTransactions] = React.useState([]);
-	const [loading, setIsLoading] = React.useState(false);
+	const [mounted, setIsMounted] = React.useState(false);
 
+	const { fetching, setIsFetching } = useLoading();
 	const { auth } = useAuth();
 	const axiosPrivate = useAxiosPrivate();
-
-	const [mounted, setIsMounted] = React.useState(false);
 
 	React.useEffect(() => {
 		let isMounted = true;
 		setIsMounted(true);
+		setIsFetching(true);
 		const controller = new AbortController();
 
 		const getBalance = async () => {
@@ -48,10 +49,9 @@ const Home = () => {
 		};
 
 		const fetchData = async () => {
-			setIsLoading(true);
 			await getBalance();
 			await getLastTransactions();
-			setIsLoading(false);
+			isMounted && setIsFetching(false);
 		};
 
 		fetchData();
@@ -64,7 +64,7 @@ const Home = () => {
 
 	return (
 		<>
-			{auth?.accessToken && !loading ? (
+			{auth?.accessToken ? (
 				<section
 					className={`Home transition1 ${
 						!mounted ? 'transition1-start' : 'transition1-end'

@@ -1,11 +1,13 @@
 import React from 'react';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useLoading from '../hooks/useLoading';
 import useTransactions from '../hooks/useTransactions';
 
 const NewTransaction = () => {
 	const axiosPrivate = useAxiosPrivate();
 	const { transactions, setTransactions } = useTransactions();
+	const { setIsFetching } = useLoading();
 
 	const [amount, setAmount] = React.useState('');
 	const [concept, setConcept] = React.useState('');
@@ -26,6 +28,7 @@ const NewTransaction = () => {
 		}
 
 		try {
+			setIsFetching(true);
 			const response = await axiosPrivate.post('/transactions', {
 				amount,
 				type,
@@ -42,6 +45,8 @@ const NewTransaction = () => {
 		} catch (err) {
 			console.error(err?.response || err?.message);
 			setError(err?.response || err.message);
+		} finally {
+			setIsFetching(false);
 		}
 	};
 

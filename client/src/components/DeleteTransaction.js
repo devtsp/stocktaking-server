@@ -1,6 +1,7 @@
 import React from 'react';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useLoading from '../hooks/useLoading';
 import useTransactions from '../hooks/useTransactions';
 
 const DeleteTransaction = ({ deleting, setDeleting }) => {
@@ -10,6 +11,7 @@ const DeleteTransaction = ({ deleting, setDeleting }) => {
 
 	const axiosPrivate = useAxiosPrivate();
 	const { setTransactions } = useTransactions();
+	const { fetching, setIsFetching } = useLoading();
 
 	const handleDelete = async e => {
 		e.preventDefault();
@@ -20,6 +22,7 @@ const DeleteTransaction = ({ deleting, setDeleting }) => {
 		}
 
 		try {
+			setIsFetching(true);
 			await axiosPrivate.delete('/transactions', {
 				data: { id },
 			});
@@ -27,6 +30,8 @@ const DeleteTransaction = ({ deleting, setDeleting }) => {
 			setTransactions(prev => [...prev].filter(tr => tr.id !== id));
 		} catch (err) {
 			console.error(err.response.message);
+		} finally {
+			setIsFetching(false);
 		}
 	};
 

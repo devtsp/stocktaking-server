@@ -137,7 +137,7 @@ const getBalance = async (req, res) => {
 			_sum: {
 				amount: true,
 			},
-			where: { transactionUserId: userId },
+			where: { transactionUserId: userId, deletedAt: null },
 		});
 
 		res.json(foundBalance._sum.amount);

@@ -74,6 +74,37 @@ ul {
 	font-size: 1.6rem;
 }
 
+.loading-screen {
+	background-color: rgba(47, 79, 79, 0.941);
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 2000;
+}
+
+.loading-screen svg {
+	display: block;
+	animation-name: spin;
+	animation-duration: 500ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	height: 4rem;
+	width: 4rem;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 /* NAV ============================================================ */
 
 nav {
@@ -300,6 +331,11 @@ form .success {
 	padding: 0.4rem;
 	border-radius: 0.4rem;
 	line-height: 1;
+}
+
+form .success a {
+	display: block;
+	margin: 0.6rem 0;
 }
 
 .instructions {

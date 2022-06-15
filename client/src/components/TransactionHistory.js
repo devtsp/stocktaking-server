@@ -6,10 +6,12 @@ import { IconContext } from 'react-icons';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useTransactions from '../hooks/useTransactions';
+import useLoading from '../hooks/useLoading';
 
 const TransactionHistory = ({ setEditing, setDeleting }) => {
 	const axiosPrivate = useAxiosPrivate();
 	const { transactions, setTransactions } = useTransactions();
+	const { fetching, setIsFetching } = useLoading();
 
 	const [filters, setFilters] = React.useState([]);
 	const [mounted, setIsMounted] = React.useState(false);
@@ -17,6 +19,7 @@ const TransactionHistory = ({ setEditing, setDeleting }) => {
 	React.useEffect(() => {
 		let isMounted = true;
 		setIsMounted(true);
+		setIsFetching(true);
 		const controller = new AbortController();
 
 		const getPastTransactions = async () => {
@@ -34,6 +37,7 @@ const TransactionHistory = ({ setEditing, setDeleting }) => {
 		};
 
 		getPastTransactions();
+		isMounted && setIsFetching(false);
 
 		return () => {
 			isMounted = false;

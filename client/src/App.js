@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { AuthProvider } from './context/AuthProvider';
 import PersistLogin from './components/PersistLogin';
+import LoadingProvider from './context/LoadingProvider';
 
 import Nav from './components/Nav';
 import Layout from './components/Layout';
@@ -14,21 +15,23 @@ import TransactionProvider from './context/TransactionProvider';
 function App() {
 	return (
 		<AuthProvider>
-			<PersistLogin>
-				<Router>
-					<Nav />
-					<Routes>
-						<Route element={<Layout />}>
-							<Route element={<TransactionProvider />}>
-								<Route path="/" element={<Home />} />
-								<Route path="/operations" element={<Operations />} />
+			<LoadingProvider>
+				<PersistLogin>
+					<Router>
+						<Nav />
+						<Routes>
+							<Route element={<Layout />}>
+								<Route element={<TransactionProvider />}>
+									<Route path="/" element={<Home />} />
+									<Route path="/operations" element={<Operations />} />
+								</Route>
+								<Route path="/login" element={<Login />} />
+								<Route path="/register" element={<Register />} />
 							</Route>
-							<Route path="/login" element={<Login />} />
-							<Route path="/register" element={<Register />} />
-						</Route>
-					</Routes>
-				</Router>
-			</PersistLogin>
+						</Routes>
+					</Router>
+				</PersistLogin>
+			</LoadingProvider>
 		</AuthProvider>
 	);
 }

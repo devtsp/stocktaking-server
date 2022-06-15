@@ -5,17 +5,22 @@ import jwt_decode from 'jwt-decode';
 
 import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useLoading from '../hooks/useLoading';
 
 const Nav = () => {
 	const { auth, setAuth } = useAuth();
 	const axiosPrivate = useAxiosPrivate();
+	const { setIsFetching } = useLoading();
 
 	const handleLogout = async () => {
 		try {
+			setIsFetching(true);
 			await axiosPrivate.post('/logout');
 			setAuth({ accessToken: null });
 		} catch (err) {
 			console.error(err.message);
+		} finally {
+			setIsFetching(false);
 		}
 	};
 

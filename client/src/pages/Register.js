@@ -7,6 +7,7 @@ import {
 } from 'react-icons/ai';
 
 import axios from '../api/axios';
+import useLoading from '../hooks/useLoading';
 
 const Register = () => {
 	const emailRef = React.useRef();
@@ -26,6 +27,8 @@ const Register = () => {
 
 	const [error, setError] = React.useState('');
 	const [success, setSuccess] = React.useState(false);
+
+	const { setIsFetching } = useLoading();
 
 	React.useEffect(() => {
 		emailRef.current.focus();
@@ -69,6 +72,7 @@ const Register = () => {
 		}
 
 		try {
+			setIsFetching(true);
 			const response = await axios.post('/register', body);
 			setEmail('');
 			setPassword('');
@@ -79,6 +83,8 @@ const Register = () => {
 			console.error(err.message);
 			setError(err.response.data);
 			errorRef.current.focus();
+		} finally {
+			setIsFetching(false);
 		}
 	};
 
@@ -212,7 +218,9 @@ const Register = () => {
 			</div>
 			{success && (
 				<div>
-					<p className="success">{success}</p>
+					<p className="success">
+						{success} <br /> <Link to="/login">Go to login Page</Link>
+					</p>
 				</div>
 			)}
 			<p
@@ -222,11 +230,12 @@ const Register = () => {
 			>
 				{error}
 			</p>
-
-			<p>
-				Already have an account? <br />
-				<Link to="/login">Go to login Page</Link>
-			</p>
+			{!success && (
+				<p>
+					Already have an account? <br />
+					<Link to="/login">Go to login Page</Link>
+				</p>
+			)}
 		</form>
 	);
 };
