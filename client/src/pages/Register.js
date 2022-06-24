@@ -96,9 +96,15 @@ const Register = () => {
 					Email{' '}
 					{email ? (
 						validEmail ? (
-							<AiOutlineCheckCircle className="valid" />
+							<AiOutlineCheckCircle
+								data-testid="correct-register-email"
+								className="valid"
+							/>
 						) : (
-							<AiOutlineCloseCircle className="invalid" />
+							<AiOutlineCloseCircle
+								data-testid="wrong-register-email"
+								className="invalid"
+							/>
 						)
 					) : (
 						''
@@ -119,6 +125,7 @@ const Register = () => {
 				/>
 				<div>
 					<p
+						data-testid="email-info"
 						className={
 							emailFocus && email && !validEmail ? 'instructions' : 'offscreen'
 						}
@@ -135,9 +142,15 @@ const Register = () => {
 					Password
 					{password ? (
 						validPassword ? (
-							<AiOutlineCheckCircle className="valid" />
+							<AiOutlineCheckCircle
+								data-testid="correct-register-password"
+								className="valid"
+							/>
 						) : (
-							<AiOutlineCloseCircle className="invalid" />
+							<AiOutlineCloseCircle
+								data-testid="wrong-register-password"
+								className="invalid"
+							/>
 						)
 					) : (
 						''
@@ -157,6 +170,7 @@ const Register = () => {
 				/>
 				<div>
 					<p
+						data-testid="password-info"
 						className={
 							passwordFocus && !validPassword ? 'instructions' : 'offscreen'
 						}
@@ -174,9 +188,15 @@ const Register = () => {
 					Confirm Password{' '}
 					{repeatPassword ? (
 						validRepeatPassword ? (
-							<AiOutlineCheckCircle className="valid" />
+							<AiOutlineCheckCircle
+								data-testid="correct-register-confirm-password"
+								className="valid"
+							/>
 						) : (
-							<AiOutlineCloseCircle className="invalid" />
+							<AiOutlineCloseCircle
+								data-testid="wrong-register-confirm-password"
+								className="invalid"
+							/>
 						)
 					) : (
 						''
@@ -196,6 +216,7 @@ const Register = () => {
 				/>
 				<div>
 					<p
+						data-testid="confirm-password-info"
 						className={
 							repeatPassword && repeatPasswordFocus && !validRepeatPassword
 								? 'instructions'
