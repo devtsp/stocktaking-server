@@ -202,20 +202,4 @@ describe('Submit button', () => {
 
 		expect(screen.getByRole('button', { name: /submit/i })).toBeEnabled();
 	});
-
-	test('Submit button is disabled on wrong confirm password', () => {
-		render(<Register />, { wrapper: HashRouter });
-
-		fireEvent.change(screen.queryByLabelText('Email'), {
-			target: { value: 'validemail@gmail.com' },
-		});
-		fireEvent.change(screen.queryByLabelText('Password'), {
-			target: { value: 'Password1' },
-		});
-		fireEvent.change(screen.queryByLabelText('Confirm Password'), {
-			target: { value: 'Password' },
-		});
-
-		expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled();
-	});
 });

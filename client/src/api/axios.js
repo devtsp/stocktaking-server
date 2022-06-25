@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://shaded-adventurous-red.glitch.me/';
+const BASE_URL = 'https://stocktaking-app.azurewebsites.net/';
 
 export const axiosPrivate = axios.create({
 	baseURL: BASE_URL,

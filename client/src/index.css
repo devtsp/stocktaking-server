@@ -54,7 +54,7 @@ ul {
 }
 
 ::-webkit-scrollbar {
-	width: 11px;
+	width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -69,8 +69,6 @@ ul {
 	background-color: darkslategrey;
 	display: flex;
 	flex-direction: column;
-	justify-items: flex-start;
-	overflow-y: auto;
 	font-size: 1.6rem;
 }
 
@@ -371,7 +369,7 @@ form .success a {
 
 .offscreen {
 	position: absolute;
-	left: 9999999999999px;
+	left: -9999px;
 }
 
 /* HOME =========================================================================== */
@@ -425,18 +423,6 @@ form .success a {
 
 .Home .TransactionHistory h1 {
 	text-align: left;
-}
-
-.Home .transparency-mask {
-	width: 22.1rem;
-	height: 26rem;
-	position: absolute;
-	background-image: linear-gradient(
-		to bottom,
-		rgba(47, 79, 79, 0.2) 50%,
-		rgba(47, 79, 79, 0.4) 75%,
-		rgba(47, 79, 79, 0.7) 80%
-	);
 }
 
 /* OPERATIONS PAGE ================================================================= */
@@ -501,7 +487,7 @@ form .success a {
 
 .TransactionHistory form label {
 	position: absolute;
-	left: 9999999999999999px;
+	left: -9999px;
 }
 
 .TransactionHistory .filter-tag-list {
@@ -775,6 +761,7 @@ form .success a {
 	.Operations td {
 		padding: 0.2rem;
 	}
+
 	nav {
 		padding: 0rem;
 	}
@@ -784,6 +771,7 @@ form .success a {
 	:root {
 		font-size: 10px;
 	}
+
 	nav svg {
 		display: none;
 	}

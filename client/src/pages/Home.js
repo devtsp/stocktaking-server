@@ -77,7 +77,6 @@ const Home = () => {
 						<h1>Last Movements</h1>
 						{transactions.length ? (
 							<>
-								<div className="transparency-mask"></div>
 								<table>
 									<tbody>
 										{transactions.map((transaction, i) => {
