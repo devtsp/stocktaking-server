@@ -17,7 +17,7 @@ const Login = () => {
 	const [error, setError] = React.useState('');
 
 	React.useEffect(() => {
-		!auth.accessToken && emailRef.current.focus();
+		!auth?.accessToken && emailRef.current.focus();
 	}, []);
 
 	React.useEffect(() => {
@@ -59,8 +59,8 @@ const Login = () => {
 
 	return (
 		<>
-			{!auth.accessToken ? (
-				<form className="Login" onSubmit={submitLogin}>
+			{!auth?.accessToken ? (
+				<form className="Login" data-testid="login-form" onSubmit={submitLogin}>
 					<h1>LOGIN</h1>
 					<div>
 						<label htmlFor="login-email">Email</label> <br />
