@@ -18,7 +18,7 @@ const Login = () => {
 
 	React.useEffect(() => {
 		!auth?.accessToken && emailRef.current.focus();
-	}, []);
+	}, [auth?.accessToken]);
 
 	React.useEffect(() => {
 		setError('');
