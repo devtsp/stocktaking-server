@@ -1,10 +1,4 @@
-import {
-	render,
-	screen,
-	cleanup,
-	fireEvent,
-	waitFor,
-} from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { jest } from '@jest/globals';
 
@@ -21,7 +15,17 @@ const axios_post = jest.fn();
 axios.post = axios_post;
 const useAuth = jest.spyOn(useAuth_module, 'default');
 
-afterEach(cleanup);
+const TestContext = ({ path, children }) => {
+	return (
+		<AuthProvider>
+			<LoadingProvider>
+				<MemoryRouter initialEntries={[path]}>
+					<Routes>{children}</Routes>
+				</MemoryRouter>
+			</LoadingProvider>
+		</AuthProvider>
+	);
+};
 
 test('ROUTING: redirect to "/" if auth.accessToken', () => {
 	useAuth.mockReturnValueOnce({
@@ -29,16 +33,10 @@ test('ROUTING: redirect to "/" if auth.accessToken', () => {
 	});
 
 	render(
-		<AuthProvider>
-			<LoadingProvider>
-				<MemoryRouter initialEntries={['/login']}>
-					<Routes>
-						<Route path="/" element={<p>HOME</p>} />
-						<Route path="/login" element={<Login />} />
-					</Routes>
-				</MemoryRouter>
-			</LoadingProvider>
-		</AuthProvider>
+		<TestContext path="/login">
+			<Route path="/" element={<p>HOME</p>} />
+			<Route path="/login" element={<Login />} />
+		</TestContext>
 	);
 
 	expect(screen.getByText('HOME')).toBeInTheDocument();
@@ -48,16 +46,10 @@ test('ROUTING: redirect to "/" if auth.accessToken', () => {
 
 test('ROUTING: not redirect if !auth.accessToken', async () => {
 	render(
-		<AuthProvider>
-			<LoadingProvider>
-				<MemoryRouter initialEntries={['/login']}>
-					<Routes>
-						<Route path="/" element={<p>HOME</p>} />
-						<Route path="/login" element={<Login />} />
-					</Routes>
-				</MemoryRouter>
-			</LoadingProvider>
-		</AuthProvider>
+		<TestContext path="/login">
+			<Route path="/" element={<p>HOME</p>} />
+			<Route path="/login" element={<Login />} />
+		</TestContext>
 	);
 
 	expect(screen.getByTestId('login-form')).toBeInTheDocument();
@@ -66,16 +58,10 @@ test('ROUTING: not redirect if !auth.accessToken', async () => {
 
 test('ROUTING: Link to "/register"', () => {
 	render(
-		<AuthProvider>
-			<LoadingProvider>
-				<MemoryRouter initialEntries={['/login']}>
-					<Routes>
-						<Route path="/login" element={<Login />} />
-						<Route path="/register" element={<p>REGISTER</p>} />
-					</Routes>
-				</MemoryRouter>
-			</LoadingProvider>
-		</AuthProvider>
+		<TestContext path="/login">
+			<Route path="/login" element={<Login />} />
+			<Route path="/register" element={<p>REGISTER</p>} />
+		</TestContext>
 	);
 
 	fireEvent.click(screen.getByText('Sign Up'));
@@ -86,15 +72,9 @@ test('ROUTING: Link to "/register"', () => {
 
 test('SUBMIT: Correct data sent to axios', async () => {
 	render(
-		<AuthProvider>
-			<LoadingProvider>
-				<MemoryRouter initialEntries={['/login']}>
-					<Routes>
-						<Route path="/login" element={<Login />} />
-					</Routes>
-				</MemoryRouter>
-			</LoadingProvider>
-		</AuthProvider>
+		<TestContext path="/login">
+			<Route path="/login" element={<Login />} />
+		</TestContext>
 	);
 
 	fireEvent.change(screen.getByLabelText('Email'), {
@@ -125,16 +105,10 @@ test('SUBMIT: redirect to home on resolved response', async () => {
 	axios_post.mockResolvedValueOnce({ data: { accessToken: 'user123' } });
 
 	render(
-		<AuthProvider>
-			<LoadingProvider>
-				<MemoryRouter initialEntries={['/login']}>
-					<Routes>
-						<Route path="/login" element={<Login />} />
-						<Route path="/" element={<p>HOME</p>} />
-					</Routes>
-				</MemoryRouter>
-			</LoadingProvider>
-		</AuthProvider>
+		<TestContext path="/login">
+			<Route path="/login" element={<Login />} />
+			<Route path="/" element={<p>HOME</p>} />
+		</TestContext>
 	);
 
 	fireEvent.change(screen.getByLabelText('Email'), {
@@ -152,13 +126,9 @@ test('SUBMIT: redirect to home on resolved response', async () => {
 
 test('SUBMIT: not triggered if empty fields', async () => {
 	render(
-		<AuthProvider>
-			<LoadingProvider>
-				<MemoryRouter>
-					<Login />
-				</MemoryRouter>
-			</LoadingProvider>
-		</AuthProvider>
+		<TestContext>
+			<Route path="/" element={<Login />} />
+		</TestContext>
 	);
 
 	fireEvent.change(screen.getByLabelText('Email'), {
