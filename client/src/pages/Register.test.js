@@ -1,20 +1,24 @@
-import React from 'react';
-import { HashRouter } from 'react-router-dom';
-import {
-	render,
-	screen,
-	cleanup,
-	fireEvent,
-	act,
-} from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
+
+import React from 'react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 import Register from './Register';
 
-afterEach(cleanup);
+test('ROUTING: Link to "/login', () => {
+	render(
+		<MemoryRouter>
+			<Routes>
+				<Route path="/" element={<Register />} />
+				<Route path="/login" element={<p>LOGIN</p>} />
+			</Routes>
+		</MemoryRouter>
+	);
+});
 
 test('EMAIL: Error icon displayed if invalid -- info message visible if invalid format when focused', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-email')).toBeNull();
 	expect(screen.queryByTestId('correct-register-email')).toBeNull();
@@ -33,7 +37,7 @@ test('EMAIL: Error icon displayed if invalid -- info message visible if invalid 
 });
 
 test('EMAIL: Info message not visible, success icon visible if valid', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('correct-register-email')).toBeNull();
 	expect(screen.queryByTestId('wrong-register-email')).toBeNull();
@@ -49,7 +53,7 @@ test('EMAIL: Info message not visible, success icon visible if valid', () => {
 });
 
 test('PASSWORD: Info message displayed when focus', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('password-info')).toHaveClass('offscreen');
 
@@ -61,7 +65,7 @@ test('PASSWORD: Info message displayed when focus', () => {
 });
 
 test('PASSWORD: Error icon displayed -- info message visible if invalid when focused', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-password')).toBeNull();
 	expect(screen.queryByTestId('correct-register-password')).toBeNull();
@@ -82,7 +86,7 @@ test('PASSWORD: Error icon displayed -- info message visible if invalid when foc
 });
 
 test('PASSWORD: Success icon displayed -- info message not visible if valid', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-password')).toBeNull();
 	expect(screen.queryByTestId('correct-register-password')).toBeNull();
@@ -100,7 +104,7 @@ test('PASSWORD: Success icon displayed -- info message not visible if valid', ()
 });
 
 test('CONFIRM PASSWORD: Error icon displayed -- info message visible on unmatched password when focused', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-confirm-password')).toBeNull();
 	expect(screen.queryByTestId('correct-register-confirm-password')).toBeNull();
@@ -131,7 +135,7 @@ test('CONFIRM PASSWORD: Error icon displayed -- info message visible on unmatche
 });
 
 test('CONFIRM PASSWORD: Success icon displayed -- info message not visible on passwords match', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-confirm-password')).toBeNull();
 	expect(screen.queryByTestId('correct-register-confirm-password')).toBeNull();
@@ -157,13 +161,13 @@ test('CONFIRM PASSWORD: Success icon displayed -- info message not visible on pa
 });
 
 test('SUBMIT BUTTON: disabled on empty fields', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled();
 });
 
 test('SUBMIT BUTTON: enabled on valid fields -- disabled if invalid fields', () => {
-	render(<Register />, { wrapper: HashRouter });
+	render(<Register />, { wrapper: MemoryRouter });
 
 	fireEvent.change(screen.queryByLabelText('Email'), {
 		target: { value: 'validemail@gmail.com' },
