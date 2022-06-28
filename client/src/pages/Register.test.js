@@ -6,18 +6,24 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 import Register from './Register';
 
-test('ROUTING: Link to "/login', () => {
+test('ROUTING: link to "/login"', () => {
 	render(
-		<MemoryRouter>
+		<MemoryRouter initialEntries={['/register']}>
 			<Routes>
-				<Route path="/" element={<Register />} />
+				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<p>LOGIN</p>} />
 			</Routes>
 		</MemoryRouter>
 	);
+
+	expect(screen.queryByText('LOGIN')).not.toBeInTheDocument();
+
+	fireEvent.click(screen.getByText('Go to login Page'));
+
+	expect(screen.getByText('LOGIN')).toBeInTheDocument();
 });
 
-test('EMAIL: Error icon displayed if invalid -- info message visible if invalid format when focused', () => {
+test('EMAIL: show error icon if invalid -- show info message if invalid on focus', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-email')).toBeNull();
@@ -36,7 +42,7 @@ test('EMAIL: Error icon displayed if invalid -- info message visible if invalid 
 	expect(screen.getByTestId('email-info')).toHaveClass('offscreen');
 });
 
-test('EMAIL: Info message not visible, success icon visible if valid', () => {
+test('EMAIL: hide info message -- show success icon if valid', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('correct-register-email')).toBeNull();
@@ -52,7 +58,7 @@ test('EMAIL: Info message not visible, success icon visible if valid', () => {
 	expect(screen.queryByTestId('email-info')).toHaveClass('offscreen');
 });
 
-test('PASSWORD: Info message displayed when focus', () => {
+test('PASSWORD: show info message on focus', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('password-info')).toHaveClass('offscreen');
@@ -64,7 +70,7 @@ test('PASSWORD: Info message displayed when focus', () => {
 	expect(screen.queryByTestId('password-info')).toHaveClass('instructions');
 });
 
-test('PASSWORD: Error icon displayed -- info message visible if invalid when focused', () => {
+test('PASSWORD: show error icon -- show info message if invalid on focus', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-password')).toBeNull();
@@ -85,7 +91,7 @@ test('PASSWORD: Error icon displayed -- info message visible if invalid when foc
 	expect(screen.getByTestId('password-info')).toHaveClass('offscreen');
 });
 
-test('PASSWORD: Success icon displayed -- info message not visible if valid', () => {
+test('PASSWORD: show success icon -- hide info message if valid', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-password')).toBeNull();
@@ -103,7 +109,7 @@ test('PASSWORD: Success icon displayed -- info message not visible if valid', ()
 	expect(screen.queryByTestId('wrong-register-password')).toBeNull();
 });
 
-test('CONFIRM PASSWORD: Error icon displayed -- info message visible on unmatched password when focused', () => {
+test('CONFIRM PASSWORD: show error icon -- show info message if unmatched password on focus', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-confirm-password')).toBeNull();
@@ -134,7 +140,7 @@ test('CONFIRM PASSWORD: Error icon displayed -- info message visible on unmatche
 	);
 });
 
-test('CONFIRM PASSWORD: Success icon displayed -- info message not visible on passwords match', () => {
+test('CONFIRM PASSWORD: show success icon -- hide info message if passwords match', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.queryByTestId('wrong-register-confirm-password')).toBeNull();
@@ -160,13 +166,13 @@ test('CONFIRM PASSWORD: Success icon displayed -- info message not visible on pa
 	expect(screen.queryByTestId('wrong-register-confirm-password')).toBeNull();
 });
 
-test('SUBMIT BUTTON: disabled on empty fields', () => {
+test('SUBMIT BUTTON: disabled if empty fields', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled();
 });
 
-test('SUBMIT BUTTON: enabled on valid fields -- disabled if invalid fields', () => {
+test('SUBMIT BUTTON: enabled oif valid fields -- disabled if invalid fields', () => {
 	render(<Register />, { wrapper: MemoryRouter });
 
 	fireEvent.change(screen.queryByLabelText('Email'), {
