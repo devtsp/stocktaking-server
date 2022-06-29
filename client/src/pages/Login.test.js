@@ -1,32 +1,17 @@
+import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { jest } from '@jest/globals';
+import { Route } from 'react-router-dom';
 
-import React from 'react';
 import { TestContext } from '../utils/testsUtils';
 import Login from './Login';
-import LoadingProvider from '../context/LoadingProvider';
-import { AuthProvider } from '../context/AuthProvider';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-
 import axios from '../api/axios';
 import * as useAuth_module from '../hooks/useAuth';
 
 const axios_post = jest.fn();
 axios.post = axios_post;
 const useAuth = jest.spyOn(useAuth_module, 'default');
-
-const TestContext = ({ path, children }) => {
-	return (
-		<AuthProvider>
-			<LoadingProvider>
-				<MemoryRouter initialEntries={[path]}>
-					<Routes>{children}</Routes>
-				</MemoryRouter>
-			</LoadingProvider>
-		</AuthProvider>
-	);
-};
 
 test('ROUTING: redirect to "/" if auth.accessToken', () => {
 	useAuth.mockReturnValueOnce({
