@@ -89,7 +89,11 @@ const Register = () => {
 	};
 
 	return (
-		<form className="Register" onSubmit={submitRegister}>
+		<form
+			className="Register"
+			data-testid="register-form"
+			onSubmit={submitRegister}
+		>
 			<h1>REGISTER</h1>
 			<div>
 				<label htmlFor="register-email" className="login-label">
@@ -239,12 +243,13 @@ const Register = () => {
 			</div>
 			{success && (
 				<div>
-					<p className="success">
+					<p data-testid="success-message" className="success">
 						{success} <br /> <Link to="/login">Go to login Page</Link>
 					</p>
 				</div>
 			)}
 			<p
+				data-testid="error-message"
 				ref={errorRef}
 				aria-live="assertive"
 				className={error ? 'error' : 'offscreen'}
