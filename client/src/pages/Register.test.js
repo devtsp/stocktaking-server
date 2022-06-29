@@ -1,20 +1,28 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import '@testing-library/jest-dom';
-
 import React from 'react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import {
+	render,
+	screen,
+	fireEvent,
+	act,
+	waitFor,
+} from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
+
 import { TestContext } from '../utils/testsUtils';
 
 import Register from './Register';
+import axios from '../api/axios';
+
+jest.spyOn(axios, 'post');
+jest.spyOn(console, 'error');
 
 test('ROUTING: link to "/login"', () => {
 	render(
-		<MemoryRouter initialEntries={['/register']}>
-			<Routes>
-				<Route path="/register" element={<Register />} />
-				<Route path="/login" element={<p>LOGIN</p>} />
-			</Routes>
-		</MemoryRouter>
+		<TestContext path="/register">
+			<Route path="/register" element={<Register />} />
+			<Route path="/login" element={<p>LOGIN</p>} />
+		</TestContext>
 	);
 
 	expect(screen.queryByText('LOGIN')).not.toBeInTheDocument();
@@ -195,4 +203,84 @@ test('SUBMIT BUTTON: enabled oif valid fields -- disabled if invalid fields', ()
 	});
 
 	expect(screen.getByRole('button', { name: /submit/i })).toBeEnabled();
+});
+
+test('SUBMIT: error message if rejected response', async () => {
+	axios.post.mockRejectedValueOnce({
+		message: 'TEST REJECT',
+		response: { data: 'TEST DATA' },
+	});
+
+	console.error.mockImplementationOnce(() => {});
+
+	render(
+		<TestContext>
+			<Route path="/" element={<Register />}></Route>
+		</TestContext>
+	);
+
+	expect(screen.getByTestId('error-message')).toHaveClass('offscreen');
+	expect(screen.getByTestId('error-message').textContent).toBe('');
+
+	fireEvent.change(screen.queryByLabelText('Email'), {
+		target: { value: 'valid@valid.com' },
+	});
+
+	fireEvent.change(screen.queryByLabelText('Password'), {
+		target: { value: 'ValidPassword123' },
+	});
+
+	fireEvent.submit(screen.getByTestId('register-form'));
+
+	await waitFor(() => {
+		expect(screen.getByTestId('error-message')).toHaveTextContent('TEST DATA');
+	});
+
+	expect(console.error).toHaveBeenCalledWith('TEST REJECT');
+});
+
+test('SUBMIT: prevent submission if invalid format on fields -- display "invalid entry" error message', async () => {
+	render(
+		<TestContext>
+			<Route path="/" element={<Register />} />
+		</TestContext>
+	);
+
+	expect(screen.getByTestId('error-message')).toHaveClass('offscreen');
+	expect(screen.getByTestId('error-message').textContent).toBe('');
+
+	fireEvent.change(screen.queryByLabelText('Email'), {
+		target: { value: 'INVALID EMAIL' },
+	});
+
+	fireEvent.change(screen.queryByLabelText('Password'), {
+		target: { value: 'Password123' },
+	});
+
+	fireEvent.submit(screen.getByTestId('register-form'));
+
+	expect(screen.getByTestId('error-message')).toHaveClass('error');
+	expect(screen.getByTestId('error-message').textContent).toBe('Invalid Entry');
+
+	fireEvent.change(screen.queryByLabelText('Email'), {
+		target: { value: 'valid@valid.com' },
+	});
+
+	fireEvent.change(screen.queryByLabelText('Password'), {
+		target: { value: 'INVALID PASSWORD' },
+	});
+
+	fireEvent.submit(screen.getByTestId('register-form'));
+
+	expect(screen.getByTestId('error-message')).toHaveClass('error');
+	expect(screen.getByTestId('error-message').textContent).toBe('Invalid Entry');
+
+	fireEvent.change(screen.queryByLabelText('Password'), {
+		target: { value: 'ValidPassword123' },
+	});
+
+	fireEvent.submit(screen.getByTestId('register-form'));
+
+	expect(screen.getByTestId('error-message')).toHaveClass('offscreen');
+	expect(screen.getByTestId('error-message').textContent).toBe('');
 });
