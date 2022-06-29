@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 
 import React from 'react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { TestContext } from '../utils/testsUtils';
 
 import Register from './Register';
 

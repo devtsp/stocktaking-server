@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import { jest } from '@jest/globals';
 
 import React from 'react';
+import { TestContext } from '../utils/testsUtils';
 import Login from './Login';
 import LoadingProvider from '../context/LoadingProvider';
 import { AuthProvider } from '../context/AuthProvider';
